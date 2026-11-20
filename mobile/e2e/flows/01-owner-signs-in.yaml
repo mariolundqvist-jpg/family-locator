@@ -1,0 +1,25 @@
+# Owner signs in with the isolated E2E account created by fixtures.mjs.
+# The code is read from the screen because this build uses demo authentication;
+# a production build sends the code by email and would need a mailbox reader.
+appId: app.safepath.client
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Logga in"
+- tapOn:
+    id: "login-email"
+- inputText: ${EMAIL_A}
+- tapOn:
+    id: "login-request-code"
+- assertVisible: "Demokod för inloggning"
+- copyTextFrom:
+    id: "demo-code-value"
+- tapOn:
+    id: "login-code"
+- inputText: ${maestro.copiedText}
+- tapOn:
+    id: "login-submit"
+- extendedWaitUntil:
+    visible: "Hello"
+    timeout: 20000
+- assertVisible: ${FAMILY_NAME}

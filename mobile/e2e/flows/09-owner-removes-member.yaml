@@ -1,0 +1,12 @@
+# Removal is enforced by the server; the removed person's position disappears.
+appId: app.safepath.client
+---
+- launchApp
+- tapOn: "Öppna ${FAMILY_NAME}"
+- tapOn:
+    id: "remove-${EMAIL_B_NAME}"
+- tapOn: "Ta bort"
+- extendedWaitUntil:
+    visible: "togs bort"
+    timeout: 15000
+- assertNotVisible: ${EMAIL_B_NAME}

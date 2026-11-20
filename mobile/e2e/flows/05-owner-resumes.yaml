@@ -1,0 +1,7 @@
+appId: app.safepath.client
+---
+- tapOn:
+    id: "start-sharing"
+- extendedWaitUntil:
+    visible: "Sharing"
+    timeout: 15000

@@ -1,0 +1,10 @@
+# The owner opens the seeded group. Both E2E accounts must be listed, and the
+# invitation must not have started anyone's sharing.
+appId: app.safepath.client
+---
+- tapOn: "Öppna ${FAMILY_NAME}"
+- extendedWaitUntil:
+    visible: "Invite someone"
+    timeout: 15000
+- assertVisible: ${EMAIL_B_NAME}
+- assertVisible: "Delar inte"

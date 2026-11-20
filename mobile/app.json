@@ -1,0 +1,88 @@
+{
+  "expo": {
+    "name": "SafePath",
+    "slug": "safepath",
+    "version": "1.0.0",
+    "scheme": "safepath",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "primaryColor": "#1b6e5a",
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 60,
+          "resizeMode": "contain",
+          "backgroundColor": "#12503f"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "SafePath delar din position med gruppen du valt. Bakgrundsuppdateringar är frivilliga, syns som en avisering och kan stängas av när som helst.",
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ],
+      "expo-secure-store"
+    ],
+    "android": {
+      "package": "app.safepath.client",
+      "versionCode": 2,
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE"
+      ],
+      "blockedPermissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.CAMERA",
+        "android.permission.READ_CONTACTS",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "com.huawei.android.launcher.permission.CHANGE_BADGE"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#12503f",
+        "backgroundImage": "./assets/adaptive-icon-background.png",
+        "monochromeImage": "./assets/adaptive-icon-monochrome.png"
+      }
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.safepath.client",
+      "buildNumber": "2",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "SafePath delar din position med gruppen du valt, medan appen är öppen och bara när du själv slagit på delning.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "SafePath kan fortsätta dela din position när skärmen är låst. Det är frivilligt, syns i aviseringsfältet och kan stängas av när som helst.",
+        "NSLocationAlwaysUsageDescription": "SafePath kan fortsätta dela din position när skärmen är låst. Det är frivilligt och kan stängas av när som helst.",
+        "NSCameraUsageDescription": "SafePath använder inte kameran.",
+        "NSMicrophoneUsageDescription": "SafePath använder inte mikrofonen.",
+        "NSPhotoLibraryUsageDescription": "SafePath använder inte bildbiblioteket."
+      },
+      "dark": {
+        "image": "./assets/icon-dark.png"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "00000000-0000-0000-0000-000000000000"
+      }
+    }
+  }
+}

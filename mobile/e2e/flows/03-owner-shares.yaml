@@ -1,0 +1,17 @@
+# Sharing on: foreground permission is requested only after the button press.
+appId: app.safepath.client
+---
+- tapOn: "← Back to your sharing"
+- tapOn:
+    id: "start-sharing"
+- runFlow:
+    when:
+      visible: "While using the app"
+    commands:
+      - tapOn: "While using the app"
+- extendedWaitUntil:
+    visible: "Sharing"
+    timeout: 15000
+- assertVisible: "Lyssnar på position medan appen är öppen."
+- assertVisible: "Mätt"
+- assertVisible: "Träffsäkerhet"

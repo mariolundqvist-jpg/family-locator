@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>SafePath — family locator prototype</title>
+<meta name="description" content="A consent-first family location prototype. Every person controls their own sharing.">
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true" class="brand-mark">
+      <circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="2 3" opacity=".55"/>
+      <path d="M16 6.5 L18.2 13.8 L25.5 16 L18.2 18.2 L16 25.5 L13.8 18.2 L6.5 16 L13.8 13.8 Z" fill="currentColor"/>
+    </svg>
+    <span class="brand-name">SafePath</span>
+    <span class="brand-tag">prototype</span>
+  </div>
+  <div class="topbar-right">
+    <span class="env-chip" id="env-chip" hidden></span>
+    <button class="btn ghost sm" id="signout-btn" hidden type="button">Sign out</button>
+  </div>
+</header>
+
+<div class="proto-banner" role="note">
+  <strong>Prototype.</strong> Foreground location only, in this browser tab. Not a safety or emergency service.
+  No background tracking is proven by this web build — see the device test plan.
+</div>
+
+<main id="main" class="main">
+
+  <!-- ─────────────── AUTH ─────────────── -->
+  <section id="view-auth" class="view" hidden>
+    <div class="auth-grid">
+      <div class="auth-copy">
+        <h1>A family locator that asks<br>before it shows.</h1>
+        <p class="lead">Everyone in the group chooses whether to share, and can stop at any moment.
+          An invitation lets someone <em>ask</em> to join. It never turns on their location.</p>
+        <ul class="plain-list">
+          <li><svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5 L6 12 L14 3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            Joining a family does not share your location</li>
+          <li><svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5 L6 12 L14 3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            Only the last reported position is kept, and only for 15 minutes</li>
+          <li><svg class="tick" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8.5 L6 12 L14 3.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+            No history, no hidden mode, and nobody can switch you on remotely</li>
+        </ul>
+        <p class="fineprint">Testing is limited to consenting adults. Child accounts are a separate design with
+          their own guardian controls and are not built here.</p>
+      </div>
+
+      <div class="card auth-card">
+        <div id="auth-step-email">
+          <h2 class="card-title">Sign in</h2>
+          <label class="field">
+            <span class="field-label">Email address</span>
+            <input id="auth-email" type="email" inputmode="email" autocomplete="email"
+                   placeholder="you@example.com" spellcheck="false">
+          </label>
+          <label class="field">
+            <span class="field-label">Display name <span class="muted">(optional)</span></span>
+            <input id="auth-name" type="text" autocomplete="name" placeholder="e.g. Sam" maxlength="40">
+          </label>
+          <button class="btn primary block" id="auth-send" type="button">Email me a sign-in code</button>
+          <p class="hint" id="auth-hint">We send a 6-digit code. No password to forget or leak.</p>
+        </div>
+
+        <div id="auth-step-code" hidden>
+          <h2 class="card-title">Enter your code</h2>
+          <p class="hint" id="auth-code-target"></p>
+          <label class="field">
+            <span class="field-label">6-digit code</span>
+            <input id="auth-code" type="text" inputmode="numeric" autocomplete="one-time-code"
+                   pattern="[0-9]*" maxlength="6" placeholder="000000" class="code-input">
+          </label>
+          <button class="btn primary block" id="auth-verify" type="button">Continue</button>
+          <button class="btn ghost block" id="auth-restart" type="button">Use a different email</button>
+          <div class="dev-code" id="dev-code" hidden>
+            <span class="dev-code-label">Development delivery</span>
+            <p>No email provider is connected, so the code is shown here and printed in the server log.
+              In production this panel never renders.</p>
+            <code id="dev-code-value">------</code>
+          </div>
+        </div>
+        <div class="form-error" id="auth-error" role="alert" hidden></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────────── HOME ─────────────── -->
+  <section id="view-home" class="view" hidden>
+    <div class="home-head">
+      <div>
+        <p class="eyebrow">Signed in</p>
+        <h1 class="page-title" id="home-greeting">Your family groups</h1>
+      </div>
+      <button class="btn primary" id="open-create" type="button">Create a family group</button>
+    </div>
+    <div id="family-list" class="family-list"></div>
+    <div class="empty-note" id="home-empty" hidden>
+      <p>You are not in a group yet. Create one and invite another adult, or open an invitation link someone sent you.</p>
+    </div>
+
+    <div class="card" id="join-inline" hidden>
+      <h2 class="card-title">Join with an invitation</h2>
+      <p class="hint">Paste the invitation code (the part after <code>#</code> in the link).</p>
+      <label class="field">
+        <span class="field-label">Invitation code</span>
+        <input id="join-token" type="text" spellcheck="false" placeholder="Paste code">
+      </label>
+      <button class="btn primary" id="join-peek" type="button">Open invitation</button>
+    </div>
+  </section>
+
+  <!-- ─────────────── FAMILY ─────────────── -->
+  <section id="view-family" class="view" hidden>
+    <div class="family-head">
+      <button class="btn ghost icon-only" id="back-home" type="button" aria-label="Back to groups">
+        <svg viewBox="0 0 20 20" aria-hidden="true" width="18" height="18"><path d="M12 4 L6 10 L12 16" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+      </button>
+      <div class="family-title-wrap">
+        <h1 class="page-title" id="family-name">Family</h1>
+        <p class="eyebrow" id="family-meta"></p>
+      </div>
+      <div class="family-actions">
+        <button class="btn" id="invite-btn" type="button">Invite someone</button>
+        <button class="btn ghost" id="manage-btn" type="button">Group settings</button>
+      </div>
+    </div>
+
+    <div class="family-layout">
+      <!-- MAP -->
+      <section class="map-panel card">
+        <div class="map-head">
+          <div>
+            <p class="eyebrow">Last reported positions</p>
+            <p class="map-caption" id="map-caption">Waiting for the first position…</p>
+          </div>
+          <div class="map-legend" aria-hidden="true">
+            <span class="lg"><i class="dot current"></i>Current</span>
+            <span class="lg"><i class="dot stale"></i>Stale</span>
+            <span class="lg"><i class="dot unavailable"></i>Unavailable</span>
+          </div>
+        </div>
+        <div class="map-wrap" id="map-wrap">
+          <svg id="map" viewBox="0 0 800 520" role="img" aria-label="Map of family members' last reported positions"></svg>
+          <div class="map-empty" id="map-empty">
+            <svg viewBox="0 0 48 48" aria-hidden="true" width="34" height="34"><circle cx="24" cy="24" r="8" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="24" cy="24" r="1.6" fill="currentColor"/><path d="M24 4v8M24 36v8M4 24h8M36 24h8" stroke="currentColor" stroke-width="1.5"/></svg>
+            <p><strong>Nobody is sharing a position right now.</strong><br>
+              Each person turns sharing on for themselves. A stale or missing pin is shown as exactly that.</p>
+          </div>
+        </div>
+        <div class="map-foot">
+          <span class="scale-note">No map tiles are loaded in this build. Positions are plotted on a plain grid with true accuracy radii.</span>
+          <button class="btn ghost sm" id="refresh-btn" type="button">Refresh</button>
+        </div>
+      </section>
+
+      <!-- SELF CONTROLS -->
+      <section class="card self-panel" id="self-panel">
+        <div class="self-head">
+          <div>
+            <p class="eyebrow">Your sharing</p>
+            <p class="self-state" id="self-state">—</p>
+          </div>
+          <span class="badge" id="self-badge">—</span>
+        </div>
+
+        <div class="self-controls">
+          <button class="btn primary block" id="share-on" type="button" hidden>Turn on sharing</button>
+          <button class="btn block" id="share-pause" type="button" hidden>Pause sharing</button>
+          <button class="btn ghost block" id="share-off" type="button" hidden>Stop sharing and clear</button>
+          <button class="btn checkin block" id="checkin-btn" type="button">
+            <svg viewBox="0 0 20 20" aria-hidden="true" width="17" height="17"><path d="M10 3 L12.2 8 L17.5 10 L12.2 12 L10 17 L7.8 12 L2.5 10 L7.8 8 Z" fill="currentColor"/></svg>
+            Check in — share this moment
+          </button>
+        </div>
+
+        <div class="bg-row">
+          <label class="switch">
+            <input type="checkbox" id="bg-toggle">
+            <span class="switch-track" aria-hidden="true"><span class="switch-thumb"></span></span>
+            <span class="switch-text">
+              <strong>Background updates</strong>
+              <small id="bg-note">Web build: unavailable. Requires the native app with a separate consent.</small>
+            </span>
+          </label>
+        </div>
+
+        <p class="self-fineprint" id="self-fineprint"></p>
+
+        <details class="privacy-details">
+          <summary>What is stored about you</summary>
+          <ul class="plain-list tight">
+            <li>One position snapshot per group — latitude, longitude, accuracy radius and the time your device captured it.</li>
+            <li>It is replaced on every update and <strong>hard-deleted after 15 minutes</strong>. There is no location history.</li>
+            <li>Pausing or stopping deletes the stored snapshot immediately.</li>
+            <li>Never collected: contacts, photo library, advertising ID, motion data, or a continuous track.</li>
+          </ul>
+          <button class="btn danger sm" id="delete-data-btn" type="button">Delete my account and all my data</button>
+        </details>
+      </section>
+    </div>
+
+    <!-- MEMBERS -->
+    <section class="members-section">
+      <div class="members-head">
+        <h2 class="section-title">People in this group</h2>
+        <p class="hint" id="members-hint"></p>
+      </div>
+      <div class="member-grid" id="member-grid"></div>
+    </section>
+
+    <section class="card activity-card">
+      <div class="activity-head">
+        <h2 class="card-title">Your recent activity</h2>
+        <span class="muted small">Events about your account. Positions are never written to this log.</span>
+      </div>
+      <ul class="activity-list" id="activity-list"></ul>
+    </section>
+  </section>
+</main>
+
+<!-- ─────────────── MODALS ─────────────── -->
+<div class="modal-backdrop" id="modal-backdrop" hidden></div>
+
+<div class="modal" id="modal-consent" role="dialog" aria-modal="true" aria-labelledby="consent-title" hidden>
+  <div class="modal-body">
+    <p class="eyebrow">Consent</p>
+    <h2 id="consent-title">Turn on location sharing?</h2>
+    <p class="lead-sm">This shares your position with the other people in <strong id="consent-family">this group</strong>.
+      Nothing is shared until you press the button below.</p>
+    <div class="consent-block">
+      <h3 class="consent-h">What will happen</h3>
+      <ul class="plain-list tight">
+        <li>Your device reports a position while sharing is on.</li>
+        <li>Everyone in the group sees your <strong>last reported</strong> position, its accuracy radius and the time it was captured.</li>
+        <li>It is replaced with each update and deleted after 15 minutes.</li>
+      </ul>
+      <h3 class="consent-h">What will not happen</h3>
+      <ul class="plain-list tight">
+        <li>Nobody else can turn this on for you, and no one can turn it back on after you stop.</li>
+        <li>No location history is built up. No advertising or third-party analytics.</li>
+        <li>You can pause, stop, leave the group or delete everything at any time.</li>
+      </ul>
+    </div>
+    <p class="fineprint" id="consent-version"></p>
+    <div class="modal-actions">
+      <button class="btn ghost" id="consent-cancel" type="button">Not now</button>
+      <button class="btn primary" id="consent-accept" type="button">Yes, share my location</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-invite" role="dialog" aria-modal="true" aria-labelledby="invite-title" hidden>
+  <div class="modal-body">
+    <p class="eyebrow">Invitation</p>
+    <h2 id="invite-title">Invite another adult</h2>
+    <p class="lead-sm">Send this link. It works once and expires in <strong id="invite-ttl">30 minutes</strong>.
+      Accepting it lets them join — it does <strong>not</strong> turn on their location.</p>
+    <div class="invite-box">
+      <input id="invite-link" type="text" readonly spellcheck="false" aria-label="Invitation link">
+      <button class="btn primary" id="invite-copy" type="button">Copy</button>
+    </div>
+    <p class="countdown" id="invite-countdown"></p>
+    <div class="invite-list-wrap">
+      <h3 class="consent-h">Invitations you have created</h3>
+      <ul class="invite-list" id="invite-list"></ul>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="invite-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-join" role="dialog" aria-modal="true" aria-labelledby="join-title" hidden>
+  <div class="modal-body">
+    <p class="eyebrow">Invitation</p>
+    <h2 id="join-title">Join this family group?</h2>
+    <div class="join-summary">
+      <p class="join-family" id="join-family-name">—</p>
+      <p class="hint" id="join-inviter"></p>
+      <p class="countdown" id="join-countdown"></p>
+    </div>
+    <div class="consent-block warn">
+      <h3 class="consent-h">Joining does not share your location</h3>
+      <p>After you join, you will be asked separately whether to share. You can join, look around, and share nothing.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="join-cancel" type="button">Cancel</button>
+      <button class="btn primary" id="join-accept" type="button">Join group</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="modal-manage" role="dialog" aria-modal="true" aria-labelledby="manage-title" hidden>
+  <div class="modal-body">
+    <p class="eyebrow">Group settings</p>
+    <h2 id="manage-title" class="sr-only">Group settings</h2>
+    <div class="manage-block">
+      <h3 class="consent-h">Leave this group</h3>
+      <p>Your position is deleted and your membership ends immediately.
+        <span id="leave-owner-note" hidden>The group will be handed to the longest-standing member.</span></p>
+      <button class="btn danger" id="leave-btn" type="button">Leave group</button>
+    </div>
+    <div class="manage-block" id="delete-group-block" hidden>
+      <h3 class="consent-h">Delete the group</h3>
+      <p>Removes every member and all stored positions. This cannot be undone.</p>
+      <button class="btn danger" id="delete-group-btn" type="button">Delete group</button>
+    </div>
+    <div class="manage-block">
+      <h3 class="consent-h">About this build</h3>
+      <ul class="plain-list tight">
+        <li>Positions are computed with the server's clock, not the browser's.</li>
+        <li>Group membership and every position read are checked on the server.</li>
+        <li>This build has no map tiles, no analytics, no third-party scripts and no payment code.</li>
+      </ul>
+    </div>
+    <div class="modal-actions">
+      <button class="btn ghost" id="manage-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "name": "safepath-prototype",
+  "version": "0.2.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "DEV_DELIVERY=1 node server/index.js",
+    "test": "node tests/security-suite.mjs && node tests/e2e-web.mjs",
+    "test:security": "node tests/security-suite.mjs",
+    "test:e2e": "node tests/e2e-web.mjs",
+    "test:mobile": "cd mobile && npm test",
+    "test:device": "cd mobile && bash e2e/run-device-tests.sh",
+    "test:all": "npm run test:security && npm run test:e2e && npm run test:mobile"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Consent-first family location prototype: invitation, explicit consent, authorised map, pause and delete.",
+  "dependencies": {
+    "pg": "^8.23.1",
+    "playwright": "^1.64.1"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  }
+}

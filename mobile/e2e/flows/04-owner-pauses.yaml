@@ -1,0 +1,11 @@
+# Pause must stop collection, not just sending. The controller line and the
+# absence of a position card are both asserted.
+appId: app.safepath.client
+---
+- tapOn:
+    id: "pause-sharing"
+- extendedWaitUntil:
+    visible: "Pausad"
+    timeout: 15000
+- assertVisible: "Samlar inte in din position."
+- assertVisible: "Ingenting samlas in eller skickas medan delningen är pausad"
