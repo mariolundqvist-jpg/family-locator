@@ -11,6 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 import { installConsoleRedaction } from './src/core/redact';
+import { LanguageProvider } from './src/i18n';
 import { GroupScreen } from './src/screens/GroupScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
@@ -69,10 +70,12 @@ export default function App() {
   }, []);
 
   return (
-    <SessionProvider>
-      <StatusBar style="dark" />
-      <Router />
-    </SessionProvider>
+    <LanguageProvider>
+      <SessionProvider>
+        <StatusBar style="dark" />
+        <Router />
+      </SessionProvider>
+    </LanguageProvider>
   );
 }
 

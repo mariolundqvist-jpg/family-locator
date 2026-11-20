@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
+import { LanguageButton, LanguagePickerModal, useI18n } from '../i18n';
 import { useSession } from '../state/SessionProvider';
 import { Banner, Button, Card, Field, SectionTitle } from '../ui/components';
 import { colors, space, type } from '../ui/theme';
@@ -15,12 +16,14 @@ import { colors, space, type } from '../ui/theme';
  */
 export function HomeScreen() {
   const { refresh, user, signOut, families, selectFamily } = useSession();
+  const { t } = useI18n();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   async function create() {
     setBusy('create');
@@ -54,24 +57,29 @@ export function HomeScreen() {
 
   return (
     <ScrollView contentContainerStyle={styles.content}>
-      <Text style={type.display}>Hej {user?.displayName ?? ''}</Text>
-      <Text style={type.small}>
-        Du är inloggad som {user?.email}. Du är inte i någon grupp än, så ingenting samlas in.
-      </Text>
+      <View style={styles.topRow}>
+        <View style={{ flex: 1, gap: space(1) }}>
+          <Text style={type.display}>{t('greeting', { name: user?.displayName ?? '' })}</Text>
+          <Text style={type.small}>
+            {t('homeEmpty', { email: user?.email ?? '' })}
+          </Text>
+        </View>
+        <LanguageButton onPress={() => setShowLangPicker(true)} />
+      </View>
 
       {error ? (
-        <Banner tone="danger" title="Det gick inte">
+        <Banner tone="danger" title={t('cancel')}>
           <Text style={type.small}>{error}</Text>
         </Banner>
       ) : null}
 
       {families.length > 0 ? (
         <Card>
-          <SectionTitle>Dina grupper</SectionTitle>
+          <SectionTitle>{t('yourGroups')}</SectionTitle>
           {families.map((f) => (
             <Button
               key={f.familyId}
-              label={`Öppna ${f.familyName}`}
+              label={t('openGroup', { name: f.familyName })}
               onPress={() => void selectFamily(f.familyId)}
               variant="secondary"
             />
@@ -80,65 +88,65 @@ export function HomeScreen() {
       ) : null}
 
       <Card>
-        <SectionTitle>Gå med i en grupp</SectionTitle>
+        <SectionTitle>{t('joinGroupTitle')}</SectionTitle>
         <Text style={type.small}>
-          Be den som bjöd in dig om länken eller koden. Den löper ut och kan bara användas en gång.
-          Att gå med startar inte din delning.
+          {t('joinGroupDesc')}
         </Text>
         <Field
-          label="Inbjudningslänk eller kod"
+          label={t('joinCodeLabel')}
           value={code}
           onChangeText={setCode}
-          placeholder="Klistra in det du fick"
+          placeholder={t('joinCodePlaceholder')}
           autoCapitalize="none"
           testID="join-code"
         />
-        <Button label="Gå med" onPress={accept} busy={busy === 'accept'} disabled={code.trim().length < 8} testID="join-submit" />
+        <Button label={t('joinButton')} onPress={accept} busy={busy === 'accept'} disabled={code.trim().length < 8} testID="join-submit" />
       </Card>
 
       <Card>
-        <SectionTitle>Starta en grupp</SectionTitle>
+        <SectionTitle>{t('createGroupTitle')}</SectionTitle>
         <Text style={type.small}>
-          Du blir ägare och kan bjuda in dem du vill. Att äga en grupp ger dig inte rätt att se
-          någons position — den syns bara om personen själv väljer att dela den.
+          {t('createGroupDesc')}
         </Text>
-        <Field label="Gruppnamn" value={name} onChangeText={setName} placeholder="Vår familj" testID="group-name" maxLength={40} />
-        <Button label="Skapa grupp" onPress={create} busy={busy === 'create'} testID="create-group" />
+        <Field label={t('groupNameLabel')} value={name} onChangeText={setName} placeholder={t('groupNamePlaceholder')} testID="group-name" maxLength={40} />
+        <Button label={t('createGroupButton')} onPress={create} busy={busy === 'create'} testID="create-group" />
       </Card>
 
       <Card>
-        <SectionTitle>Familjeplan & Priser</SectionTitle>
+        <SectionTitle>{t('plansAndPricing')}</SectionTitle>
         <Text style={type.small}>
-          Inga provperiodsfällor eller månadskostnader. Välj en plan från 2,98 $/år för upp till 4, 6 eller 8 personer.
+          {t('plansDesc')}
         </Text>
         <Button
-          label="Se planer (från $2.98/år)"
+          label={t('seePlansButton')}
           onPress={() => setShowPaywall(true)}
           variant="secondary"
           testID="open-paywall"
         />
       </Card>
 
-      <Button label="Logga ut" onPress={() => void signOut()} variant="quiet" />
+      <Button label={t('signOut')} onPress={() => void signOut()} variant="quiet" />
 
       <View style={styles.legalRow}>
         <Pressable onPress={() => setLegalDoc('terms')}>
-          <Text style={styles.legalLink}>Användarvillkor</Text>
+          <Text style={styles.legalLink}>{t('termsTitle')}</Text>
         </Pressable>
         <Text style={styles.legalSep}>·</Text>
         <Pressable onPress={() => setLegalDoc('privacy')}>
-          <Text style={styles.legalLink}>Integritetspolicy</Text>
+          <Text style={styles.legalLink}>{t('privacyTitle')}</Text>
         </Pressable>
       </View>
 
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   content: { padding: space(4), gap: space(4), paddingTop: space(8), paddingBottom: space(10) },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: space(3) },
   bg: { backgroundColor: colors.bg },
   legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(2) },
   legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },

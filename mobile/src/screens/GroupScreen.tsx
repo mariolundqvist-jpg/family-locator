@@ -4,6 +4,7 @@ import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } 
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
+import { LanguageButton, LanguagePickerModal, useI18n } from '../i18n';
 import { useSession } from '../state/SessionProvider';
 import { Banner, Button, Card, Divider, SectionTitle } from '../ui/components';
 import { PositionCard } from '../ui/PositionCard';
@@ -15,11 +16,13 @@ import { colors, space, type } from '../ui/theme';
  */
 export function GroupScreen() {
   const { view, refresh, user } = useSession();
+  const { t } = useI18n();
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   if (!view) return null;
 
@@ -92,12 +95,14 @@ export function GroupScreen() {
         />
       }
     >
-      <View>
-        <Text style={type.display}>{view.family.name}</Text>
-        <Text style={type.small}>
-          Du är {view.viewer.role === 'owner' ? 'gruppägare' : 'medlem'}. Positionerna nedan visar när de
-          mättes och hur noggranna de är.
-        </Text>
+      <View style={styles.topRow}>
+        <View style={{ flex: 1 }}>
+          <Text style={type.display}>{view.family.name}</Text>
+          <Text style={type.small}>
+            {t('groupOwnerNotice', { role: view.viewer.role === 'owner' ? t('owner') : t('member') })}
+          </Text>
+        </View>
+        <LanguageButton onPress={() => setShowLangPicker(true)} />
       </View>
 
       {notice ? (
@@ -178,12 +183,14 @@ export function GroupScreen() {
 
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   content: { padding: space(4), gap: space(4), paddingBottom: space(12) },
+  topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: space(2) },
   memberActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: space(2), marginTop: -space(1) },
   footnote: { ...type.faint, textAlign: 'center' },
   legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(1) },

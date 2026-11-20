@@ -5,6 +5,7 @@ import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
 import { getController } from '../controller';
+import { LanguageButton, LanguagePickerModal, useI18n } from '../i18n';
 import { CONSENT_COPY, askBackground, askForeground, readConsent, revokeAll } from '../location/consent';
 import { readOnce } from '../location/native';
 import { useSession } from '../state/SessionProvider';
@@ -19,6 +20,7 @@ import { colors, space, type } from '../ui/theme';
  */
 export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
   const { view, refresh, setSharing, signOut, deleteAccount, applyConsent, controller } = useSession();
+  const { t } = useI18n();
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [consent, setConsent] = useState<Awaited<ReturnType<typeof readConsent>> | null>(null);
@@ -26,6 +28,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
   const [checkingIn, setCheckingIn] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   useEffect(() => {
     if (!view) return;
@@ -223,7 +226,10 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
             {view.family.memberCount} av {view.family.maxMembers} personer
           </Text>
         </View>
-        <Button label="Gruppen" onPress={onOpenGroup} variant="secondary" testID="open-group" />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(2) }}>
+          <LanguageButton onPress={() => setShowLangPicker(true)} />
+          <Button label="Gruppen" onPress={onOpenGroup} variant="secondary" testID="open-group" />
+        </View>
       </View>
 
       <Card>
@@ -373,6 +379,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
 
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );
 }
