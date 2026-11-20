@@ -60,8 +60,8 @@ integritet (art. 6.1 f).
 
 ### 2.5 Betalning
 Vi tar **inte emot eller lagrar kortuppgifter**. Köp hanteras av den butik du installerade
-appen från (t.ex. Huawei AppGallery). Vi får från butiken endast ett **kvitto/transaktions-id**
-och uppgift om prenumerationsstatus.
+appen från (Apple App Store, Google Play eller Huawei AppGallery). Vi får från butiken endast ett **kvitto/transaktions-id**
+och uppgift om vald familjeplan (upp till 4, 6 eller 8 medlemmar) och prenumerationsstatus.
 
 **Rättslig grund:** avtal (art. 6.1 b) samt rättslig förpliktelse att föra bokföring
 (art. 6.1 c).

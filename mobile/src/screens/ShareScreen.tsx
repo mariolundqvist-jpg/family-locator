@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { LegalDocType, LegalModal } from './LegalScreen';
+import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
 import { getController } from '../controller';
+import { LanguageButton, LanguagePickerModal, useI18n } from '../i18n';
 import { CONSENT_COPY, askBackground, askForeground, readConsent, revokeAll } from '../location/consent';
 import { readOnce } from '../location/native';
 import { useSession } from '../state/SessionProvider';
@@ -17,11 +20,15 @@ import { colors, space, type } from '../ui/theme';
  */
 export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
   const { view, refresh, setSharing, signOut, deleteAccount, applyConsent, controller } = useSession();
+  const { t } = useI18n();
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [consent, setConsent] = useState<Awaited<ReturnType<typeof readConsent>> | null>(null);
   const [showBackgroundCopy, setShowBackgroundCopy] = useState(false);
   const [checkingIn, setCheckingIn] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
   useEffect(() => {
     if (!view) return;
@@ -219,7 +226,10 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
             {view.family.memberCount} av {view.family.maxMembers} personer
           </Text>
         </View>
-        <Button label="Gruppen" onPress={onOpenGroup} variant="secondary" testID="open-group" />
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(2) }}>
+          <LanguageButton onPress={() => setShowLangPicker(true)} />
+          <Button label="Gruppen" onPress={onOpenGroup} variant="secondary" testID="open-group" />
+        </View>
       </View>
 
       <Card>
@@ -344,6 +354,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
             {consent.osBackground === 'granted' ? 'tillåten' : consent.osBackground}
           </Text>
         ) : null}
+        <Button label="Hantera familjeplan & priser" onPress={() => setShowPaywall(true)} variant="secondary" testID="share-paywall" />
         <Button label="Ta bort platsbehörigheten" onPress={withdrawConsent} variant="danger" testID="withdraw-consent" />
         <Divider />
         <Button label="Lämna gruppen" onPress={leaveGroup} variant="secondary" busy={busy === 'leave'} testID="leave-group" />
@@ -351,10 +362,24 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
         <Button label="Radera konto och uppgifter" onPress={removeMyData} variant="quiet" testID="delete-account" />
       </Card>
 
+      <View style={styles.legalRow}>
+        <Pressable onPress={() => setLegalDoc('terms')}>
+          <Text style={styles.legalLink}>Användarvillkor</Text>
+        </Pressable>
+        <Text style={styles.legalSep}>·</Text>
+        <Pressable onPress={() => setLegalDoc('privacy')}>
+          <Text style={styles.legalLink}>Integritetspolicy</Text>
+        </Pressable>
+      </View>
+
       <Text style={styles.footnote}>
         SafePath sparar ingen historik över var du varit. Bara din senaste position lagras, och den
         raderas när den blir för gammal, när du pausar och när du lämnar gruppen.
       </Text>
+
+      <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
+      <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );
 }
@@ -365,4 +390,7 @@ const styles = StyleSheet.create({
   rowBetween: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   actions: { gap: space(2) },
   footnote: { ...type.faint, textAlign: 'center', paddingHorizontal: space(3) },
+  legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(2) },
+  legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },
+  legalSep: { color: colors.inkFaint },
 });

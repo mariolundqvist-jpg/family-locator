@@ -65,6 +65,9 @@
       "bundleIdentifier": "app.safepath.client",
       "buildNumber": "2",
       "infoPlist": {
+        "UIBackgroundModes": [
+          "location"
+        ],
         "NSLocationWhenInUseUsageDescription": "SafePath delar din position med gruppen du valt, medan appen är öppen och bara när du själv slagit på delning.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "SafePath kan fortsätta dela din position när skärmen är låst. Det är frivilligt, syns i aviseringsfältet och kan stängas av när som helst.",
         "NSLocationAlwaysUsageDescription": "SafePath kan fortsätta dela din position när skärmen är låst. Det är frivilligt och kan stängas av när som helst.",
