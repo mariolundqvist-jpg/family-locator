@@ -1,0 +1,18 @@
+# Background updates: the explanation appears before the OS prompt, and the
+# person must confirm explicitly.
+appId: app.safepath.client
+---
+- tapOn:
+    id: "offer-background"
+- assertVisible: "Fortsätt dela när skärmen är låst"
+- assertVisible: "uses more battery"
+- tapOn:
+    id: "confirm-background"
+- runFlow:
+    when:
+      visible: "Allow all the time"
+    commands:
+      - tapOn: "Allow all the time"
+- extendedWaitUntil:
+    visible: "Background updates are on"
+    timeout: 20000

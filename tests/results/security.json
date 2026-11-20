@@ -1,0 +1,554 @@
+{
+  "kind": "api-security",
+  "backend": "json",
+  "generatedAt": "2026-11-20T12:50:36.715Z",
+  "total": 81,
+  "passed": 81,
+  "failed": 0,
+  "sections": {
+    "Authentication and sessions": {
+      "pass": 9,
+      "fail": 0
+    },
+    "CSRF and transport hardening": {
+      "pass": 4,
+      "fail": 0
+    },
+    "Group creation and membership": {
+      "pass": 3,
+      "fail": 0
+    },
+    "Invitations": {
+      "pass": 10,
+      "fail": 0
+    },
+    "Authorisation between families": {
+      "pass": 4,
+      "fail": 0
+    },
+    "Consent gates on location": {
+      "pass": 8,
+      "fail": 0
+    },
+    "No remote control of another person": {
+      "pass": 4,
+      "fail": 0
+    },
+    "Pause, withdrawal and deletion of position data": {
+      "pass": 4,
+      "fail": 0
+    },
+    "Data minimisation and retention": {
+      "pass": 7,
+      "fail": 0
+    },
+    "Removal and leaving": {
+      "pass": 6,
+      "fail": 0
+    },
+    "Session lifetime": {
+      "pass": 1,
+      "fail": 0
+    },
+    "Rate limiting": {
+      "pass": 1,
+      "fail": 0
+    },
+    "Account deletion": {
+      "pass": 8,
+      "fail": 0
+    },
+    "Logging and secret handling": {
+      "pass": 12,
+      "fail": 0
+    }
+  },
+  "results": [
+    {
+      "section": "Authentication and sessions",
+      "name": "Unauthenticated request to /api/me is rejected",
+      "pass": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "One-time code signs a user in",
+      "pass": true,
+      "detail": "user 7790c020…"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Forged session cookie is rejected",
+      "pass": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Sign-in code is single use",
+      "pass": true,
+      "detail": "first 200, replay 400"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Repeated wrong codes are locked out and the code is burned",
+      "pass": true,
+      "detail": "Too many incorrect attempts. Request a new code."
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Email addresses are normalised (codes are not duplicated per case)",
+      "pass": true,
+      "detail": "uppercase then lowercase accepted"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Malformed email is rejected",
+      "pass": true,
+      "detail": "HTTP 400"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Native clients can authenticate with a bearer token",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "section": "Authentication and sessions",
+      "name": "Browser clients do not receive the session token in the body",
+      "pass": true,
+      "detail": "cookie-only for web"
+    },
+    {
+      "section": "CSRF and transport hardening",
+      "name": "State-changing request without the client header is refused",
+      "pass": true,
+      "detail": "HTTP 403"
+    },
+    {
+      "section": "CSRF and transport hardening",
+      "name": "Cross-origin state-changing request is refused",
+      "pass": true,
+      "detail": "HTTP 403 cross_origin"
+    },
+    {
+      "section": "CSRF and transport hardening",
+      "name": "Session cookie is HttpOnly and SameSite=Lax",
+      "pass": true,
+      "detail": "safepath_sid=…; Path=/; HttpOnly; SameSite=Lax; Max-Age=43200"
+    },
+    {
+      "section": "CSRF and transport hardening",
+      "name": "Responses carry a restrictive Content-Security-Policy",
+      "pass": true,
+      "detail": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self"
+    },
+    {
+      "section": "Group creation and membership",
+      "name": "Owner creates a group",
+      "pass": true,
+      "detail": "family b852bb3e…"
+    },
+    {
+      "section": "Group creation and membership",
+      "name": "Creating a group does not start sharing",
+      "pass": true,
+      "detail": "sharingState=off"
+    },
+    {
+      "section": "Group creation and membership",
+      "name": "No location consent is recorded on group creation",
+      "pass": true,
+      "detail": "consent.foreground=false"
+    },
+    {
+      "section": "Invitations",
+      "name": "Owner can mint an invitation",
+      "pass": true,
+      "detail": "43 chars"
+    },
+    {
+      "section": "Invitations",
+      "name": "Invitation token is stored hashed, never in plaintext",
+      "pass": true,
+      "detail": "1 hash(es) present, plaintext absent=true"
+    },
+    {
+      "section": "Invitations",
+      "name": "A non-owner cannot create an invitation",
+      "pass": true,
+      "detail": "HTTP 404"
+    },
+    {
+      "section": "Invitations",
+      "name": "A made-up invitation token is not found",
+      "pass": true,
+      "detail": "HTTP 404"
+    },
+    {
+      "section": "Invitations",
+      "name": "Invitation preview reveals the group name but no positions",
+      "pass": true,
+      "detail": "family=\"Alice Family\""
+    },
+    {
+      "section": "Invitations",
+      "name": "Invitee accepts and joins",
+      "pass": true,
+      "detail": "member 4fc9458b…"
+    },
+    {
+      "section": "Invitations",
+      "name": "Accepting reports explicitly that no location was authorised",
+      "pass": true,
+      "detail": "sharingState=off"
+    },
+    {
+      "section": "Invitations",
+      "name": "An invitation cannot be used twice",
+      "pass": true,
+      "detail": "HTTP 410"
+    },
+    {
+      "section": "Invitations",
+      "name": "A withdrawn invitation cannot be used",
+      "pass": true,
+      "detail": "HTTP 403"
+    },
+    {
+      "section": "Invitations",
+      "name": "Invitation expires after its TTL",
+      "pass": true,
+      "detail": "before 200, after 410"
+    },
+    {
+      "section": "Authorisation between families",
+      "name": "A member of another family cannot read this family",
+      "pass": true,
+      "detail": "HTTP 404"
+    },
+    {
+      "section": "Authorisation between families",
+      "name": "The same user can read their own family",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "section": "Authorisation between families",
+      "name": "Anonymous read of a family is rejected",
+      "pass": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "section": "Authorisation between families",
+      "name": "A non-member cannot delete someone else's family",
+      "pass": true,
+      "detail": "HTTP 404"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "Posting a position before consent is refused",
+      "pass": true,
+      "detail": "HTTP 409 consent_required"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "Consent alone does not start sharing",
+      "pass": true,
+      "detail": "HTTP 409 sharing_off"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "Background consent is refused before foreground consent exists on a fresh member",
+      "pass": true,
+      "detail": "HTTP 200 (foreground already granted, so this is allowed)"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "Authorised member can publish a position",
+      "pass": true,
+      "detail": "state=current"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "Another member now sees the position with timestamp and radius",
+      "pass": true,
+      "detail": "state=current, r=25"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "Out-of-range coordinates are rejected",
+      "pass": true,
+      "detail": "HTTP 400"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "A position claimed in the future is rejected",
+      "pass": true,
+      "detail": "HTTP 400"
+    },
+    {
+      "section": "Consent gates on location",
+      "name": "An absurd accuracy radius is rejected",
+      "pass": true,
+      "detail": "HTTP 400"
+    },
+    {
+      "section": "No remote control of another person",
+      "name": "No endpoint lets one member change another member's sharing",
+      "pass": true,
+      "detail": "404/400/404"
+    },
+    {
+      "section": "No remote control of another person",
+      "name": "The owner remains not-sharing after all of those attempts",
+      "pass": true,
+      "detail": "state=off"
+    },
+    {
+      "section": "No remote control of another person",
+      "name": "A check-in request notifies but cannot start sharing",
+      "pass": true,
+      "detail": "response states it is a nudge only"
+    },
+    {
+      "section": "No remote control of another person",
+      "name": "After a check-in request the owner is still not sharing",
+      "pass": true,
+      "detail": "state=off"
+    },
+    {
+      "section": "Pause, withdrawal and deletion of position data",
+      "name": "Pausing deletes the stored position rather than freezing it",
+      "pass": true,
+      "detail": "stored rows for that fix: false"
+    },
+    {
+      "section": "Pause, withdrawal and deletion of position data",
+      "name": "A paused member shows no coordinates to others",
+      "pass": true,
+      "detail": "reason=paused"
+    },
+    {
+      "section": "Pause, withdrawal and deletion of position data",
+      "name": "Withdrawing consent stops sharing and deletes the position",
+      "pass": true,
+      "detail": "sharingState=off, locationRows=false"
+    },
+    {
+      "section": "Pause, withdrawal and deletion of position data",
+      "name": "Check-in works after consent is re-granted, without turning sharing back on",
+      "pass": true,
+      "detail": "sharingState=off"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "Repeated updates leave exactly one row per member (no history)",
+      "pass": true,
+      "detail": "1 stored row(s) for 5 updates"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "The database contains no location history structure",
+      "pass": true,
+      "detail": "keys: version, users, sessions, families, members, invites, locations, audit, codes"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "The audit log contains no coordinates",
+      "pass": true,
+      "detail": "41 event lines scanned"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "A fresh fix is reported as current",
+      "pass": true,
+      "detail": "state=current"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "A fix inside the stale window is reported as stale",
+      "pass": true,
+      "detail": "state=stale"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "A fix past retention is reported as unavailable",
+      "pass": true,
+      "detail": "location=null"
+    },
+    {
+      "section": "Data minimisation and retention",
+      "name": "Expired positions are physically deleted by the sweeper",
+      "pass": true,
+      "detail": "0 row(s) left"
+    },
+    {
+      "section": "Removal and leaving",
+      "name": "An adult cannot remove another member",
+      "pass": true,
+      "detail": "HTTP 403"
+    },
+    {
+      "section": "Removal and leaving",
+      "name": "The owner can remove a member",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "section": "Removal and leaving",
+      "name": "A removed member immediately loses access",
+      "pass": true,
+      "detail": "HTTP 404"
+    },
+    {
+      "section": "Removal and leaving",
+      "name": "Removal purges the removed member's stored position",
+      "pass": true,
+      "detail": "0 row(s)"
+    },
+    {
+      "section": "Removal and leaving",
+      "name": "The owner cannot use \"remove\" on themselves",
+      "pass": true,
+      "detail": "HTTP 409"
+    },
+    {
+      "section": "Removal and leaving",
+      "name": "A member cannot write a position into another family's member record",
+      "pass": true,
+      "detail": "HTTP 403 (member ids are scoped to the caller)"
+    },
+    {
+      "section": "Session lifetime",
+      "name": "Sessions expire on schedule",
+      "pass": true,
+      "detail": "before 200, after 401"
+    },
+    {
+      "section": "Rate limiting",
+      "name": "Sign-in code requests are rate limited",
+      "pass": true,
+      "detail": "final HTTP 429"
+    },
+    {
+      "section": "Account deletion",
+      "name": "Account deletion succeeds",
+      "pass": true,
+      "detail": "HTTP 200"
+    },
+    {
+      "section": "Account deletion",
+      "name": "Deletion removes the user record",
+      "pass": true,
+      "detail": "users[4ec49f85] present=false"
+    },
+    {
+      "section": "Account deletion",
+      "name": "Deletion removes stored positions",
+      "pass": true,
+      "detail": "location row present=false"
+    },
+    {
+      "section": "Account deletion",
+      "name": "Deletion removes memberships",
+      "pass": true,
+      "detail": "member row present=false"
+    },
+    {
+      "section": "Account deletion",
+      "name": "Deletion removes sessions",
+      "pass": true,
+      "detail": "session present=false"
+    },
+    {
+      "section": "Account deletion",
+      "name": "The deleted user's session no longer works",
+      "pass": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "section": "Account deletion",
+      "name": "A family whose only member deleted their account is removed",
+      "pass": true,
+      "detail": "HTTP 401"
+    },
+    {
+      "section": "Account deletion",
+      "name": "Owner can delete a group and loses access afterwards",
+      "pass": true,
+      "detail": "delete 200, read-after 404"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "A fix can be recorded (needed for the log checks below)",
+      "pass": true,
+      "detail": "HTTP 202"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Server output contains no latitude/longitude",
+      "pass": true,
+      "detail": "273 bytes of output scanned"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Server output contains no coordinate-shaped numbers at all",
+      "pass": true,
+      "detail": "pattern /-?\\d{2,3}\\.\\d{5,}/"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Server output contains no session token",
+      "pass": true,
+      "detail": "no bearer values logged"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Server output does not contain the issued sign-in code",
+      "pass": true,
+      "detail": "code not present in output"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Activity feed exposes no coordinates",
+      "pass": true,
+      "detail": "5 entries"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Activity entries never contain lat/lng fields",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Storing a fix twice leaves a single row, not a history",
+      "pass": true,
+      "detail": "1 row(s)"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "The family was created for the log probe",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Production refuses to start with demo authentication enabled",
+      "pass": true,
+      "detail": "exit 1"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Refusal names demo authentication as the reason",
+      "pass": true,
+      "detail": "DEV_DELIVERY listed"
+    },
+    {
+      "section": "Logging and secret handling",
+      "name": "Refusal names the database and email requirements",
+      "pass": true,
+      "detail": "DATABASE_URL + EMAIL_PROVIDER listed"
+    }
+  ]
+}

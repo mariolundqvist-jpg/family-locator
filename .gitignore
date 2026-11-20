@@ -1,0 +1,15 @@
+node_modules/
+server/data/
+.runtime-data/
+tests/results/*.png
+.env
+.env.*
+*.p8
+google-services.json
+.DS_Store
+
+# Signeringsnyckel och lokal SDK-sökväg — får aldrig checkas in
+mobile/android/*.keystore
+mobile/android/app/*.keystore
+mobile/android/keystore.properties
+mobile/android/local.properties

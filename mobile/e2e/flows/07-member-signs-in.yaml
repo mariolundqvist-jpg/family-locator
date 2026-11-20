@@ -1,0 +1,27 @@
+# The second, isolated account signs in and sees the owner's position with a
+# timestamp and an accuracy radius - or an explicit "not current" state.
+appId: app.safepath.client
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: "login-email"
+- inputText: ${EMAIL_B}
+- tapOn:
+    id: "login-request-code"
+- copyTextFrom:
+    id: "demo-code-value"
+- tapOn:
+    id: "login-code"
+- inputText: ${maestro.copiedText}
+- tapOn:
+    id: "login-submit"
+- extendedWaitUntil:
+    visible: "Hello"
+    timeout: 20000
+- tapOn: "Öppna ${FAMILY_NAME}"
+- extendedWaitUntil:
+    visible: ${OWNER_NAME}
+    timeout: 15000
+- assertVisible:
+    text: "Mätt|Ingen position än"

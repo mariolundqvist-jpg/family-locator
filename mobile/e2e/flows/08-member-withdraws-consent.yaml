@@ -1,0 +1,11 @@
+# Consent withdrawal from the member's own screen: collection stops and the
+# queue is destroyed.
+appId: app.safepath.client
+---
+- tapOn: "← Back to your sharing"
+- tapOn:
+    id: "withdraw-consent"
+- tapOn: "Ta bort"
+- extendedWaitUntil:
+    visible: "Not collecting your position."
+    timeout: 15000

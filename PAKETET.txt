@@ -1,0 +1,32 @@
+SafePath — komplett projektpaket
+Byggt 2026-11-20
+
+INNEHÅLL
+  server/            API (Node 20), PostgreSQL + JSON-lager
+  mobile/            React Native-appen (Expo SDK 58, RN 0.88), svensk UI
+  mobile/artifacts/  Signerad release-APK för Huawei AppGallery
+  mobile/android/    Fungerande Android-konfiguration (compileSdk 37, signering)
+  design/            Designunderlag + 19 PNG-skärmar + ikoner
+  docs/              Arkitektur, tester, lanseringskrav
+  docs/legal/        Användarvillkor + integritetspolicy (svenska)
+  docs/HUAWEI-APPGALLERY.md   Publiceringsguide steg för steg
+
+LÄS FÖRST
+  SA-HAR-DU-PROJEKTET.md      karta, kom-igång, vad som återstår, GitHub-checklista
+  README.md                   teknisk översikt
+
+APK
+  mobile/artifacts/safepath-release.apk
+  34 203 255 byte
+  sha256 9d44ace4175300008e30e674a68ce6ec636fabc81ca3262a962ff94fc584fb71
+  signerad, verifierad med apksigner v2
+  paket app.safepath.client, versionCode 2, minSdk 24, targetSdk 36, compileSdk 37
+
+VIKTIGT
+  Signeringsnyckeln ingår INTE i det här paketet (den ska aldrig i git).
+  Den ligger i den privata arbetsmappen: mobile/android/safepath-release.keystore
+  + keystore.properties. Ta en säkerhetskopia — utan den kan appen aldrig
+  uppdateras på AppGallery.
+
+  Villkor och integritetspolicy är utkast. Organisationsnummer och adress
+  måste fyllas i innan publicering (checklista längst ner i respektive fil).
