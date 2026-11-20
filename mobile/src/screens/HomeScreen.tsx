@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { LegalDocType, LegalModal } from './LegalScreen';
+import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
 import { useSession } from '../state/SessionProvider';
 import { Banner, Button, Card, Field, SectionTitle } from '../ui/components';
@@ -17,6 +19,8 @@ export function HomeScreen() {
   const [code, setCode] = useState('');
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
 
   async function create() {
     setBusy('create');
@@ -102,7 +106,33 @@ export function HomeScreen() {
         <Button label="Skapa grupp" onPress={create} busy={busy === 'create'} testID="create-group" />
       </Card>
 
+      <Card>
+        <SectionTitle>Familjeplan & Priser</SectionTitle>
+        <Text style={type.small}>
+          Inga provperiodsfällor eller månadskostnader. Välj en plan från 2,98 $/år för upp till 4, 6 eller 8 personer.
+        </Text>
+        <Button
+          label="Se planer (från $2.98/år)"
+          onPress={() => setShowPaywall(true)}
+          variant="secondary"
+          testID="open-paywall"
+        />
+      </Card>
+
       <Button label="Logga ut" onPress={() => void signOut()} variant="quiet" />
+
+      <View style={styles.legalRow}>
+        <Pressable onPress={() => setLegalDoc('terms')}>
+          <Text style={styles.legalLink}>Användarvillkor</Text>
+        </Pressable>
+        <Text style={styles.legalSep}>·</Text>
+        <Pressable onPress={() => setLegalDoc('privacy')}>
+          <Text style={styles.legalLink}>Integritetspolicy</Text>
+        </Pressable>
+      </View>
+
+      <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
+      <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
     </ScrollView>
   );
 }
@@ -110,4 +140,7 @@ export function HomeScreen() {
 const styles = StyleSheet.create({
   content: { padding: space(4), gap: space(4), paddingTop: space(8), paddingBottom: space(10) },
   bg: { backgroundColor: colors.bg },
+  legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(2) },
+  legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },
+  legalSep: { color: colors.inkFaint },
 });

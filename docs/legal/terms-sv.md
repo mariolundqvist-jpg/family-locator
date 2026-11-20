@@ -65,21 +65,23 @@ Vi behandlar positionsuppgifter enligt vår integritetspolicy. Kort:
 
 ## 6. Prenumeration, priser och betalning
 
-SafePath är en betaltjänst med **auto-förnyande prenumeration**. **Det finns ingen
-gratis provperiod.**
+SafePath är en betaltjänst med **auto-förnyande årsprenumeration**. **Det finns ingen
+gratis provperiod** och inga dolda avgifter. Priserna är transparenta och faktureras
+årsvis:
 
-| Plan | Pris | Motsvarar |
-|---|---|---|
-| Veckovis | **4,98 € / vecka** | 258,96 € / år |
-| Årsvis (förvald) | **49,98 € / år** | ca 0,96 € / vecka (spara ca 81 %) |
+| Plan | Pris per år | Antal medlemmar | Motsvarar per månad |
+|---|---|---|---|
+| Liten familj | **2,98 USD / år** | Upp till 4 personer | ca 0,25 USD / mån |
+| Mellanfamilj | **3,98 USD / år** | Upp till 6 personer | ca 0,33 USD / mån |
+| Stor familj | **4,98 EUR / år** | Upp till 8 personer | ca 0,41 EUR / mån |
 
 - Priserna är **inklusive moms** för konsumenter inom EU där det är tillämpligt.
-- Betalning sker genom den butik du installerade appen från (t.ex. Huawei AppGallery).
-  Butiken är betalningsmottagare och hanterar din betalmetod. Vi ser inte dina kortuppgifter.
+- Betalning sker genom den butik du installerade appen från (Apple App Store, Google Play
+  eller Huawei AppGallery). Butiken är betalningsmottagare och hanterar din betalmetod. Vi ser inte dina kortuppgifter.
 - Priset som visas i appen hämtas **live från butiken** och kan skilja sig mellan länder
-  och valutor. Butikens pris vid köptillfället gäller.
-- Prenumerationen förnyas automatiskt i slutet av varje period till ordinarie pris, om du
-  inte säger upp den senast **24 timmar före** periodens slut. Uppsägning görs i butikens
+  och lokala valutor. Butikens pris vid köptillfället gäller.
+- Prenumerationen förnyas automatiskt i slutet av varje år till ordinarie pris, om du
+  inte säger upp den senast **24 timmar före** periodens slut. Uppsägning görs enkelt i butikens
   prenumerationsinställningar.
 - Vi meddelar i appen och via e-post **minst 30 dagar innan** ett pris höjs. Höjningen
   gäller från nästa förnyelse.
@@ -88,11 +90,11 @@ gratis provperiod.**
 
 Som konsument inom EU har du **14 dagars ångerrätt** från det att avtalet ingicks, om du
 inte uttryckligen har begärt att tjänsten ska börja användas omgående. I appen finns en
-**förkryssad kryssruta** där du samtycker till omedelbar åtkomst och bekräftar att
+**oförkryssad kryssruta** där du samtycker till omedelbar åtkomst och bekräftar att
 ångerrätten därmed upphör när tjänsten har börjat levereras (14 dagar gäller dock alltid
 om du inte kryssar i).
 
-Ånger förnyelseköp regleras av butikens villkor. Kontakta oss på support@safepath.app om
+Ånger av förnyelseköp regleras av butikens villkor. Kontakta oss på support@safepath.app om
 du vill ångra ett köp; vi hjälper dig och butiken hanterar återbetalningen.
 
 ## 8. Uppsägning och radering

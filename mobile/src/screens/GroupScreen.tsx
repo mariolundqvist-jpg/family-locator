@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Alert, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { LegalDocType, LegalModal } from './LegalScreen';
+import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
 import { useSession } from '../state/SessionProvider';
 import { Banner, Button, Card, Divider, SectionTitle } from '../ui/components';
@@ -16,6 +18,8 @@ export function GroupScreen() {
   const [busy, setBusy] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
 
   if (!view) return null;
 
@@ -147,6 +151,12 @@ export function GroupScreen() {
               Du äger gruppen. Du kan ta bort personer och se vilka som är med, men du kan inte slå på
               eller av någon annans delning — den bestämmer var och en över själv.
             </Text>
+            <Button
+              label="Hantera plan & medlemsantal"
+              onPress={() => setShowPaywall(true)}
+              variant="quiet"
+              testID="manage-plan"
+            />
           </>
         ) : null}
       </Card>
@@ -155,6 +165,19 @@ export function GroupScreen() {
         Visar {view.members.length} av upp till {view.family.maxMembers} personer. Uppdaterad{' '}
         {new Date(view.policy.serverTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}.
       </Text>
+
+      <View style={styles.legalRow}>
+        <Pressable onPress={() => setLegalDoc('terms')}>
+          <Text style={styles.legalLink}>Användarvillkor</Text>
+        </Pressable>
+        <Text style={styles.legalSep}>·</Text>
+        <Pressable onPress={() => setLegalDoc('privacy')}>
+          <Text style={styles.legalLink}>Integritetspolicy</Text>
+        </Pressable>
+      </View>
+
+      <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
+      <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
     </ScrollView>
   );
 }
@@ -163,4 +186,7 @@ const styles = StyleSheet.create({
   content: { padding: space(4), gap: space(4), paddingBottom: space(12) },
   memberActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: space(2), marginTop: -space(1) },
   footnote: { ...type.faint, textAlign: 'center' },
+  legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(1) },
+  legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },
+  legalSep: { color: colors.inkFaint },
 });
