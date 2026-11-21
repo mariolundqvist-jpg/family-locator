@@ -145,8 +145,7 @@ Bygget kräver swapfilen: maskinen har 2 GB RAM och Gradle dödas utan den.
    överlevnad vid omstart är **oprövat**. Inga siffror om detta får användas i marknadsföring
    förrän de är uppmätta. Testplanen ligger i `docs/DEVICE-TEST-PLAN.md` (F1–F5, B1–B8,
    P1–P6, G1–G6, E1–E6).
-2. **Betalning i appen är inte integrerad.** Priserna (4,98 €/vecka, 49,98 €/år) finns i
-   gränssnittet, men ingen butikstransaktion sker. Se § 8.
+2. **Betalning i appen integrerad via Superwall och StoreKit.** Planerna 2,99 USD, 3,99 USD och 4,99 USD per år är kopplade mot produkterna `small4`, `medium6` och `large8`. Köp och återställning kan testas i TestFlight via Apple Sandbox utan skarp debitering. För Android/Huawei krävs IAP-aktivering före skarp release om köp ska ske i appen.
 3. **E-postutskick i produktion är inte kopplat** — kräver leverantörsnyckel, se
    `docs/CREDENTIALS-NEEDED.md`.
 4. **Huawei-telefon utan Google Play-tjänster** är hanterad i koden (expo-location faller
@@ -185,10 +184,11 @@ dokumenterats i `open-decisions.md` — inte rådgivning.
 
 ## 7. Ekonomi och priser
 
-| Plan | Pris | Per år |
-| --- | --- | --- |
-| Veckovis | 4,98 € / vecka | 258,96 € |
-| Årsvis (förvald) | 49,98 € / år | 49,98 € (≈ 0,96 €/vecka, spara 81 %) |
+| Plan | Medlemmar | Pris (USD / år) | Produkt-ID (Apple/Google) |
+| --- | --- | --- | --- |
+| Bas (Liten familj) | Upp till 4 personer | 2,99 USD / år | `small4` |
+| Plus (Mellanfamilj, mest populär ★) | Upp till 6 personer | 3,99 USD / år | `medium6` |
+| Max (Stor familj) | Upp till 8 personer | 4,99 USD / år | `large8` |
 
 - **Ingen gratis provperiod.** Ordet får inte förekomma i app, butikstext eller marknadsföring.
 - Priset ska läsas **live från butiken** vid köp — aldrig hårdkodas. Butikspriser varierar

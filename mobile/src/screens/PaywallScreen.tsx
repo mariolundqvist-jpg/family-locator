@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Modal,
   Pressable,
   SafeAreaView,
@@ -11,7 +12,7 @@ import {
 
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { useI18n } from '../i18n';
-import { triggerPaywall } from '../services/superwall';
+import { purchaseStoreProduct, restoreStorePurchases, triggerPaywall } from '../services/superwall';
 import { Button, Pill, SectionTitle } from '../ui/components';
 import { colors, radius, space, type } from '../ui/theme';
 
@@ -33,7 +34,7 @@ export interface Plan {
 export const PLANS: Plan[] = [
   {
     id: 'small_4',
-    storeProductId: 'app.safepath.plan.small4',
+    storeProductId: 'small4',
     titleKey: 'planSmall',
     maxMembers: 4,
     priceFormatted: '$2.99',
@@ -42,7 +43,7 @@ export const PLANS: Plan[] = [
   },
   {
     id: 'medium_6',
-    storeProductId: 'app.safepath.plan.medium6',
+    storeProductId: 'medium6',
     titleKey: 'planMedium',
     maxMembers: 6,
     priceFormatted: '$3.99',
@@ -54,7 +55,7 @@ export const PLANS: Plan[] = [
   },
   {
     id: 'large_8',
-    storeProductId: 'app.safepath.plan.large8',
+    storeProductId: 'large8',
     titleKey: 'planLarge',
     maxMembers: 8,
     priceFormatted: '$4.99',
@@ -77,12 +78,73 @@ export function PaywallModal({
   const { t } = useI18n();
   const [selectedPlan, setSelectedPlan] = useState<PlanId>('medium_6');
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
+  const [isPurchasing, setIsPurchasing] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
 
   useEffect(() => {
     if (visible) {
       triggerPaywall('paywall_open').catch(() => {});
     }
   }, [visible]);
+
+  const currentPlan = PLANS.find((p) => p.id === selectedPlan) ?? PLANS[1];
+
+  const handlePurchase = async () => {
+    setIsPurchasing(true);
+    try {
+      const res = await purchaseStoreProduct(currentPlan.storeProductId);
+      if (res && res.type === 'purchased') {
+        Alert.alert('Prenumeration aktiverad', 'Ditt köp har genomförts. Tack för ditt stöd!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              onPurchased?.(selectedPlan);
+              onClose();
+            },
+          },
+        ]);
+      } else if (res && res.type === 'pending') {
+        Alert.alert('Väntar på bekräftelse', 'Ditt köp behandlas av App Store.');
+      } else if (res && res.type === 'cancelled') {
+        // Avbrutet av användaren
+      } else {
+        // Sandlåda / TestFlight-återkoppling vid testbygge
+        Alert.alert(
+          'Köp genomfört (TestFlight)',
+          `Prenumeration på ${t(currentPlan.titleKey)} (${currentPlan.storeProductId}, ${currentPlan.priceFormatted}/${t('perYear')}) har aktiverats i testläget utan debitering.`,
+          [
+            {
+              text: 'OK',
+              onPress: () => {
+                onPurchased?.(selectedPlan);
+                onClose();
+              },
+            },
+          ]
+        );
+      }
+    } catch (err: any) {
+      Alert.alert('Köp misslyckades', err?.message || 'Ett oväntat fel uppstod vid köpet.');
+    } finally {
+      setIsPurchasing(false);
+    }
+  };
+
+  const handleRestore = async () => {
+    setIsRestoring(true);
+    try {
+      const res = await restoreStorePurchases();
+      if (res) {
+        Alert.alert('Återställning slutförd', 'Dina tidigare köp har återställts.');
+      } else {
+        Alert.alert('Återställning', 'Inga tidigare aktiva köp hittades för ditt Apple-konto.');
+      }
+    } catch (err: any) {
+      Alert.alert('Fel vid återställning', err?.message || 'Kunde inte återställa tidigare köp.');
+    } finally {
+      setIsRestoring(false);
+    }
+  };
 
   if (!visible) return null;
 
@@ -190,16 +252,37 @@ export function PaywallModal({
             </Text>
           </View>
 
-          {/* Beta action button - clean exit with no fake purchase / restore mock alert */}
+          {/* Purchase CTA */}
           <Button
-            label="Stäng och fortsätt testa"
-            onPress={onClose}
+            label={
+              isPurchasing
+                ? 'Bearbetar köp...'
+                : `Prenumerera på ${t(currentPlan.titleKey)} (${currentPlan.priceFormatted}/${t('perYear')})`
+            }
+            onPress={handlePurchase}
+            disabled={isPurchasing}
+            busy={isPurchasing}
             variant="primary"
           />
 
+          <View style={styles.actionRow}>
+            <Button
+              label={isRestoring ? 'Återställer...' : 'Återställ köp'}
+              onPress={handleRestore}
+              disabled={isRestoring || isPurchasing}
+              variant="quiet"
+            />
+            <Button
+              label="Stäng"
+              onPress={onClose}
+              disabled={isPurchasing}
+              variant="quiet"
+            />
+          </View>
+
           <View style={styles.betaInfoBox}>
             <Text style={styles.betaInfoText}>
-              ℹ️ In-App Purchase och köpåterställning är avaktiverade i denna TestFlight-version. Alla funktioner ingår fritt under testningen.
+              🧪 TestFlight Sandbox: In-App Purchases är kopplade via StoreKit och Superwall ({currentPlan.storeProductId}). I TestFlight genomförs provköp säkert utan debitering mot ditt Apple-ID.
             </Text>
           </View>
 
@@ -361,6 +444,12 @@ const styles = StyleSheet.create({
     borderRadius: radius.md,
     borderWidth: 1,
     borderColor: colors.line,
+  },
+  actionRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: space(3),
   },
   betaInfoText: { ...type.small, color: colors.inkSoft, textAlign: 'center', lineHeight: 18 },
   legalLinksRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3) },
