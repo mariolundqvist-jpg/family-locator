@@ -1,19 +1,23 @@
 # Överlämning — SafePath
 
-**Datum:** 2026-11-20
+**Datum:** 2026-11-20 (Uppdaterad 2026-11-21)
 **Uppdragsgivare:** Mario Lundqvist OÜ
-**Leverans:** källkod, signerad Android-APK, design, dokumentation, juridiska utkast
-**Paket:** `safepath-projekt-2026-11-20.zip` (27,4 MB, 379 filer)
+**Leverans:** Källkod, signerad Android-APK, TestFlight iOS-konfiguration, Render/Fly-driftsättning, Vercel-webbplatser, juridiska dokument och flerspråksstöd (24 språk).
+**Aktiv kodbas:** `main` (PR #4 mergad)
+**Live juridiska URL:er (200 OK):**
+- Integritetspolicy: `https://family-locator-xi.vercel.app/privacy`
+- Användarvillkor: `https://family-locator-xi.vercel.app/terms`
+- Start / Webapp: `https://family-locator-xi.vercel.app/`
 
 ---
 
 ## 1. Sammanfattning på fem rader
 
-SafePath är en samtyckesstyrd positionsdelning för vuxna i en sluten grupp. Appen är
-byggd, testad och signerad men **aldrig körd på en fysisk telefon** — det är den enskilt
-största kvarvarande risken. Användarvillkor och integritetspolicy finns som juridiska
-utkast som behöver organisationsnummer, adress och en granskning innan publicering.
-AppGallery-paketet är tekniskt färdigt; betalning i appen är inte integrerad.
+SafePath är en samtyckesstyrd positionsdelning för vuxna i en sluten grupp (18+). Appen har
+komplett flerspråksstöd på 24 språk och automatisk nödnummerdirigering (112/911/999/etc.)
+utifrån användarens aktuella GPS-position. TestFlight-konfigurationen för iOS är förberedd
+med rena informationsvyer utan mock-köp, och legala sidor är driftsatta och aktiva på Vercel.
+Driftsättningsmallar för Render (`render.yaml`) med PostgreSQL och Fly.io (`fly.toml`) är klara.
 
 ---
 
