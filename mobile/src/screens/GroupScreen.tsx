@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { EmergencyButton, EmergencyModal } from './EmergencyModal';
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
@@ -21,6 +22,7 @@ export function GroupScreen() {
   const [notice, setNotice] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showEmergency, setShowEmergency] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
 
@@ -102,7 +104,10 @@ export function GroupScreen() {
             {t('groupOwnerNotice', { role: view.viewer.role === 'owner' ? t('owner') : t('member') })}
           </Text>
         </View>
-        <LanguageButton onPress={() => setShowLangPicker(true)} />
+        <View style={styles.headerActions}>
+          <EmergencyButton onPress={() => setShowEmergency(true)} />
+          <LanguageButton onPress={() => setShowLangPicker(true)} />
+        </View>
       </View>
 
       {notice ? (
@@ -183,6 +188,7 @@ export function GroupScreen() {
 
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <EmergencyModal visible={showEmergency} onClose={() => setShowEmergency(false)} />
       <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );
@@ -191,6 +197,7 @@ export function GroupScreen() {
 const styles = StyleSheet.create({
   content: { padding: space(4), gap: space(4), paddingBottom: space(12) },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: space(2) },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: space(2) },
   memberActions: { flexDirection: 'row', justifyContent: 'flex-end', gap: space(2), marginTop: -space(1) },
   footnote: { ...type.faint, textAlign: 'center' },
   legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(1) },

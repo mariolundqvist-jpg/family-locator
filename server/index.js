@@ -34,6 +34,8 @@ const MIME = {
 
 async function serveStatic(req, res, pathname) {
   let rel = pathname === '/' ? '/index.html' : pathname;
+  if (rel === '/privacy') rel = '/privacy.html';
+  if (rel === '/terms') rel = '/terms.html';
   if (rel.startsWith('/join')) rel = '/index.html';
 
   // Resolve and verify the path stays inside the public directory.

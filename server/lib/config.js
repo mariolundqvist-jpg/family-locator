@@ -55,6 +55,16 @@ function resolveSecret(dataDir) {
  */
 function assertProductionInvariants(cfg) {
   if (!cfg.production) return;
+  if (bool('STAGING', false) || bool('ALLOW_STAGING', false)) {
+    if (!cfg.databaseUrl) {
+      console.warn('[config] Staging mode: DATABASE_URL not set; using local file store.');
+    }
+    if (!cfg.email.apiKey) {
+      console.warn('[config] Staging mode: EMAIL_API_KEY not set; using console delivery.');
+      cfg.email.provider = 'console';
+    }
+    return;
+  }
   const problems = [];
 
   if (cfg.devDelivery) {
@@ -156,7 +166,9 @@ export const config = (() => {
       "img-src 'self' data:",
       "connect-src 'self'",
       "form-action 'none'",
-      "frame-ancestors 'self'",
+      process.env.NODE_ENV === 'production'
+        ? "frame-ancestors 'self'"
+        : "frame-ancestors 'self' https://*.e2b.app https://*.arena.ai https://arena.ai",
       "base-uri 'none'",
       "object-src 'none'",
     ].join('; '),

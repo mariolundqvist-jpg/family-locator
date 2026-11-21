@@ -2,7 +2,7 @@
 
 **Version:** 1.0 · **Gäller från:** 2026-11-19
 **Tjänsteleverantör:** Mario Lundqvist OÜ, registrerad i Estland
-**Kontakt:** support@safepath.app
+**Kontakt:** support@byggbartech.com (märk "SafePath")
 
 > Detta är ett juridiskt utkast som följer de beslut som dokumenterats i
 > `open-decisions.md`. Innan publicering ska punktlistan i avsnitt 14 gås igenom.
@@ -39,8 +39,7 @@ nätverkstillgång påverkar tjänsten.
 
 ## 3. Konto och behörighet
 
-Du skapar konto med e-postadress och lösenord. Du ansvarar för att hålla inloggningen
-hemlig och för att uppgifterna du anger är korrekta. Du får inte dela konto med någon
+Du loggar in lösenordsfritt med din e-postadress och en engångskod. Du ansvarar för att hålla tillgången till din e-postadress säker och för att uppgifterna du anger är korrekta. Du får inte dela konto med någon
 annan. Vi får stänga av konton som används för att trakassera, spåra eller hota andra.
 
 ## 4. Grupper, inbjudningar och samtycke
@@ -60,7 +59,7 @@ Vi behandlar positionsuppgifter enligt vår integritetspolicy. Kort:
 - Positionen visas för gruppen med **tidpunkt och noggrannhet** och markeras som
   **aktuell**, **inaktuell** eller **otillgänglig**. En gammal position visas aldrig som live.
 - Vi sparar **ingen positionshistorik** i denna version. Senaste kända position raderas
-  normalt inom 24 timmar och när du pausar, lämnar gruppen eller raderar ditt konto.
+  automatiskt inom max 15 minuter och när du pausar, lämnar gruppen eller raderar ditt konto.
 - Positionsuppgifter skickas bara när du aktivt delar.
 
 ## 6. Prenumeration, priser och betalning
@@ -73,7 +72,7 @@ gratis provperiod** och inga dolda avgifter. Priserna är transparenta och faktu
 |---|---|---|---|
 | Liten familj | **2,98 USD / år** | Upp till 4 personer | ca 0,25 USD / mån |
 | Mellanfamilj | **3,98 USD / år** | Upp till 6 personer | ca 0,33 USD / mån |
-| Stor familj | **4,98 EUR / år** | Upp till 8 personer | ca 0,41 EUR / mån |
+| Stor familj | **4,98 USD / år** | Upp till 8 personer | ca 0,41 USD / mån |
 
 - Priserna är **inklusive moms** för konsumenter inom EU där det är tillämpligt.
 - Betalning sker genom den butik du installerade appen från (Apple App Store, Google Play
@@ -94,7 +93,7 @@ inte uttryckligen har begärt att tjänsten ska börja användas omgående. I ap
 ångerrätten därmed upphör när tjänsten har börjat levereras (14 dagar gäller dock alltid
 om du inte kryssar i).
 
-Ånger av förnyelseköp regleras av butikens villkor. Kontakta oss på support@safepath.app om
+Ånger av förnyelseköp regleras av butikens villkor. Kontakta oss på support@byggbartech.com (märk "SafePath") om
 du vill ångra ett köp; vi hjälper dig och butiken hanterar återbetalningen.
 
 ## 8. Uppsägning och radering
@@ -142,7 +141,7 @@ kopiera, sälja eller bakåtkompilera appen utöver vad som följer av tvingande
 
 Villkoren regleras av **estnisk rätt**, utan att det påverkar tvingande konsumentregler i
 det land där du har din vanliga vistelseort. Tvist kan i första hand lösas med oss via
-support@safepath.app. Konsumenter i EU kan även vända sig till sitt lokala
+support@byggbartech.com (märk "SafePath"). Konsumenter i EU kan även vända sig till sitt lokala
 konsumenttvistorgan eller EU:s plattform för tvistlösning online.
 
 **Tillsynsmyndighet för personuppgifter:** Estonian Data Protection Inspectorate (AKI),
@@ -155,5 +154,5 @@ Tatari 39, 10134 Tallinn, Estland · info@aki.ee · +372 627 4135.
 - [ ] Bekräfta butikens prisvisning och att live-pris hämtas i appen.
 - [ ] Länka integritetspolicyn (`integritetspolicy-sv.md`) från appens Mer-sida och butikens
       listning.
-- [ ] Kontrollera att supportadressen `support@safepath.app` är aktiv.
+- [ ] Kontrollera att supportadressen `support@byggbartech.com (märk "SafePath")` är aktiv.
 - [ ] Publicera villkoren på en öppen URL innan butiksgranskning.

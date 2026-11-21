@@ -40,20 +40,36 @@ export function PositionCard({
   const presence = classifyPosition(member.location, now ?? Date.now(), thresholds);
   const label = presenceLabel(presence, member.unavailableReason);
   const band = member.location ? accuracyBand(member.location.accuracyM) : 'low';
+  const initial = (member.displayName || '?').charAt(0).toUpperCase();
 
   return (
     <View style={[styles.card, compact && styles.cardCompact]} testID={`position-${member.displayName}`}>
       <View style={styles.head}>
-        <View style={styles.nameBlock}>
-          <Text style={type.title} numberOfLines={1}>
-            {member.isSelf ? `${member.displayName} (du)` : member.displayName}
-          </Text>
-          <Text style={type.faint}>
-            {member.role === 'owner' ? 'Gruppägare' : 'Medlem'}
-            {member.distanceFromViewerM != null && !member.isSelf
-              ? ` · ${formatDistance(member.distanceFromViewerM)} bort`
-              : ''}
-          </Text>
+        <View style={styles.avatarRow}>
+          <View style={[styles.avatar, member.isSelf && styles.avatarSelf]}>
+            <Text style={styles.avatarText}>{initial}</Text>
+            <View
+              style={[
+                styles.presenceDot,
+                presence.state === 'current'
+                  ? styles.dotCurrent
+                  : presence.state === 'stale'
+                    ? styles.dotStale
+                    : styles.dotUnavailable,
+              ]}
+            />
+          </View>
+          <View style={styles.nameBlock}>
+            <Text style={type.title} numberOfLines={1}>
+              {member.isSelf ? `${member.displayName} (du)` : member.displayName}
+            </Text>
+            <Text style={type.faint}>
+              {member.role === 'owner' ? 'Gruppägare' : 'Medlem'}
+              {member.distanceFromViewerM != null && !member.isSelf
+                ? ` · ${formatDistance(member.distanceFromViewerM)} bort`
+                : ''}
+            </Text>
+          </View>
         </View>
         <Pill
           label={presence.state === 'current' ? 'Delar nu' : presence.state === 'stale' ? 'Inte aktuell' : 'Otillgänglig'}
@@ -120,14 +136,50 @@ const styles = StyleSheet.create({
     borderRadius: radius.lg,
     borderWidth: 1,
     borderColor: colors.line,
-    padding: space(4),
-    gap: space(2),
+    padding: space(4.5),
+    gap: space(2.5),
   },
   cardCompact: { padding: space(3.5) },
-  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: space(2) },
-  nameBlock: { flex: 1, gap: 2 },
+  head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: space(2) },
+  avatarRow: { flexDirection: 'row', alignItems: 'center', gap: space(3), flex: 1 },
+  avatar: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    backgroundColor: colors.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    borderWidth: 1.5,
+    borderColor: colors.line,
+  },
+  avatarSelf: {
+    backgroundColor: '#d8eee5',
+    borderColor: colors.primary,
+  },
+  avatarText: { fontSize: 17, fontWeight: '700', color: colors.primary },
+  presenceDot: {
+    position: 'absolute',
+    bottom: -1,
+    right: -1,
+    width: 13,
+    height: 13,
+    borderRadius: 6.5,
+    borderWidth: 2,
+    borderColor: colors.surface,
+  },
+  dotCurrent: { backgroundColor: colors.primaryAccent },
+  dotStale: { backgroundColor: colors.caution },
+  dotUnavailable: { backgroundColor: colors.inkFaint },
+  nameBlock: { flex: 1, gap: 1 },
   headline: { fontWeight: '600' },
-  facts: { marginTop: space(1), gap: space(1.5) },
+  facts: {
+    marginTop: space(1),
+    gap: space(2),
+    backgroundColor: colors.surfaceSubtle,
+    padding: space(3),
+    borderRadius: radius.md,
+  },
   fact: { flexDirection: 'row', justifyContent: 'space-between', gap: space(2) },
   factLabel: { ...type.faint, textTransform: 'uppercase', letterSpacing: 0.6, fontWeight: '600' },
 });

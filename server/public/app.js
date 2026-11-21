@@ -93,7 +93,7 @@ function show(viewId) {
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 }
 
-const MODALS = ['modal-consent', 'modal-invite', 'modal-join', 'modal-manage'];
+const MODALS = ['modal-consent', 'modal-invite', 'modal-join', 'modal-manage', 'modal-legal', 'modal-pricing', 'modal-emergency'];
 function openModal(id) {
   for (const m of MODALS) $('#' + m).hidden = m !== id;
   $('#modal-backdrop').hidden = false;
@@ -1084,6 +1084,118 @@ function wire() {
 
   $('#join-cancel').addEventListener('click', () => { closeModals(); state.pendingJoinPeek = null; });
   $('#join-accept').addEventListener('click', acceptJoin);
+
+  function switchLegalTab(tab) {
+    const isTerms = tab === 'terms';
+    $('#legal-content-terms').hidden = !isTerms;
+    $('#legal-content-privacy').hidden = isTerms;
+    $('#tab-terms-btn').classList.toggle('active', isTerms);
+    $('#tab-privacy-btn').classList.toggle('active', !isTerms);
+  }
+
+  $('#legal-terms-btn').addEventListener('click', () => {
+    switchLegalTab('terms');
+    openModal('modal-legal');
+  });
+  $('#legal-privacy-btn').addEventListener('click', () => {
+    switchLegalTab('privacy');
+    openModal('modal-legal');
+  });
+  $('#tab-terms-btn').addEventListener('click', () => switchLegalTab('terms'));
+  $('#tab-privacy-btn').addEventListener('click', () => switchLegalTab('privacy'));
+  $('#legal-close').addEventListener('click', closeModals);
+
+  // Pricing modal
+  $('#pricing-btn').addEventListener('click', () => openModal('modal-pricing'));
+  $('#footer-pricing-btn').addEventListener('click', () => openModal('modal-pricing'));
+  $('#pricing-close').addEventListener('click', closeModals);
+
+  for (const card of $$('.tier-card')) {
+    card.addEventListener('click', () => {
+      for (const c of $$('.tier-card')) c.classList.remove('selected');
+      card.classList.add('selected');
+    });
+  }
+
+  $('#pricing-select-btn').addEventListener('click', () => {
+    const selected = $('.tier-card.selected');
+    const tierName = selected ? selected.querySelector('.tier-name').textContent : 'Plus';
+    toast(`Plan vald: ${tierName}. I mobilappen slutförs köpet säkert via StoreKit/Google Play.`, 'ok');
+    closeModals();
+  });
+
+  // Emergency SOS modal
+  let emergencyCoords = null;
+  function updateEmergencyCoordsDisplay() {
+    if (!navigator.geolocation) {
+      $('#emergency-coords-display').textContent = 'Geolokalisering stöds inte i webbläsaren';
+      return;
+    }
+    $('#emergency-coords-display').textContent = 'Hämtar GPS-position…';
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        emergencyCoords = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          acc: Math.round(pos.coords.accuracy),
+        };
+        const latStr = `${emergencyCoords.lat.toFixed(5)}° ${emergencyCoords.lat >= 0 ? 'N' : 'S'}`;
+        const lngStr = `${emergencyCoords.lng.toFixed(5)}° ${emergencyCoords.lng >= 0 ? 'E' : 'W'}`;
+        $('#emergency-coords-display').textContent = `${latStr}, ${lngStr}`;
+        $('#emergency-coords-meta').textContent = `Noggrannhet: ±${emergencyCoords.acc} m · Hämtad nyss`;
+      },
+      (err) => {
+        $('#emergency-coords-display').textContent = 'Kunde inte läsa position (tillåt behörighet)';
+        $('#emergency-coords-meta').textContent = err.message;
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+    );
+  }
+
+  function setEmergencyNumber(num) {
+    const callBtn = $('#emergency-call-btn');
+    callBtn.href = `tel:${num}`;
+    callBtn.textContent = `📞 Ring ${num} direkt`;
+    $('#btn-num-112').classList.toggle('active', num === '112');
+    $('#btn-num-911').classList.toggle('active', num === '911');
+    $('#btn-num-999').classList.toggle('active', num === '999');
+  }
+
+  $('#btn-num-112').addEventListener('click', () => setEmergencyNumber('112'));
+  $('#btn-num-911').addEventListener('click', () => setEmergencyNumber('911'));
+  $('#btn-num-999').addEventListener('click', () => setEmergencyNumber('999'));
+
+  function openEmergencyModal() {
+    openModal('modal-emergency');
+    updateEmergencyCoordsDisplay();
+  }
+
+  $('#emergency-btn').addEventListener('click', openEmergencyModal);
+  $('#footer-emergency-btn').addEventListener('click', openEmergencyModal);
+  $('#emergency-close').addEventListener('click', closeModals);
+
+  $('#emergency-copy-coords-btn').addEventListener('click', () => {
+    if (!emergencyCoords) {
+      toast('Inga koordinater att kopiera än', 'error');
+      return;
+    }
+    const txt = `${emergencyCoords.lat.toFixed(5)}, ${emergencyCoords.lng.toFixed(5)} (±${emergencyCoords.acc}m)`;
+    navigator.clipboard?.writeText(txt).then(() => {
+      toast('Koordinater kopierade till urklipp! ✓', 'ok');
+    }).catch(() => {
+      toast(txt, 'ok');
+    });
+  });
+
+  $('#emergency-sms-btn').addEventListener('click', () => {
+    if (!emergencyCoords) {
+      toast('Inga koordinater tillgängliga än', 'error');
+      return;
+    }
+    const maps = `https://maps.google.com/?q=${emergencyCoords.lat.toFixed(5)},${emergencyCoords.lng.toFixed(5)}`;
+    const msg = encodeURIComponent(`🚨 Nödläge! Min position är lat: ${emergencyCoords.lat.toFixed(5)}, lon: ${emergencyCoords.lng.toFixed(5)} (±${emergencyCoords.acc}m). Karta: ${maps}`);
+    window.location.href = `sms:?body=${msg}`;
+  });
 
   $('#modal-backdrop').addEventListener('click', closeModals);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });

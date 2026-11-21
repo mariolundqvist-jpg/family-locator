@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { EmergencyButton, EmergencyModal } from './EmergencyModal';
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
@@ -22,6 +23,7 @@ export function HomeScreen() {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showEmergency, setShowEmergency] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
 
@@ -64,7 +66,10 @@ export function HomeScreen() {
             {t('homeEmpty', { email: user?.email ?? '' })}
           </Text>
         </View>
-        <LanguageButton onPress={() => setShowLangPicker(true)} />
+        <View style={styles.headerActions}>
+          <EmergencyButton onPress={() => setShowEmergency(true)} />
+          <LanguageButton onPress={() => setShowLangPicker(true)} />
+        </View>
       </View>
 
       {error ? (
@@ -139,6 +144,7 @@ export function HomeScreen() {
 
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <EmergencyModal visible={showEmergency} onClose={() => setShowEmergency(false)} />
       <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );
@@ -147,6 +153,7 @@ export function HomeScreen() {
 const styles = StyleSheet.create({
   content: { padding: space(4), gap: space(4), paddingTop: space(8), paddingBottom: space(10) },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', gap: space(3) },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: space(2) },
   bg: { backgroundColor: colors.bg },
   legalRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3), paddingTop: space(2) },
   legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },

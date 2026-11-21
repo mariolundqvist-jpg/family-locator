@@ -2,7 +2,7 @@
 
 **Version:** 1.0 · **Gäller från:** 2026-11-19
 **Personuppgiftsansvarig:** Mario Lundqvist OÜ, Estland
-**Kontakt i integritetsfrågor:** privacy@safepath.app
+**Kontakt i integritetsfrågor:** support@byggbartech.com (märk "SafePath Dataskydd")
 
 > Utkast som följer besluten i `open-decisions.md` och den genomförda
 > konsekvensbedömningen (`PRIVACY-RISK-ASSESSMENT.md`). Se checklistan i avsnitt 12.
@@ -121,7 +121,7 @@ Du har rätt att:
 - **dataportabilitet** (art. 20),
 - **dra tillbaka samtycke** när som helst (art. 7.3) – pausa eller lämna gruppen i appen.
 
-Kontakta **privacy@safepath.app**. Vi svarar inom **30 dagar**. Du kan också klaga hos
+Kontakta **support@byggbartech.com (märk "SafePath Dataskydd")**. Vi svarar inom **30 dagar**. Du kan också klaga hos
 tillsynsmyndigheten: **Estonian Data Protection Inspectorate (AKI)**, Tatari 39,
 10134 Tallinn, Estland · info@aki.ee. Du har rätt att klaga i det land där du bor.
 
@@ -166,4 +166,4 @@ version som gällde när du godkände finns kvar för din räkning.
 - [ ] Bekräfta att 15-minutersgallringen (`LOCATION_RETENTION_MS`) är schemalagd och övervakad i produktion.
 - [ ] Genomför DPIA och spara den tillsammans med denna policy (`PRIVACY-RISK-ASSESSMENT.md`).
 - [ ] Publicera på öppen URL och länka från appens Mer-sida samt butikens listning.
-- [ ] Kontrollera att privacy@safepath.app är aktiv och att 30-dagarsrutinen finns.
+- [ ] Kontrollera att support@byggbartech.com (märk "SafePath Dataskydd") är aktiv och att 30-dagarsrutinen finns.

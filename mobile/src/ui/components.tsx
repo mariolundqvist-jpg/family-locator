@@ -95,11 +95,19 @@ export function Banner({
   );
 }
 
-export function Pill({ label, tone }: { label: string; tone: 'positive' | 'caution' | 'neutral' }) {
+export function Pill({
+  label,
+  tone,
+}: {
+  label: string;
+  tone: 'positive' | 'caution' | 'neutral' | 'danger' | 'gold';
+}) {
   const palette = {
     positive: { bg: colors.primarySoft, fg: colors.primary },
     caution: { bg: colors.cautionSoft, fg: colors.caution },
     neutral: { bg: colors.neutralSoft, fg: colors.inkSoft },
+    danger: { bg: colors.dangerSoft, fg: colors.danger },
+    gold: { bg: colors.goldSoft, fg: colors.gold },
   }[tone];
   return (
     <View style={[styles.pill, { backgroundColor: palette.bg }]}>

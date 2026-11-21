@@ -4,93 +4,101 @@ Den här guiden beskriver steg-för-steg hur du bygger och publicerar SafePath s
 
 ---
 
-## 1. Förutsättningar
+## ⚡ Snabbstart för Lumi: Bygg IPA för TestFlight på 3 minuter
 
-1. **Apple Developer Program:**
-   - Kostar $99/år. Registrera på [developer.apple.com](https://developer.apple.com).
-   - Skapa ett App ID med Bundle Identifier: `app.safepath.client`.
-2. **Expo / EAS-konto:**
-   - Skapa ett gratis konto på [expo.dev](https://expo.dev).
-   - Installera EAS CLI lokalt på din dator:
-     ```bash
-     npm install -g eas-cli
-     eas login
-     ```
+Om du (Lumi) ska bygga och ladda upp appen till TestFlight:
+
+1. **Klona repot och gå till mobilmappen:**
+   ```bash
+   git clone https://github.com/mariolundqvist-jpg/family-locator.git
+   cd family-locator/mobile
+   npm install
+   ```
+
+2. **Starta TestFlight-bygget via EAS (använd `production` eller `testflight` som har App Store-signering):**
+   ```bash
+   npx eas-cli login
+   EXPO_PUBLIC_API_BASE="https://ditt-server-doman.com" npx eas-cli build --platform ios --profile production
+   ```
+   *(Obs: Använd profilen `production` eller `testflight` – profilen `preview` bygger endast ett internt ad-hoc-paket och kan inte skickas till TestFlight via Apple).*
+
+3. **Skicka till TestFlight direkt från terminalen:**
+   ```bash
+   npx eas-cli submit --platform ios
+   ```
+   Bygget dyker automatiskt upp i **Apple App Store Connect → TestFlight** inom cirka 5–10 minuter!
 
 ---
 
-## 2. Bygga en IPA (iOS-paket)
+## 1. Server på nätet (Viktigt innan TestFlight-bygge)
 
-SafePath är redan förberett med `mobile/eas.json` och `mobile/app.json`.
+En iPhone i TestFlight kan **inte** nå `http://localhost:8787`. Servern måste köras på en publik HTTPS-adress.
 
-### Alternativ A: Molnbygge via EAS (Enklast, kräver ingen Mac)
-Kör i `mobile/`-mappen på din dator:
+Servern är en Node.js-tjänst med bakgrundsstädare (raderar positioner efter 15 minuter). Välj ett av följande kostnadsfria/billiga alternativ:
 
+### Alternativ A: Render (Rekommenderas – 1 klick)
+Projektet har en färdig `render.yaml`:
+1. Skapa konto på [render.com](https://render.com).
+2. Klicka på **New +** → **Blueprint** och koppla repot `mariolundqvist-jpg/family-locator`.
+3. Render bygger och startar webbtjänsten automatiskt på t.ex. `https://safepath-server.onrender.com`.
+
+### Alternativ B: Fly.io (Via Dockerfile)
+Projektet har färdig `Dockerfile` och `fly.toml`:
 ```bash
-cd mobile
-
-# För internt TestFlight-test
-eas build --platform ios --profile preview
-
-# För skarp produktion (App Store)
-eas build --platform ios --profile production
+fly launch
+fly deploy
 ```
 
-EAS hanterar automatiskt:
-- Certifikat (Distribution Certificate)
-- Provisioning Profiles
-- Signering och kompilering av `.ipa`-filen
-
-### Alternativ B: Lokalt bygge med Xcode (Kräver Mac med macOS)
-
+När servern är igång anger du dess HTTPS-adress vid bygge:
 ```bash
-cd mobile
-npx expo prebuild --platform ios
-cd ios
-pod install
-open safepath.xcworkspace
+EXPO_PUBLIC_API_BASE="https://din-server.onrender.com" npx eas-cli build --platform ios --profile production
 ```
-I Xcode: Välj **Product → Archive** → **Distribute App** → **App Store Connect**.
 
 ---
 
-## 3. Bakgrundsplats på iOS (App Store Review)
+## 2. Publika adresser för App Store Connect
 
-Apple har strikta regler för appar som använder plats i bakgrunden. SafePath är redan förberett i `mobile/app.json` med:
-- `UIBackgroundModes`: `["location"]`
-- Tydliga förklaringstexter på svenska och engelska i `Info.plist`:
-  - `NSLocationWhenInUseUsageDescription`
-  - `NSLocationAlwaysAndWhenInUseUsageDescription`
-  - `NSLocationAlwaysUsageDescription`
+Apple kräver öppna webblänkar för support och integritetspolicy innan en app kan godkännas:
 
-### Förklaring att klistra in vid App Store-granskning:
-> *"SafePath is a consent-first family location sharing application. Background location is strictly voluntary and activated only when the user explicitly grants permission to share with their private family group. When background sharing is enabled, a persistent blue status bar indicator is shown (showsBackgroundLocationIndicator=true) as required by iOS guidelines. Location data is never stored historically (deleted after 15 minutes), and no data is shared with third parties or advertisers."*
+| Fält i App Store Connect | Publik URL |
+|---|---|
+| **Privacy Policy URL** | `https://family-locator-xi.vercel.app/privacy` |
+| **Terms of Service URL** | `https://family-locator-xi.vercel.app/terms` |
+| **Support URL** | `https://family-locator-xi.vercel.app/` |
+| **Support Email** | `support@byggbartech.com` (märk *"SafePath"*) |
 
 ---
 
-## 4. Konfigurera köp i appen (In-App Purchases / StoreKit)
+## 3. Positionering och Namn (Undvik Apple-avslag för "barnspårning")
 
-I **App Store Connect** under din app → **In-App Purchases**:
-Skapa tre auto-förnyande prenumerationer i samma prenumerationsgrupp ("SafePath Family"):
+Apple har mycket strikta regler kring appar för barn och föräldrakontroll. SafePath är **enbart för myndiga vuxna (18+) med 100 % frivilligt samtycke**.
+
+- **Appnamn:** SafePath
+- **Undertext / Tagline:** *"Samtyckesbaserad positionsdelning för vuxna och närstående (18+)"*
+- **Kategorier i App Store:** *Navigation* eller *Lifestyle* (Välj **inte** *Kids*).
+- **Åldersmärkning (Age Rating):** Vuxen/17+ i App Store Connect.
+
+### Text att klistra in till Apples granskningsteam (App Review Notes):
+> *"SafePath is a consent-first location sharing application built exclusively for consenting adults (18+). It is not designed for parental surveillance or child tracking. Location sharing is strictly voluntary: joining a group does NOT enable location, and no administrator or group owner can turn on tracking remotely. Background updates show a persistent iOS status bar indicator (showsBackgroundLocationIndicator=true) and can be paused at any time. Location data is never stored historically (deleted permanently after 15 minutes), and no data is sold or shared with third parties."*
+
+---
+
+## 4. Betalvägg och Köp i TestFlight
+
+- **I TestFlight & Beta:** Betalväggen visar en tydlig testbanner som informerar testare och granskare om att alla funktioner är helt upplåsta under betaversionen. Inga låtsasköp simuleras.
+- **Vid skarp App Store-lansering:** Skapa följande auto-förnyande prenumerationer under **In-App Purchases** i App Store Connect:
 
 | Produkt-ID | Nivå | Pris (USD / Tier) | Medlemmar |
 |---|---|---|---|
-| `app.safepath.plan.small4` | Liten familj | **$2.98 / år** (Tier 3) | Upp till 4 personer |
-| `app.safepath.plan.medium6` | Mellanfamilj | **$3.98 / år** (Tier 4) | Upp till 6 personer |
-| `app.safepath.plan.large8` | Stor familj | **4.98 € / år** (Tier 5) | Upp till 8 personer |
-
-- **Varaktighet:** 1 år (1 Year).
-- **Gratis provperiod:** Ingen (None).
-- **Återställ köp:** SafePaths `PaywallModal` har redan knappen *"Återställ tidigare köp"* inbyggd, vilket uppfyller Apples granskningskrav (Guideline 3.1.1).
+| `app.safepath.plan.small4` | Bas | **$2.98 / år** (Tier 3) | Upp till 4 personer |
+| `app.safepath.plan.medium6` | Plus (Populärast ★) | **$3.98 / år** (Tier 4) | Upp till 6 personer |
+| `app.safepath.plan.large8` | Max | **$4.98 / år** (Tier 5) | Upp till 8 personer |
 
 ---
 
-## 5. TestFlight — Testa på din egen iPhone
+## 5. Nödassistans (SOS & 112)
 
-När EAS-bygget är klart:
-1. Skicka bygget till TestFlight:
-   ```bash
-   eas submit --platform ios
-   ```
-2. I App Store Connect: Lägg till din e-postadress under **Internal Testing**.
-3. Installera **TestFlight** från App Store på din iPhone och öppna inbjudningslänken för att installera SafePath direkt!
+SafePath innehåller en integrerad SOS-knapp:
+- Hämtar automatisk landsidentifiering via GPS och kopplar till landets lokala nödnummer (112 i Sverige och EU, 911 i USA, 999 i UK).
+- Visar aktuella koordinater i stor fet text så att den nödställde enkelt kan läsa upp dem för SOS Alarm / larmcentralen.
+- Överensstämmer med Apple Guideline 1.4.1 (initierar samtal via telefonens egna modem `tel:112` och informerar om AML).
