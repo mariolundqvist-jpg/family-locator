@@ -16,6 +16,7 @@ import { GroupScreen } from './src/screens/GroupScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { ShareScreen } from './src/screens/ShareScreen';
+import { initSuperwall } from './src/services/superwall';
 import { SessionProvider, useSession } from './src/state/SessionProvider';
 import { colors, space, type } from './src/ui/theme';
 
@@ -67,6 +68,7 @@ export default function App() {
   useEffect(() => {
     // Guard against a stale dev menu overlay in tests.
     if (__DEV__) console.log('[safepath] app started');
+    initSuperwall().catch((err) => console.warn('[Superwall] Init notice:', err));
   }, []);
 
   return (

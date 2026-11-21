@@ -101,16 +101,16 @@ function TermsContent() {
       </Text>
       <View style={styles.bulletBox}>
         <View style={styles.planRow}>
-          <Text style={styles.planName}>• Liten familj (upp till 4 personer):</Text>
-          <Text style={styles.planPrice}>2,98 USD / år</Text>
+          <Text style={styles.planName}>• Liten familj / Bas (upp till 4 personer):</Text>
+          <Text style={styles.planPrice}>2,99 USD / år</Text>
         </View>
         <View style={styles.planRow}>
-          <Text style={styles.planName}>• Mellanfamilj (upp till 6 personer):</Text>
-          <Text style={styles.planPrice}>3,98 USD / år</Text>
+          <Text style={styles.planName}>• Mellanfamilj / Plus (upp till 6 personer):</Text>
+          <Text style={styles.planPrice}>3,99 USD / år</Text>
         </View>
         <View style={styles.planRow}>
-          <Text style={styles.planName}>• Stor familj (upp till 8 personer):</Text>
-          <Text style={styles.planPrice}>4,98 EUR / år</Text>
+          <Text style={styles.planName}>• Stor familj / Max (upp till 8 personer):</Text>
+          <Text style={styles.planPrice}>4,99 USD / år</Text>
         </View>
       </View>
       <Text style={styles.p}>

@@ -90,9 +90,9 @@ Apple har mycket strikta regler kring appar för barn och föräldrakontroll. Sa
 
 | Produkt-ID | Nivå | Pris (USD / Tier) | Medlemmar |
 |---|---|---|---|
-| `app.safepath.plan.small4` | Bas | **$2.98 / år** (Tier 3) | Upp till 4 personer |
-| `app.safepath.plan.medium6` | Plus (Populärast ★) | **$3.98 / år** (Tier 4) | Upp till 6 personer |
-| `app.safepath.plan.large8` | Max | **$4.98 / år** (Tier 5) | Upp till 8 personer |
+| `app.safepath.plan.small4` | Bas | **$2.99 / år** (Tier 3) | Upp till 4 personer |
+| `app.safepath.plan.medium6` | Plus (Populärast ★) | **$3.99 / år** (Tier 4) | Upp till 6 personer |
+| `app.safepath.plan.large8` | Max | **$4.99 / år** (Tier 5) | Upp till 8 personer |
 
 ---
 
