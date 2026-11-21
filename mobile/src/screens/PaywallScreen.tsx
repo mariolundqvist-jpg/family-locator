@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   Pressable,
@@ -11,6 +11,7 @@ import {
 
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { useI18n } from '../i18n';
+import { triggerPaywall } from '../services/superwall';
 import { Button, Pill, SectionTitle } from '../ui/components';
 import { colors, radius, space, type } from '../ui/theme';
 
@@ -33,7 +34,7 @@ export const PLANS: Plan[] = [
     id: 'small_4',
     titleKey: 'planSmall',
     maxMembers: 4,
-    priceFormatted: '$2.98',
+    priceFormatted: '$2.99',
     monthlyEquivalent: 'ca $0.25 / mån',
     descKey: 'planSmallDesc',
   },
@@ -41,7 +42,7 @@ export const PLANS: Plan[] = [
     id: 'medium_6',
     titleKey: 'planMedium',
     maxMembers: 6,
-    priceFormatted: '$3.98',
+    priceFormatted: '$3.99',
     monthlyEquivalent: 'ca $0.33 / mån',
     badgeKey: 'badgeMostPopular',
     badgeTone: 'gold',
@@ -52,7 +53,7 @@ export const PLANS: Plan[] = [
     id: 'large_8',
     titleKey: 'planLarge',
     maxMembers: 8,
-    priceFormatted: '$4.98',
+    priceFormatted: '$4.99',
     monthlyEquivalent: 'ca $0.41 / mån',
     badgeKey: 'badgeMaxFreedom',
     badgeTone: 'positive',
@@ -72,6 +73,12 @@ export function PaywallModal({
   const { t } = useI18n();
   const [selectedPlan, setSelectedPlan] = useState<PlanId>('medium_6');
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
+
+  useEffect(() => {
+    if (visible) {
+      triggerPaywall('paywall_open').catch(() => {});
+    }
+  }, [visible]);
 
   if (!visible) return null;
 
