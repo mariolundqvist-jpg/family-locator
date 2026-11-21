@@ -19,6 +19,10 @@ export const POLICY = {
 
 export const TASK_NAME = 'safepath-background-location';
 
+/** Default emergency dispatch number (e.g. 112 in EU, 911 in US/CA). */
+export const DEFAULT_EMERGENCY_NUMBER =
+  process.env.EXPO_PUBLIC_DEFAULT_EMERGENCY_NUMBER || '112';
+
 /** Keys used in AsyncStorage. Never store a token here — keychain only. */
 export const STORAGE_KEYS = {
   outbox: 'safepath.outbox.v1',

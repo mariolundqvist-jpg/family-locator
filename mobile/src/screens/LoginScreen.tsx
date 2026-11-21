@@ -6,6 +6,7 @@ import { LanguageButton, LanguagePickerModal, useI18n } from '../i18n';
 import { useSession } from '../state/SessionProvider';
 import { Banner, Button, Card, Field } from '../ui/components';
 import { colors, space, type } from '../ui/theme';
+import { EmergencyButton, EmergencyModal } from './EmergencyModal';
 import { LegalDocType, LegalModal } from './LegalScreen';
 
 /**
@@ -27,6 +28,7 @@ export function LoginScreen() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const [showEmergency, setShowEmergency] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
 
   async function requestCode() {
@@ -66,7 +68,10 @@ export function LoginScreen() {
             <Text style={type.display}>{t('appName')}</Text>
             <Text style={type.small}>{t('appTagline')}</Text>
           </View>
-          <LanguageButton onPress={() => setShowLangPicker(true)} />
+          <View style={styles.headerActions}>
+            <EmergencyButton onPress={() => setShowEmergency(true)} />
+            <LanguageButton onPress={() => setShowLangPicker(true)} />
+          </View>
         </View>
 
         <Card>
@@ -158,6 +163,7 @@ export function LoginScreen() {
 
         <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
         <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+        <EmergencyModal visible={showEmergency} onClose={() => setShowEmergency(false)} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -168,6 +174,7 @@ const styles = StyleSheet.create({
   content: { padding: space(5), gap: space(5), paddingBottom: space(10) },
   topRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', paddingTop: space(4) },
   header: { gap: space(2), flex: 1, paddingRight: space(3) },
+  headerActions: { flexDirection: 'row', alignItems: 'center', gap: space(2) },
   code: { fontSize: 30, fontWeight: '700', letterSpacing: 6, color: colors.ink },
   footnote: { ...type.faint, textAlign: 'center', paddingHorizontal: space(3) },
   legalLinks: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(2), marginTop: space(2) },

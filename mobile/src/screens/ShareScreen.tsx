@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { EmergencyButton, EmergencyModal } from './EmergencyModal';
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
@@ -27,6 +28,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
   const [showBackgroundCopy, setShowBackgroundCopy] = useState(false);
   const [checkingIn, setCheckingIn] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showEmergency, setShowEmergency] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
 
@@ -227,6 +229,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
           </Text>
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(2) }}>
+          <EmergencyButton onPress={() => setShowEmergency(true)} />
           <LanguageButton onPress={() => setShowLangPicker(true)} />
           <Button label="Gruppen" onPress={onOpenGroup} variant="secondary" testID="open-group" />
         </View>
@@ -379,6 +382,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
 
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
+      <EmergencyModal visible={showEmergency} onClose={() => setShowEmergency(false)} />
       <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );

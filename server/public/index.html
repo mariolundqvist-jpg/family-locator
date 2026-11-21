@@ -23,6 +23,7 @@
     <span class="brand-tag">prototype</span>
   </div>
   <div class="topbar-right">
+    <button class="btn danger sm" id="emergency-btn" type="button" style="display: inline-flex; align-items: center; gap: 4px;">🚨 SOS 112</button>
     <button class="btn ghost sm" id="pricing-btn" type="button">Priser & Planer</button>
     <span class="env-chip" id="env-chip" hidden></span>
     <button class="btn ghost sm" id="signout-btn" hidden type="button">Sign out</button>
@@ -230,6 +231,8 @@
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-links">
+      <button class="link-btn" id="footer-emergency-btn" type="button" style="color: var(--red); font-weight: 700;">🚨 SOS (Nödläge & 112)</button>
+      <span class="footer-sep">·</span>
       <button class="link-btn" id="legal-terms-btn" type="button">Användarvillkor (Terms)</button>
       <span class="footer-sep">·</span>
       <button class="link-btn" id="legal-privacy-btn" type="button">Integritetspolicy (Privacy)</button>
@@ -522,6 +525,51 @@
     <div class="modal-actions">
       <button class="btn ghost" id="pricing-close" type="button">Stäng</button>
       <button class="btn primary" id="pricing-select-btn" type="button">Välj vald plan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-lg" id="modal-emergency" role="dialog" aria-modal="true" aria-labelledby="emergency-modal-title" hidden>
+  <div class="modal-body">
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+      <span style="font-size: 20px;">🚨</span>
+      <p class="eyebrow" style="color: var(--red); font-weight: 800; margin: 0;">SOS & NÖDASSISTANS</p>
+    </div>
+    <h2 id="emergency-modal-title">Nödnummer & Position</h2>
+    <p class="lead-sm">SafePath är inte en larmcentral. Vid akut fara för liv eller hälsa – <strong>ring alltid 112 direkt</strong>. Din telefon skickar automatiskt GPS-position (AML) till SOS Alarm under samtalet.</p>
+
+    <div class="consent-block warn" style="background: #fff5f5; border-color: #fbd5d5; text-align: center; padding: 20px;">
+      <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 14px;">
+        <button class="tab-chip active" id="btn-num-112" type="button" style="flex: initial; padding: 6px 14px;">112 (EU/Global)</button>
+        <button class="tab-chip" id="btn-num-911" type="button" style="flex: initial; padding: 6px 14px;">911 (US/CA)</button>
+        <button class="tab-chip" id="btn-num-999" type="button" style="flex: initial; padding: 6px 14px;">999 (UK)</button>
+      </div>
+      <a href="tel:112" class="btn danger" id="emergency-call-btn" style="font-size: 20px; padding: 14px 28px; text-decoration: none; display: inline-flex; align-items: center; gap: 10px;">
+        📞 Ring 112 direkt
+      </a>
+      <p style="font-size: 12px; color: var(--ink-3); margin-top: 10px;">
+        Kopplas via mobilnätet direkt till SOS Alarm.
+      </p>
+    </div>
+
+    <div class="consent-block">
+      <h3 class="consent-h">Dina aktuella koordinater (att läsa upp för operatören)</h3>
+      <div style="background: var(--paper-2); padding: 16px; border-radius: 10px; text-align: center; margin: 10px 0;">
+        <div id="emergency-coords-display" style="font-family: var(--mono); font-size: 20px; font-weight: 700; color: var(--ink);">
+          Hämtar webbläsarens GPS-position…
+        </div>
+        <div id="emergency-coords-meta" style="font-size: 12px; color: var(--muted); margin-top: 4px;">
+          Noggrannhet beräknas via webbläsaren
+        </div>
+      </div>
+      <div style="display: flex; gap: 10px; justify-content: center; margin-top: 10px;">
+        <button class="btn secondary sm" id="emergency-copy-coords-btn" type="button">📋 Kopiera koordinater</button>
+        <button class="btn secondary sm" id="emergency-sms-btn" type="button">✉️ Skicka SMS med position</button>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn primary" id="emergency-close" type="button">Stäng</button>
     </div>
   </div>
 </div>
