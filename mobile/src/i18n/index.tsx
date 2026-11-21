@@ -3,6 +3,7 @@ import {
   Modal,
   Pressable,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -46,8 +47,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     void SecureStore.getItemAsync(LANG_KEY)
       .then((saved) => {
-        if (saved && (saved === 'sv' || saved === 'en' || saved === 'es' || saved === 'de')) {
-          setLangState(saved);
+        if (saved && LANGUAGES.some((l) => l.code === saved)) {
+          setLangState(saved as SupportedLanguage);
         }
       })
       .catch(() => undefined);
@@ -106,7 +107,7 @@ export function LanguagePickerModal({
           <Button label={t('close')} onPress={onClose} variant="quiet" />
         </View>
 
-        <View style={styles.content}>
+        <ScrollView contentContainerStyle={styles.content}>
           <SectionTitle>{t('selectLanguage')}</SectionTitle>
           <View style={styles.list}>
             {languages.map((l) => {
@@ -131,7 +132,7 @@ export function LanguagePickerModal({
               );
             })}
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </Modal>
   );
