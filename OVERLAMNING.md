@@ -174,7 +174,7 @@ Bygget kräver swapfilen: maskinen har 2 GB RAM och Gradle dödas utan den.
 - [ ] Juridisk granskning av ansvarstaket mot tvingande konsumenträtt.
 - [ ] Publicera båda dokumenten på **öppna URL:er** — AppGallery kräver det, filuppladdning
       fungerar inte.
-- [ ] Verifiera att `support@safepath.app` och `privacy@safepath.app` är aktiva.
+- [ ] Verifiera att `support@byggbartech.com (märk "SafePath")` och `support@byggbartech.com (märk "SafePath Dataskydd")` är aktiva.
 - [ ] Genomför och arkivera DPIA:n (`docs/PRIVACY-RISK-ASSESSMENT.md`).
 - [ ] DPO-bedömning enligt art. 37 finns dokumenterad; omvärdera vid >10 000 MAU.
 

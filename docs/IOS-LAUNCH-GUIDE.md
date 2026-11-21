@@ -4,6 +4,32 @@ Den här guiden beskriver steg-för-steg hur du bygger och publicerar SafePath s
 
 ---
 
+## ⚡ Snabbstart för Lumi: Bygg IPA för TestFlight på 3 minuter
+
+Om du (Lumi) ska bygga och testa appen i TestFlight:
+
+1. **Klona repot och gå till mobilmappen:**
+   ```bash
+   git clone https://github.com/mariolundqvist-jpg/family-locator.git
+   cd family-locator/mobile
+   npm install
+   ```
+
+2. **Logga in med ert Expo/EAS-konto och starta TestFlight-bygget:**
+   ```bash
+   npx eas-cli login
+   npx eas-cli build --platform ios --profile preview
+   ```
+   *(EAS skapar automatiskt provisioning profiles, certifikat och genererar en färdig `.ipa`-fil i molnet).*
+
+3. **Skicka till TestFlight direkt från terminalen:**
+   ```bash
+   npx eas-cli submit --platform ios
+   ```
+   Bygget dyker automatiskt upp i **Apple App Store Connect → TestFlight** inom cirka 5–10 minuter!
+
+---
+
 ## 1. Förutsättningar
 
 1. **Apple Developer Program:**

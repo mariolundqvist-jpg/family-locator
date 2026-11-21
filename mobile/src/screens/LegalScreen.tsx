@@ -84,7 +84,7 @@ function TermsContent() {
       <View style={styles.metaBox}>
         <Text style={styles.metaTitle}>SafePath Användarvillkor</Text>
         <Text style={type.faint}>Version 1.2 · Gäller från 2026-11-20 · Mario Lundqvist OÜ</Text>
-        <Text style={type.faint}>Kontakt: support@safepath.app · Tallinn, Estland</Text>
+        <Text style={type.faint}>Kontakt: support@byggbartech.com (ange &quot;SafePath&quot; i ämnesraden) · Tallinn, Estland</Text>
       </View>
 
       <SectionTitle>1. Översikt & Behörighet</SectionTitle>
@@ -144,7 +144,7 @@ function TermsContent() {
       </Text>
 
       <SectionTitle>7. Kontakt & Support</SectionTitle>
-      <Text style={styles.p}>Har du frågor eller behöver support? Kontakta oss på support@safepath.app.</Text>
+      <Text style={styles.p}>Har du frågor eller behöver support? Kontakta oss på support@byggbartech.com med &quot;SafePath&quot; i ämnesraden.</Text>
     </View>
   );
 }
@@ -155,7 +155,7 @@ function PrivacyContent() {
       <View style={styles.metaBox}>
         <Text style={styles.metaTitle}>SafePath Integritetspolicy</Text>
         <Text style={type.faint}>Version 1.2 · Gäller från 2026-11-20 · GDPR-kompatibel</Text>
-        <Text style={type.faint}>Personuppgiftsansvarig: Mario Lundqvist OÜ (privacy@safepath.app)</Text>
+        <Text style={type.faint}>Personuppgiftsansvarig: Mario Lundqvist OÜ (support@byggbartech.com, märk &quot;SafePath Dataskydd&quot;)</Text>
       </View>
 
       <SectionTitle>1. Vårt Integritetslöfte</SectionTitle>
@@ -198,9 +198,9 @@ function PrivacyContent() {
 
       <SectionTitle>5. Tillsynsmyndighet & Kontakt</SectionTitle>
       <Text style={styles.p}>
-        Personuppgiftsansvarig är Mario Lundqvist OÜ. Vid frågor om dina personuppgifter kontakta privacy@safepath.app.
-        Du har även rätt att inge klagomål till behörig dataskyddsmyndighet (Integritetsskyddsmyndigheten IMY i Sverige
-        eller AKI i Estland).
+        Personuppgiftsansvarig är Mario Lundqvist OÜ. Vid frågor om dina personuppgifter kontakta support@byggbartech.com
+        (ange &quot;SafePath Dataskydd&quot; som ämne). Du har även rätt att inge klagomål till behörig dataskyddsmyndighet
+        (Integritetsskyddsmyndigheten IMY i Sverige eller AKI i Estland).
       </Text>
     </View>
   );

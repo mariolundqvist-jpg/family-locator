@@ -2,7 +2,7 @@
 
 **Version:** 1.0 · **Gäller från:** 2026-11-19
 **Tjänsteleverantör:** Mario Lundqvist OÜ, registrerad i Estland
-**Kontakt:** support@safepath.app
+**Kontakt:** support@byggbartech.com (märk "SafePath")
 
 > Detta är ett juridiskt utkast som följer de beslut som dokumenterats i
 > `open-decisions.md`. Innan publicering ska punktlistan i avsnitt 14 gås igenom.
@@ -94,7 +94,7 @@ inte uttryckligen har begärt att tjänsten ska börja användas omgående. I ap
 ångerrätten därmed upphör när tjänsten har börjat levereras (14 dagar gäller dock alltid
 om du inte kryssar i).
 
-Ånger av förnyelseköp regleras av butikens villkor. Kontakta oss på support@safepath.app om
+Ånger av förnyelseköp regleras av butikens villkor. Kontakta oss på support@byggbartech.com (märk "SafePath") om
 du vill ångra ett köp; vi hjälper dig och butiken hanterar återbetalningen.
 
 ## 8. Uppsägning och radering
@@ -142,7 +142,7 @@ kopiera, sälja eller bakåtkompilera appen utöver vad som följer av tvingande
 
 Villkoren regleras av **estnisk rätt**, utan att det påverkar tvingande konsumentregler i
 det land där du har din vanliga vistelseort. Tvist kan i första hand lösas med oss via
-support@safepath.app. Konsumenter i EU kan även vända sig till sitt lokala
+support@byggbartech.com (märk "SafePath"). Konsumenter i EU kan även vända sig till sitt lokala
 konsumenttvistorgan eller EU:s plattform för tvistlösning online.
 
 **Tillsynsmyndighet för personuppgifter:** Estonian Data Protection Inspectorate (AKI),
@@ -155,5 +155,5 @@ Tatari 39, 10134 Tallinn, Estland · info@aki.ee · +372 627 4135.
 - [ ] Bekräfta butikens prisvisning och att live-pris hämtas i appen.
 - [ ] Länka integritetspolicyn (`integritetspolicy-sv.md`) från appens Mer-sida och butikens
       listning.
-- [ ] Kontrollera att supportadressen `support@safepath.app` är aktiv.
+- [ ] Kontrollera att supportadressen `support@byggbartech.com (märk "SafePath")` är aktiv.
 - [ ] Publicera villkoren på en öppen URL innan butiksgranskning.

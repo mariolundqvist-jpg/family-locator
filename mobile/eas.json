@@ -11,12 +11,18 @@
       "distribution": "internal",
       "ios": {
         "simulator": false
+      },
+      "env": {
+        "EXPO_PUBLIC_DEFAULT_EMERGENCY_NUMBER": "112"
       }
     },
     "production": {
       "autoIncrement": true,
       "ios": {
         "simulator": false
+      },
+      "env": {
+        "EXPO_PUBLIC_DEFAULT_EMERGENCY_NUMBER": "112"
       }
     }
   },

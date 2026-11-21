@@ -11,6 +11,7 @@ import {
   Text,
   View,
 } from 'react-native';
+import * as Location from 'expo-location';
 
 import * as api from '../api';
 import { DEFAULT_EMERGENCY_NUMBER } from '../config';
@@ -32,12 +33,62 @@ interface CoordsState {
   capturedAt: number;
 }
 
+export interface CountryEmergencyInfo {
+  code: string;
+  name: string;
+  flag: string;
+  number: string;
+}
+
+export const COUNTRY_EMERGENCY_MAP: Record<string, CountryEmergencyInfo> = {
+  SE: { code: 'SE', name: 'Sverige', flag: '🇸🇪', number: '112' },
+  NO: { code: 'NO', name: 'Norge', flag: '🇳🇴', number: '112' },
+  DK: { code: 'DK', name: 'Danmark', flag: '🇩🇰', number: '112' },
+  FI: { code: 'FI', name: 'Suomi', flag: '🇫🇮', number: '112' },
+  IS: { code: 'IS', name: 'Ísland', flag: '🇮🇸', number: '112' },
+  DE: { code: 'DE', name: 'Deutschland', flag: '🇩🇪', number: '112' },
+  FR: { code: 'FR', name: 'France', flag: '🇫🇷', number: '112' },
+  ES: { code: 'ES', name: 'España', flag: '🇪🇸', number: '112' },
+  IT: { code: 'IT', name: 'Italia', flag: '🇮🇹', number: '112' },
+  PT: { code: 'PT', name: 'Portugal', flag: '🇵🇹', number: '112' },
+  NL: { code: 'NL', name: 'Nederland', flag: '🇳🇱', number: '112' },
+  BE: { code: 'BE', name: 'België', flag: '🇧🇪', number: '112' },
+  AT: { code: 'AT', name: 'Österreich', flag: '🇦🇹', number: '112' },
+  CH: { code: 'CH', name: 'Schweiz', flag: '🇨🇭', number: '112' },
+  PL: { code: 'PL', name: 'Polska', flag: '🇵🇱', number: '112' },
+  EE: { code: 'EE', name: 'Eesti', flag: '🇪🇪', number: '112' },
+  LV: { code: 'LV', name: 'Latvija', flag: '🇱🇻', number: '112' },
+  LT: { code: 'LT', name: 'Lietuva', flag: '🇱🇹', number: '112' },
+  IE: { code: 'IE', name: 'Ireland', flag: '🇮🇪', number: '112' },
+  GB: { code: 'GB', name: 'United Kingdom', flag: '🇬🇧', number: '999' },
+  US: { code: 'US', name: 'United States', flag: '🇺🇸', number: '911' },
+  CA: { code: 'CA', name: 'Canada', flag: '🇨🇦', number: '911' },
+  AU: { code: 'AU', name: 'Australia', flag: '🇦🇺', number: '000' },
+  NZ: { code: 'NZ', name: 'New Zealand', flag: '🇳🇿', number: '111' },
+  JP: { code: 'JP', name: '日本', flag: '🇯🇵', number: '110' },
+  CN: { code: 'CN', name: '中国', flag: '🇨🇳', number: '110' },
+  IN: { code: 'IN', name: 'India', flag: '🇮🇳', number: '112' },
+  TR: { code: 'TR', name: 'Türkiye', flag: '🇹🇷', number: '112' },
+  GR: { code: 'GR', name: 'Ελλάδα', flag: '🇬🇷', number: '112' },
+  CZ: { code: 'CZ', name: 'Česko', flag: '🇨🇿', number: '112' },
+  HU: { code: 'HU', name: 'Magyarország', flag: '🇭🇺', number: '112' },
+  RO: { code: 'RO', name: 'România', flag: '🇷🇴', number: '112' },
+  BR: { code: 'BR', name: 'Brasil', flag: '🇧🇷', number: '190' },
+  MX: { code: 'MX', name: 'México', flag: '🇲🇽', number: '911' },
+  ZA: { code: 'ZA', name: 'South Africa', flag: '🇿🇦', number: '112' },
+  AE: { code: 'AE', name: 'الإمارات', flag: '🇦🇪', number: '999' },
+  SA: { code: 'SA', name: 'السعودية', flag: '🇸🇦', number: '911' },
+  RU: { code: 'RU', name: 'Россия', flag: '🇷🇺', number: '112' },
+  UA: { code: 'UA', name: 'Україна', flag: '🇺🇦', number: '112' },
+};
+
 const COMMON_NUMBERS = ['112', '911', '999'];
 
 export function EmergencyModal({ visible, onClose }: Props) {
   const { t } = useI18n();
   const session = useSession();
   const [selectedNumber, setSelectedNumber] = useState(DEFAULT_EMERGENCY_NUMBER);
+  const [detectedCountry, setDetectedCountry] = useState<CountryEmergencyInfo | null>(null);
   const [coords, setCoords] = useState<CoordsState | null>(null);
   const [fetchingGps, setFetchingGps] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -56,14 +107,31 @@ export function EmergencyModal({ visible, onClose }: Props) {
     setFetchingGps(true);
 
     bestEffortFix('foreground')
-      .then((sample) => {
-        if (mounted && sample) {
-          setCoords({
-            lat: sample.lat,
-            lng: sample.lng,
-            accuracyM: sample.accuracyM,
-            capturedAt: sample.capturedAt,
+      .then(async (sample) => {
+        if (!mounted || !sample) return;
+        setCoords({
+          lat: sample.lat,
+          lng: sample.lng,
+          accuracyM: sample.accuracyM,
+          capturedAt: sample.capturedAt,
+        });
+
+        // Detect current country and adjust emergency number
+        try {
+          const geocoded = await Location.reverseGeocodeAsync({
+            latitude: sample.lat,
+            longitude: sample.lng,
           });
+          if (mounted && geocoded && geocoded.length > 0) {
+            const iso = (geocoded[0]?.isoCountryCode || '').toUpperCase();
+            if (iso && COUNTRY_EMERGENCY_MAP[iso]) {
+              const countryInfo = COUNTRY_EMERGENCY_MAP[iso]!;
+              setDetectedCountry(countryInfo);
+              setSelectedNumber(countryInfo.number);
+            }
+          }
+        } catch {
+          // Reverse geocode failed or offline — keep standard default (112)
         }
       })
       .catch(() => undefined)
@@ -89,7 +157,6 @@ export function EmergencyModal({ visible, onClose }: Props) {
     const msg = `SOS! Min position är lat: ${coords.lat.toFixed(5)}, lon: ${coords.lng.toFixed(5)} (±${Math.round(coords.accuracyM)}m). Karta: ${mapsUrl}`;
 
     try {
-      // Try SMS first, fallback to native Share sheet
       const smsUrl = `sms:?body=${encodeURIComponent(msg)}`;
       const canSms = await Linking.canOpenURL(smsUrl);
       if (canSms) {
@@ -155,9 +222,31 @@ export function EmergencyModal({ visible, onClose }: Props) {
             <Text style={styles.disclaimer}>{t('emergencyDisclaimer')}</Text>
           </View>
 
+          {/* DETECTED COUNTRY BANNER */}
+          {detectedCountry ? (
+            <View style={styles.countryBadge}>
+              <Text style={styles.countryFlag}>{detectedCountry.flag}</Text>
+              <Text style={styles.countryText}>
+                Plats identifierad: <Text style={{ fontWeight: '800' }}>{detectedCountry.name}</Text> · Lokalt nödnummer:{' '}
+                <Text style={{ fontWeight: '800', color: colors.danger }}>{detectedCountry.number}</Text>
+              </Text>
+            </View>
+          ) : null}
+
           {/* EMERGENCY CALL SECTION */}
           <Card style={styles.callCard}>
             <View style={styles.numberSelector}>
+              {detectedCountry && !COMMON_NUMBERS.includes(detectedCountry.number) ? (
+                <Pressable
+                  onPress={() => setSelectedNumber(detectedCountry.number)}
+                  style={[styles.numChip, selectedNumber === detectedCountry.number && styles.numChipActive]}
+                >
+                  <Text style={[styles.numChipText, selectedNumber === detectedCountry.number && styles.numChipTextActive]}>
+                    {detectedCountry.flag} {detectedCountry.number}
+                  </Text>
+                </Pressable>
+              ) : null}
+
               {COMMON_NUMBERS.map((num) => (
                 <Pressable
                   key={num}
@@ -165,7 +254,7 @@ export function EmergencyModal({ visible, onClose }: Props) {
                   style={[styles.numChip, selectedNumber === num && styles.numChipActive]}
                 >
                   <Text style={[styles.numChipText, selectedNumber === num && styles.numChipTextActive]}>
-                    {num}
+                    {num} {num === '112' ? '(EU)' : num === '911' ? '(US)' : '(UK)'}
                   </Text>
                 </Pressable>
               ))}
@@ -305,6 +394,19 @@ const styles = StyleSheet.create({
   header: { gap: space(1), marginBottom: space(1) },
   title: { fontSize: 24, fontWeight: '800', color: colors.ink, letterSpacing: -0.5 },
   disclaimer: { ...type.faint, fontSize: 13, color: colors.inkFaint },
+  countryBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space(2),
+    backgroundColor: '#fff0f0',
+    borderColor: '#fbd5d5',
+    borderWidth: 1,
+    paddingVertical: space(2),
+    paddingHorizontal: space(3),
+    borderRadius: radius.md,
+  },
+  countryFlag: { fontSize: 20 },
+  countryText: { fontSize: 13, color: colors.ink, flex: 1 },
   callCard: {
     backgroundColor: '#fff5f5',
     borderColor: '#fbd5d5',
@@ -314,6 +416,7 @@ const styles = StyleSheet.create({
   numberSelector: {
     flexDirection: 'row',
     gap: space(2),
+    flexWrap: 'wrap',
   },
   numChip: {
     paddingVertical: space(1.5),
