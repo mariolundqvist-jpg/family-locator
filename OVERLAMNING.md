@@ -161,7 +161,7 @@ Bygget kräver swapfilen: maskinen har 2 GB RAM och Gradle dödas utan den.
 
 - `docs/legal/terms-sv.md` — användarvillkor, 14 avsnitt: 18-årsgräns, inbjudan ≠ samtycke,
   priser, ångerrätt med **oförkryssad** ruta, ansvarstak motsvarande 12 månadsavgifter med
-  50 € golv och uttryckligt undantag för uppsåt och grov vårdslöshet (VÕS § 106).
+  50 USD golv och uttryckligt undantag för uppsåt och grov vårdslöshet (VÕS § 106).
 - `docs/legal/integritetspolicy-sv.md` — rättslig grund per behandling, lagringstider
   (position 15 min, kö på enheten 10 min, inloggningskod 10 min, inbjudan 30 min, session
   12 h, driftloggar 30 d, säkerhetsloggar 90 d, backup 14 d, bokföring 7 år), rättigheter,

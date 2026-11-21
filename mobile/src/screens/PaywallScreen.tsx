@@ -19,6 +19,7 @@ export type PlanId = 'small_4' | 'medium_6' | 'large_8';
 
 export interface Plan {
   id: PlanId;
+  storeProductId: string;
   titleKey: 'planSmall' | 'planMedium' | 'planLarge';
   maxMembers: number;
   priceFormatted: string;
@@ -32,6 +33,7 @@ export interface Plan {
 export const PLANS: Plan[] = [
   {
     id: 'small_4',
+    storeProductId: 'app.safepath.plan.small4',
     titleKey: 'planSmall',
     maxMembers: 4,
     priceFormatted: '$2.99',
@@ -40,6 +42,7 @@ export const PLANS: Plan[] = [
   },
   {
     id: 'medium_6',
+    storeProductId: 'app.safepath.plan.medium6',
     titleKey: 'planMedium',
     maxMembers: 6,
     priceFormatted: '$3.99',
@@ -51,6 +54,7 @@ export const PLANS: Plan[] = [
   },
   {
     id: 'large_8',
+    storeProductId: 'app.safepath.plan.large8',
     titleKey: 'planLarge',
     maxMembers: 8,
     priceFormatted: '$4.99',
