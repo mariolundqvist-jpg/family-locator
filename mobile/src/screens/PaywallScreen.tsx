@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Alert,
   Modal,
   Pressable,
   SafeAreaView,
@@ -53,8 +52,8 @@ export const PLANS: Plan[] = [
     id: 'large_8',
     titleKey: 'planLarge',
     maxMembers: 8,
-    priceFormatted: '4.98 €',
-    monthlyEquivalent: 'ca 0.41 € / mån',
+    priceFormatted: '$4.98',
+    monthlyEquivalent: 'ca $0.41 / mån',
     badgeKey: 'badgeMaxFreedom',
     badgeTone: 'positive',
     descKey: 'planLargeDesc',
@@ -72,36 +71,15 @@ export function PaywallModal({
 }) {
   const { t } = useI18n();
   const [selectedPlan, setSelectedPlan] = useState<PlanId>('medium_6');
-  const [busy, setBusy] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
 
   if (!visible) return null;
-
-  async function handleSubscribe() {
-    setBusy(true);
-    const plan = PLANS.find((p) => p.id === selectedPlan)!;
-    // Transparent TestFlight/Beta handling compliant with Apple Review guidelines
-    setTimeout(() => {
-      setBusy(false);
-      onPurchased?.(selectedPlan);
-      onClose();
-    }, 400);
-  }
-
-  function handleRestore() {
-    Alert.alert(
-      t('restorePurchases'),
-      'Inga tidigare köp hittades. I TestFlight-versionen är alla funktioner redan upplåsta.',
-    );
-  }
-
-  const selectedPlanInfo = PLANS.find((p) => p.id === selectedPlan) ?? PLANS[1]!;
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={styles.safe}>
         <View style={styles.header}>
-          <Text style={type.title}>{t('paywallTitle')}</Text>
+          <Text style={type.title}>Planöversikt & Priser</Text>
           <Button label={t('close')} onPress={onClose} variant="quiet" />
         </View>
 
@@ -110,7 +88,7 @@ export function PaywallModal({
           <View style={styles.betaNotice}>
             <Text style={styles.betaNoticeTitle}>🧪 TestFlight & Beta-läge</Text>
             <Text style={styles.betaNoticeText}>
-              Alla funktioner är helt kostnadsfritt upplåsta under testperioden. Nedan visas de planer som lanseras vid skarp release.
+              Alla funktioner är helt kostnadsfritt upplåsta under testperioden. Nedan visas de planer och priser som lanseras vid skarp release.
             </Text>
           </View>
 
@@ -201,13 +179,18 @@ export function PaywallModal({
             </Text>
           </View>
 
+          {/* Beta action button - clean exit with no fake purchase / restore mock alert */}
           <Button
-            label={`Välj ${selectedPlanInfo.priceFormatted} / år (Öppna i beta)`}
-            onPress={handleSubscribe}
-            busy={busy}
+            label="Stäng och fortsätt testa"
+            onPress={onClose}
+            variant="primary"
           />
 
-          <Button label={t('restorePurchases')} onPress={handleRestore} variant="quiet" />
+          <View style={styles.betaInfoBox}>
+            <Text style={styles.betaInfoText}>
+              ℹ️ In-App Purchase och köpåterställning är avaktiverade i denna TestFlight-version. Alla funktioner ingår fritt under testningen.
+            </Text>
+          </View>
 
           {/* Villkor och integritetspolicy */}
           <View style={styles.legalLinksRow}>
@@ -361,6 +344,14 @@ const styles = StyleSheet.create({
   },
   guaranteeTitle: { fontSize: 13, fontWeight: '700', color: colors.ink },
   guaranteeText: { ...type.small, color: colors.inkSoft, lineHeight: 20 },
+  betaInfoBox: {
+    padding: space(3),
+    backgroundColor: colors.surfaceSubtle,
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.line,
+  },
+  betaInfoText: { ...type.small, color: colors.inkSoft, textAlign: 'center', lineHeight: 18 },
   legalLinksRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3) },
   legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },
   legalSep: { color: colors.inkFaint },

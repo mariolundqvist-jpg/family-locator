@@ -22,7 +22,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "SafePath delar din position med gruppen du valt. Bakgrundsuppdateringar är frivilliga, syns som en avisering och kan stängas av när som helst.",
+          "locationAlwaysAndWhenInUsePermission": "SafePath allows voluntary background location sharing with your group when the screen is locked. A persistent indicator is shown, and sharing can be paused at any time.",
           "isAndroidBackgroundLocationEnabled": true,
           "isAndroidForegroundServiceEnabled": true
         }

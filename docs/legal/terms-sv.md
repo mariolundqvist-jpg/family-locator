@@ -72,7 +72,7 @@ gratis provperiod** och inga dolda avgifter. Priserna är transparenta och faktu
 |---|---|---|---|
 | Liten familj | **2,98 USD / år** | Upp till 4 personer | ca 0,25 USD / mån |
 | Mellanfamilj | **3,98 USD / år** | Upp till 6 personer | ca 0,33 USD / mån |
-| Stor familj | **4,98 EUR / år** | Upp till 8 personer | ca 0,41 EUR / mån |
+| Stor familj | **4,98 USD / år** | Upp till 8 personer | ca 0,41 USD / mån |
 
 - Priserna är **inklusive moms** för konsumenter inom EU där det är tillämpligt.
 - Betalning sker genom den butik du installerade appen från (Apple App Store, Google Play
