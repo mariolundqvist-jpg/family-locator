@@ -156,7 +156,9 @@ export const config = (() => {
       "img-src 'self' data:",
       "connect-src 'self'",
       "form-action 'none'",
-      "frame-ancestors 'self'",
+      process.env.NODE_ENV === 'production'
+        ? "frame-ancestors 'self'"
+        : "frame-ancestors 'self' https://*.e2b.app https://*.arena.ai https://arena.ai",
       "base-uri 'none'",
       "object-src 'none'",
     ].join('; '),

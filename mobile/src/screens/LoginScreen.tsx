@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import * as api from '../api';
 import { LanguageButton, LanguagePickerModal, useI18n } from '../i18n';
 import { useSession } from '../state/SessionProvider';
 import { Banner, Button, Card, Field } from '../ui/components';
 import { colors, space, type } from '../ui/theme';
+import { LegalDocType, LegalModal } from './LegalScreen';
 
 /**
  * Sign-in by email code.
@@ -26,6 +27,7 @@ export function LoginScreen() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
 
   async function requestCode() {
     setBusy(true);
@@ -144,7 +146,18 @@ export function LoginScreen() {
           {t('emergencyNotice')}
         </Text>
 
+        <View style={styles.legalLinks}>
+          <Pressable onPress={() => setLegalDoc('terms')}>
+            <Text style={styles.legalLink}>{t('termsTitle')}</Text>
+          </Pressable>
+          <Text style={styles.legalDivider}>·</Text>
+          <Pressable onPress={() => setLegalDoc('privacy')}>
+            <Text style={styles.legalLink}>{t('privacyTitle')}</Text>
+          </Pressable>
+        </View>
+
         <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
+        <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
@@ -157,4 +170,7 @@ const styles = StyleSheet.create({
   header: { gap: space(2), flex: 1, paddingRight: space(3) },
   code: { fontSize: 30, fontWeight: '700', letterSpacing: 6, color: colors.ink },
   footnote: { ...type.faint, textAlign: 'center', paddingHorizontal: space(3) },
+  legalLinks: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(2), marginTop: space(2) },
+  legalLink: { ...type.faint, color: colors.primary, textDecorationLine: 'underline', fontSize: 13 },
+  legalDivider: { ...type.faint, color: colors.inkFaint },
 });

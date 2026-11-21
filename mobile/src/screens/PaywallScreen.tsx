@@ -24,6 +24,8 @@ export interface Plan {
   priceFormatted: string;
   monthlyEquivalent: string;
   badgeKey?: 'badgeMostPopular' | 'badgeMaxFreedom';
+  badgeTone?: 'positive' | 'gold' | 'neutral';
+  savingsText?: string;
   descKey: 'planSmallDesc' | 'planMediumDesc' | 'planLargeDesc';
 }
 
@@ -43,6 +45,8 @@ export const PLANS: Plan[] = [
     priceFormatted: '$3.98',
     monthlyEquivalent: 'ca $0.33 / mån',
     badgeKey: 'badgeMostPopular',
+    badgeTone: 'gold',
+    savingsText: 'Spara över 90% mot månadsprenumerationer',
     descKey: 'planMediumDesc',
   },
   {
@@ -52,6 +56,7 @@ export const PLANS: Plan[] = [
     priceFormatted: '4.98 €',
     monthlyEquivalent: 'ca 0.41 € / mån',
     badgeKey: 'badgeMaxFreedom',
+    badgeTone: 'positive',
     descKey: 'planLargeDesc',
   },
 ];
@@ -110,8 +115,12 @@ export function PaywallModal({
 
         <ScrollView contentContainerStyle={styles.content}>
           <View style={styles.hero}>
-            <Text style={type.display}>{t('paywallHeroTitle')}</Text>
-            <Text style={type.body}>{t('paywallHeroDesc')}</Text>
+            <View style={styles.heroBadge}>
+              <Text style={styles.heroBadgeIcon}>🛡️</Text>
+              <Text style={styles.heroBadgeText}>100% Samtycke · Noll Historiklagring</Text>
+            </View>
+            <Text style={type.hero}>{t('paywallHeroTitle')}</Text>
+            <Text style={[type.body, styles.heroSub]}>{t('paywallHeroDesc')}</Text>
           </View>
 
           {/* Välj plan */}
@@ -119,27 +128,45 @@ export function PaywallModal({
           <View style={styles.planList}>
             {PLANS.map((plan) => {
               const isSelected = selectedPlan === plan.id;
+              const isPopular = plan.id === 'medium_6';
               return (
                 <Pressable
                   key={plan.id}
-                  style={[styles.planCard, isSelected && styles.planCardSelected]}
+                  style={[
+                    styles.planCard,
+                    isPopular && styles.planCardPopular,
+                    isSelected && styles.planCardSelected,
+                  ]}
                   onPress={() => setSelectedPlan(plan.id)}
                   accessibilityRole="radio"
                   accessibilityState={{ selected: isSelected }}
                 >
                   <View style={styles.planHeader}>
                     <View style={styles.planTitleWrap}>
-                      <Text style={styles.planTitle}>{t(plan.titleKey)}</Text>
-                      {plan.badgeKey ? <Pill label={t(plan.badgeKey)} tone="positive" /> : null}
+                      <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(2) }}>
+                        <Text style={styles.planTitle}>{t(plan.titleKey)}</Text>
+                        {plan.badgeKey ? (
+                          <Pill
+                            label={plan.badgeKey === 'badgeMostPopular' ? 'MEST POPULÄR ★' : t(plan.badgeKey)}
+                            tone={plan.badgeTone ?? 'positive'}
+                          />
+                        ) : null}
+                      </View>
+                      <Text style={styles.planDesc}>{t(plan.descKey)}</Text>
                     </View>
                     <View style={styles.priceWrap}>
                       <Text style={styles.planPrice}>{plan.priceFormatted}</Text>
                       <Text style={styles.planPeriod}>{t('perYear')}</Text>
+                      <Text style={styles.monthlyEq}>{plan.monthlyEquivalent}</Text>
                     </View>
                   </View>
 
-                  <Text style={styles.monthlyEq}>{plan.monthlyEquivalent}</Text>
-                  <Text style={styles.planDesc}>{t(plan.descKey)}</Text>
+                  {plan.savingsText ? (
+                    <View style={styles.savingsRow}>
+                      <Text style={styles.savingsIcon}>⚡</Text>
+                      <Text style={styles.savingsText}>{plan.savingsText}</Text>
+                    </View>
+                  ) : null}
 
                   <View style={styles.radioRow}>
                     <View style={[styles.radioCircle, isSelected && styles.radioCircleSelected]}>
@@ -157,11 +184,21 @@ export function PaywallModal({
           {/* Vad som alltid ingår */}
           <View style={styles.featuresCard}>
             <SectionTitle>{t('includedFeatures')}</SectionTitle>
-            <FeatureRow title={t('featurePrivacy')} desc={t('featurePrivacyDesc')} />
-            <FeatureRow title={t('featureNoSpy')} desc={t('featureNoSpyDesc')} />
-            <FeatureRow title={t('featureFreeGps')} desc={t('featureFreeGpsDesc')} />
-            <FeatureRow title={t('featureCheckIn')} desc={t('featureCheckInDesc')} />
-            <FeatureRow title={t('featureNoTrialTrap')} desc={t('featureNoTrialTrapDesc')} />
+            <FeatureRow icon="🛡️" title={t('featurePrivacy')} desc={t('featurePrivacyDesc')} />
+            <FeatureRow icon="🤝" title={t('featureNoSpy')} desc={t('featureNoSpyDesc')} />
+            <FeatureRow icon="📍" title={t('featureFreeGps')} desc={t('featureFreeGpsDesc')} />
+            <FeatureRow icon="⚡" title={t('featureCheckIn')} desc={t('featureCheckInDesc')} />
+            <FeatureRow icon="🚫" title={t('featureNoTrialTrap')} desc={t('featureNoTrialTrapDesc')} />
+          </View>
+
+          {/* Trygghetsgarantier */}
+          <View style={styles.guaranteeBox}>
+            <Text style={styles.guaranteeTitle}>Vårt trygghetslöfte</Text>
+            <Text style={styles.guaranteeText}>
+              • Ingen bindningstid — avsluta när du vill i butiken med ett tryck.{'\n'}
+              • 14 dagars ångerrätt enligt konsumenträtt.{'\n'}
+              • Ingen data säljs någonsin till annonsörer eller tredjepart.
+            </Text>
           </View>
 
           <Button
@@ -191,11 +228,11 @@ export function PaywallModal({
   );
 }
 
-function FeatureRow({ title, desc }: { title: string; desc: string }) {
+function FeatureRow({ icon, title, desc }: { icon: string; title: string; desc: string }) {
   return (
     <View style={styles.featureRow}>
-      <Text style={styles.featureCheck}>✓</Text>
-      <View style={{ flex: 1, gap: 2 }}>
+      <Text style={styles.featureIcon}>{icon}</Text>
+      <View style={{ flex: 1, gap: 1 }}>
         <Text style={styles.featureTitle}>{title}</Text>
         <Text style={styles.featureDesc}>{desc}</Text>
       </View>
@@ -214,8 +251,21 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.line,
   },
-  content: { padding: space(4), gap: space(4), paddingBottom: space(8) },
-  hero: { gap: space(2) },
+  content: { padding: space(4), gap: space(4), paddingBottom: space(10) },
+  hero: { gap: space(2), paddingTop: space(2) },
+  heroBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space(1.5),
+    backgroundColor: colors.primarySoft,
+    alignSelf: 'flex-start',
+    paddingHorizontal: space(3),
+    paddingVertical: space(1.5),
+    borderRadius: radius.pill,
+  },
+  heroBadgeIcon: { fontSize: 13 },
+  heroBadgeText: { fontSize: 12, fontWeight: '700', color: colors.primary },
+  heroSub: { color: colors.inkSoft, marginTop: -space(0.5) },
   planList: { gap: space(3) },
   planCard: {
     backgroundColor: colors.surface,
@@ -223,25 +273,42 @@ const styles = StyleSheet.create({
     padding: space(4),
     borderWidth: 2,
     borderColor: colors.line,
-    gap: space(2),
+    gap: space(2.5),
+  },
+  planCardPopular: {
+    borderColor: '#e8be6b',
+    backgroundColor: '#fffcf5',
   },
   planCardSelected: {
     borderColor: colors.primary,
-    backgroundColor: '#f3faf7',
+    backgroundColor: '#f1f8f5',
   },
   planHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
+    gap: space(2),
   },
   planTitleWrap: { gap: space(1), flex: 1 },
-  planTitle: { fontSize: 18, fontWeight: '700', color: colors.ink },
-  priceWrap: { alignItems: 'flex-end' },
-  planPrice: { fontSize: 22, fontWeight: '800', color: colors.primary },
-  planPeriod: { ...type.faint, fontSize: 12 },
-  monthlyEq: { fontSize: 13, fontWeight: '600', color: colors.primary, marginTop: -space(1) },
+  planTitle: { fontSize: 17, fontWeight: '700', color: colors.ink },
+  priceWrap: { alignItems: 'flex-end', gap: 1 },
+  planPrice: { fontSize: 24, fontWeight: '800', color: colors.primary },
+  planPeriod: { ...type.faint, fontSize: 12, marginTop: -3 },
+  monthlyEq: { fontSize: 12, fontWeight: '600', color: colors.primaryAccent },
   planDesc: { ...type.small, color: colors.inkSoft, lineHeight: 18 },
-  radioRow: { flexDirection: 'row', alignItems: 'center', gap: space(2), marginTop: space(1) },
+  savingsRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: space(1.5),
+    backgroundColor: colors.goldSoft,
+    paddingHorizontal: space(2.5),
+    paddingVertical: space(1),
+    borderRadius: radius.sm,
+    alignSelf: 'flex-start',
+  },
+  savingsIcon: { fontSize: 12 },
+  savingsText: { fontSize: 12, fontWeight: '700', color: colors.gold },
+  radioRow: { flexDirection: 'row', alignItems: 'center', gap: space(2), marginTop: space(0.5) },
   radioCircle: {
     width: 20,
     height: 20,
@@ -261,7 +328,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   radioLabel: { ...type.small, color: colors.inkFaint },
-  radioLabelSelected: { color: colors.primary, fontWeight: '600' },
+  radioLabelSelected: { color: colors.primary, fontWeight: '700' },
   featuresCard: {
     backgroundColor: colors.surface,
     padding: space(4),
@@ -271,9 +338,19 @@ const styles = StyleSheet.create({
     gap: space(3),
   },
   featureRow: { flexDirection: 'row', gap: space(3), alignItems: 'flex-start' },
-  featureCheck: { fontSize: 16, fontWeight: '800', color: colors.primary, marginTop: 1 },
+  featureIcon: { fontSize: 18, marginTop: 1 },
   featureTitle: { fontSize: 14, fontWeight: '700', color: colors.ink },
   featureDesc: { ...type.small, color: colors.inkSoft },
+  guaranteeBox: {
+    backgroundColor: colors.surfaceSubtle,
+    padding: space(3.5),
+    borderRadius: radius.md,
+    borderWidth: 1,
+    borderColor: colors.line,
+    gap: space(1.5),
+  },
+  guaranteeTitle: { fontSize: 13, fontWeight: '700', color: colors.ink },
+  guaranteeText: { ...type.small, color: colors.inkSoft, lineHeight: 20 },
   legalLinksRow: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: space(3) },
   legalLink: { ...type.small, color: colors.primary, fontWeight: '600' },
   legalSep: { color: colors.inkFaint },

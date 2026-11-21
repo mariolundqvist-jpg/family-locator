@@ -115,7 +115,9 @@ export function assertFields(body, allowed, label = 'body') {
 
 export function securityHeaders(res, csp) {
   res.setHeader('content-security-policy', csp);
-  res.setHeader('x-frame-options', 'SAMEORIGIN');
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('x-frame-options', 'SAMEORIGIN');
+  }
   res.setHeader('referrer-policy', 'no-referrer');
   res.setHeader('cross-origin-opener-policy', 'same-origin');
   res.setHeader('permissions-policy', 'geolocation=(self), camera=(), microphone=(), interest-cohort=()');

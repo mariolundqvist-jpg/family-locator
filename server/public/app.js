@@ -93,7 +93,7 @@ function show(viewId) {
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 }
 
-const MODALS = ['modal-consent', 'modal-invite', 'modal-join', 'modal-manage'];
+const MODALS = ['modal-consent', 'modal-invite', 'modal-join', 'modal-manage', 'modal-legal', 'modal-pricing'];
 function openModal(id) {
   for (const m of MODALS) $('#' + m).hidden = m !== id;
   $('#modal-backdrop').hidden = false;
@@ -1084,6 +1084,45 @@ function wire() {
 
   $('#join-cancel').addEventListener('click', () => { closeModals(); state.pendingJoinPeek = null; });
   $('#join-accept').addEventListener('click', acceptJoin);
+
+  function switchLegalTab(tab) {
+    const isTerms = tab === 'terms';
+    $('#legal-content-terms').hidden = !isTerms;
+    $('#legal-content-privacy').hidden = isTerms;
+    $('#tab-terms-btn').classList.toggle('active', isTerms);
+    $('#tab-privacy-btn').classList.toggle('active', !isTerms);
+  }
+
+  $('#legal-terms-btn').addEventListener('click', () => {
+    switchLegalTab('terms');
+    openModal('modal-legal');
+  });
+  $('#legal-privacy-btn').addEventListener('click', () => {
+    switchLegalTab('privacy');
+    openModal('modal-legal');
+  });
+  $('#tab-terms-btn').addEventListener('click', () => switchLegalTab('terms'));
+  $('#tab-privacy-btn').addEventListener('click', () => switchLegalTab('privacy'));
+  $('#legal-close').addEventListener('click', closeModals);
+
+  // Pricing modal
+  $('#pricing-btn').addEventListener('click', () => openModal('modal-pricing'));
+  $('#footer-pricing-btn').addEventListener('click', () => openModal('modal-pricing'));
+  $('#pricing-close').addEventListener('click', closeModals);
+
+  for (const card of $$('.tier-card')) {
+    card.addEventListener('click', () => {
+      for (const c of $$('.tier-card')) c.classList.remove('selected');
+      card.classList.add('selected');
+    });
+  }
+
+  $('#pricing-select-btn').addEventListener('click', () => {
+    const selected = $('.tier-card.selected');
+    const tierName = selected ? selected.querySelector('.tier-name').textContent : 'Plus';
+    toast(`Plan vald: ${tierName}. I mobilappen slutförs köpet säkert via StoreKit/Google Play.`, 'ok');
+    closeModals();
+  });
 
   $('#modal-backdrop').addEventListener('click', closeModals);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModals(); });

@@ -23,6 +23,7 @@
     <span class="brand-tag">prototype</span>
   </div>
   <div class="topbar-right">
+    <button class="btn ghost sm" id="pricing-btn" type="button">Priser & Planer</button>
     <span class="env-chip" id="env-chip" hidden></span>
     <button class="btn ghost sm" id="signout-btn" hidden type="button">Sign out</button>
   </div>
@@ -226,6 +227,21 @@
   </section>
 </main>
 
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <button class="link-btn" id="legal-terms-btn" type="button">Användarvillkor (Terms)</button>
+      <span class="footer-sep">·</span>
+      <button class="link-btn" id="legal-privacy-btn" type="button">Integritetspolicy (Privacy)</button>
+      <span class="footer-sep">·</span>
+      <button class="link-btn" id="footer-pricing-btn" type="button">Familjeabonnemang (Priser)</button>
+    </div>
+    <div class="footer-info">
+      SafePath · Mario Lundqvist OÜ · 100% samtycke · Inga historiska positioner sparas
+    </div>
+  </div>
+</footer>
+
 <!-- ─────────────── MODALS ─────────────── -->
 <div class="modal-backdrop" id="modal-backdrop" hidden></div>
 
@@ -323,6 +339,189 @@
     </div>
     <div class="modal-actions">
       <button class="btn ghost" id="manage-close" type="button">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-lg" id="modal-legal" role="dialog" aria-modal="true" aria-labelledby="legal-modal-title" hidden>
+  <div class="modal-body">
+    <div class="legal-tabs-nav">
+      <button class="tab-chip active" id="tab-terms-btn" type="button">Användarvillkor</button>
+      <button class="tab-chip" id="tab-privacy-btn" type="button">Integritetspolicy</button>
+    </div>
+
+    <div id="legal-content-terms" class="legal-scroll">
+      <h2 id="legal-modal-title">Allmänna Användarvillkor</h2>
+      <p class="eyebrow">SafePath · Mario Lundqvist OÜ · Gäller fr.o.m. 2026-11-20</p>
+      
+      <div class="consent-block">
+        <h3 class="consent-h">1. Tjänsteleverantör & Omfattning</h3>
+        <p>SafePath tillhandahålls av Mario Lundqvist OÜ (reg.nr under registrering i Estland, e-post: support@safepath.app). SafePath är ett samtyckesbaserat familjelokaliseringsverktyg utformat för frivillig positionsdelning i realtid mellan familjemedlemmar och närstående.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">2. Åldersgräns & Behörighet</h3>
+        <p>Denna version av SafePath är uteslutande avsedd för myndiga personer (18 år eller äldre). Genom att skapa ett konto eller ansluta dig till en familjegrupp intygar du att du är minst 18 år fyllda.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">3. Frivilligt Samtycke & Ingen Spårning i Smyg</h3>
+        <p>Att gå med i en familjegrupp innebär <strong>aldrig</strong> automatisk positionsdelning. Varje deltagare måste aktivt och uttryckligen aktivera delning på sin egen enhet. Ingen administratör, familjeägare eller extern part kan fjärraktivera eller tvinga igång delning på din enhet. Du kan när som helst pausa eller avsluta delning med omedelbar verkan.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">4. Ingen Historiklagring (Data Minimization)</h3>
+        <p>SafePath lagrar aldrig historiska rörelsemönster eller tidslinjer. Endast din allra senaste koordinat sparas i max 15 minuter. Därefter raderas den automatiskt och oåterkalleligt från våra servrar.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">5. Prenumerationer, Priser & Ingen Provperiod</h3>
+        <p>SafePath erbjuder transparenta årsabonnemang utan dolda kostnader:</p>
+        <ul class="plain-list tight">
+          <li><strong>Bas (upp till 4 medlemmar):</strong> $2.98 / år</li>
+          <li><strong>Plus (upp till 6 medlemmar):</strong> $3.98 / år</li>
+          <li><strong>Max (upp till 8 medlemmar):</strong> 4.98 € / år</li>
+        </ul>
+        <p>Vi tillämpar <em>ingen gratis provperiod</em> för att förhindra oväntade automatiska förnyelser. Betalning debiteras säkert via Apple App Store / Google Play vid köpbekräftelse.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">6. Lagstadgad Ångerrätt (14 dagar)</h3>
+        <p>I enlighet med EU:s konsumenträttsdirektiv har konsumenter inom EU/EES rätt att frånträda avtalet inom 14 dagar från köptillfället utan att ange något skäl. För köp genomförda via Apple App Store eller Google Play hanteras återbetalningsbegäran direkt via respektive plattforms officiella återbetalningssystem.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">7. Nödsituationsfriskrivning</h3>
+        <p>SafePath är inte en larm- eller räddningstjänst. Tjänsten kräver fungerande internet- och GPS-anslutning och ska aldrig användas som enda säkerhetsåtgärd i livshotande eller akuta nödsituationer. Ring alltid 112 vid fara för liv och hälsa.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">8. Kontakt</h3>
+        <p>Frågor om användarvillkoren besvaras via support@safepath.app.</p>
+      </div>
+    </div>
+
+    <div id="legal-content-privacy" class="legal-scroll" hidden>
+      <h2>Integritetspolicy (GDPR)</h2>
+      <p class="eyebrow">SafePath · Personuppgiftsansvarig: Mario Lundqvist OÜ</p>
+
+      <div class="consent-block">
+        <h3 class="consent-h">1. Personuppgiftsansvarig</h3>
+        <p>Mario Lundqvist OÜ (Estland, e-post: privacy@safepath.app) är personuppgiftsansvarig för behandlingen av dina personuppgifter i SafePath.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">2. Vilka uppgifter behandlas och varför?</h3>
+        <ul class="plain-list tight">
+          <li><strong>E-postadress:</strong> Används enbart för lösenordsfri inloggning via engångskod (laglig grund: fullgörande av avtal).</li>
+          <li><strong>Visningsnamn:</strong> Det namn du väljer att visa för din familjegrupp.</li>
+          <li><strong>Geografisk position:</strong> Behandlas uteslutande med stöd av ditt uttryckliga samtycke (GDPR Art. 6.1 a och Art. 9 där tillämpligt). Endast den senaste positionen hålls i minnet.</li>
+        </ul>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">3. Lagringstid & Raderingsrutiner</h3>
+        <p><strong>Noll historiklagring:</strong> Varje ny position ersätter den föregående. Om ingen ny position rapporteras raderas den befintliga automatiskt efter max 15 minuter. När du pausar delning eller raderar ditt konto raderas alla sparade positionsdata omedelbart.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">4. Ingen Försäljning & Inga Tredjepartsspårare</h3>
+        <p>Vi säljer, hyr aldrig ut eller delar dina personuppgifter med datamäklare, annonsnätverk eller analysföretag. Appen innehåller inga tredjepartsreklamnätverk eller spårningspixlar.</p>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">5. Dina Rättigheter enligt GDPR</h3>
+        <p>Du har full rätt att när som helst:</p>
+        <ul class="plain-list tight">
+          <li>Återkalla ditt samtycke med omedelbar verkan.</li>
+          <li>Begära ett utdrag av dina personuppgifter (registerutdrag).</li>
+          <li>Begära rättelse eller permanent radering ("rätten att bli bortglömd").</li>
+          <li>Lämna in klagomål till Integritetsskyddsmyndigheten (IMY) i Sverige eller Estlands dataskyddsinspektion (Andmekaitse Inspektsioon).</li>
+        </ul>
+      </div>
+
+      <div class="consent-block">
+        <h3 class="consent-h">6. Dataskyddskontakt</h3>
+        <p>För alla ärenden rörande dina personuppgifter, kontakta vårt dataskyddsteam på privacy@safepath.app.</p>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn primary" id="legal-close" type="button">Stäng</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal modal-lg" id="modal-pricing" role="dialog" aria-modal="true" aria-labelledby="pricing-modal-title" hidden>
+  <div class="modal-body">
+    <p class="eyebrow">Familjeplaner & Transparenta Priser</p>
+    <h2 id="pricing-modal-title">Skydda hela familjen</h2>
+    <p class="lead-sm">Ingen inlåsning, inga månadskostnader och framför allt <strong>ingen falsk gratis provperiod</strong> som lurar dig in i en dyr prenumeration. Välj den plan som passar din familj:</p>
+
+    <div class="pricing-tiers">
+      <div class="tier-card" data-tier="base">
+        <div class="tier-header">
+          <span class="tier-name">Bas</span>
+          <div class="tier-price-wrap">
+            <span class="tier-price">$2.98</span>
+            <span class="tier-period"> / år</span>
+          </div>
+        </div>
+        <div class="tier-meta">
+          <span>Upp till 4 familjemedlemmar</span>
+          <span>Endast $0.25 / månad</span>
+        </div>
+      </div>
+
+      <div class="tier-card featured selected" data-tier="plus">
+        <div class="tier-header">
+          <div>
+            <span class="tier-name">Plus</span>
+            <span class="tier-badge">MEST POPULÄR ★</span>
+          </div>
+          <div class="tier-price-wrap">
+            <span class="tier-price">$3.98</span>
+            <span class="tier-period"> / år</span>
+          </div>
+        </div>
+        <div class="tier-meta">
+          <span>Upp till 6 familjemedlemmar</span>
+          <span class="savings-pill">Spara över 90% mot månadsprenumerationer</span>
+        </div>
+      </div>
+
+      <div class="tier-card" data-tier="max">
+        <div class="tier-header">
+          <span class="tier-name">Max</span>
+          <div class="tier-price-wrap">
+            <span class="tier-price">4.98 €</span>
+            <span class="tier-period"> / år</span>
+          </div>
+        </div>
+        <div class="tier-meta">
+          <span>Upp till 8 familjemedlemmar</span>
+          <span>Komplett storfamiljsskydd</span>
+        </div>
+      </div>
+    </div>
+
+    <label class="withdrawal-check">
+      <input type="checkbox" id="pricing-withdrawal-check">
+      <span>Jag bekräftar att jag har tagit del av den lagstadgade ångerrätten (14 dagar enligt EU:s konsumenträttsdirektiv). Vid köp via App Store / Google Play hanteras återbetalning direkt av respektive butik.</span>
+    </label>
+
+    <div class="consent-block" style="margin-top: 14px;">
+      <h3 class="consent-h">Integritets- och Trygghetsgaranti</h3>
+      <ul class="plain-list tight">
+        <li>100% samtyckesbaserat – ingen kan spåras i smyg.</li>
+        <li>Noll historiklagring – endast senaste positionen visas och raderas efter 15 minuter.</li>
+        <li>Inget konto eller data säljs vidare till tredje part eller annonsörer.</li>
+      </ul>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn ghost" id="pricing-close" type="button">Stäng</button>
+      <button class="btn primary" id="pricing-select-btn" type="button">Välj vald plan</button>
     </div>
   </div>
 </div>
