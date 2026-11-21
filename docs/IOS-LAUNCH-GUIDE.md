@@ -85,14 +85,14 @@ Apple har mycket strikta regler kring appar för barn och föräldrakontroll. Sa
 
 ## 4. Betalvägg och Köp i TestFlight
 
-- **I TestFlight & Beta:** Betalväggen visar en tydlig testbanner som informerar testare och granskare om att alla funktioner är helt upplåsta under betaversionen. Inga låtsasköp simuleras.
+- **I TestFlight & Sandbox:** Betalväggen stöder StoreKit Sandbox-köp och köpåterställning via Superwall utan verklig debitering mot Apple-ID:t.
 - **Vid skarp App Store-lansering:** Skapa följande auto-förnyande prenumerationer under **In-App Purchases** i App Store Connect:
 
 | Produkt-ID | Nivå | Pris (USD / Tier) | Medlemmar |
 |---|---|---|---|
-| `app.safepath.plan.small4` | Bas | **$2.99 / år** (Tier 3) | Upp till 4 personer |
-| `app.safepath.plan.medium6` | Plus (Populärast ★) | **$3.99 / år** (Tier 4) | Upp till 6 personer |
-| `app.safepath.plan.large8` | Max | **$4.99 / år** (Tier 5) | Upp till 8 personer |
+| `small4` | Bas | **$2.99 / år** (Tier 3) | Upp till 4 personer |
+| `medium6` | Plus (Populärast ★) | **$3.99 / år** (Tier 4) | Upp till 6 personer |
+| `large8` | Max | **$4.99 / år** (Tier 5) | Upp till 8 personer |
 
 ---
 

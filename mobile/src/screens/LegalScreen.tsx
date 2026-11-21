@@ -91,7 +91,7 @@ function TermsContent() {
       <Text style={styles.p}>
         SafePath tillhandahålls av Mario Lundqvist OÜ. SafePath är en app för att dela sin position med
         en sluten, privat grupp av personer som du själv väljer och som själva aktivt har godkänt inbjudan.
-        Tjänsten är inte ett trygghetslarm, inte ett övervakningsverktyg och inte avsedd för barn under 18 år.
+        Tjänsten är inte ett trygghetslarm, inte ett övervakningsverktyg och inte avsedd för personer under 18 år (18+-gräns).
       </Text>
 
       <SectionTitle>2. Prenumerationer & Priser</SectionTitle>

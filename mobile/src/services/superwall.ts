@@ -1,9 +1,9 @@
 import { SuperwallExpoModule } from 'expo-superwall';
 
 export const STORE_PRODUCTS = {
-  small4: 'app.safepath.plan.small4',
-  medium6: 'app.safepath.plan.medium6',
-  large8: 'app.safepath.plan.large8',
+  small4: 'small4',
+  medium6: 'medium6',
+  large8: 'large8',
 } as const;
 
 export const PLAN_TO_STORE_PRODUCT: Record<'small_4' | 'medium_6' | 'large_8', string> = {
@@ -84,6 +84,19 @@ export async function purchaseStoreProduct(productId: string) {
     return await SuperwallExpoModule.purchase(productId);
   } catch (err) {
     console.warn('[Superwall] Purchase error:', err);
+    return null;
+  }
+}
+
+/**
+ * Restores store purchases via Superwall / StoreKit.
+ */
+export async function restoreStorePurchases() {
+  if (!isConfigured) return null;
+  try {
+    return await SuperwallExpoModule.restorePurchases();
+  } catch (err) {
+    console.warn('[Superwall] Restore error:', err);
     return null;
   }
 }

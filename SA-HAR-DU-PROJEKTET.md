@@ -86,7 +86,7 @@ node scripts/configure-android.mjs
    och lägg den **utanför** git.
 2. **Appen är aldrig körd på en fysisk telefon.** Det gäller fortfarande.
 3. **Ingen gratis provperiod.** Ordet får inte förekomma någonstans i text eller
-   gränssnitt. Priserna är 4,98 €/vecka och 49,98 €/år, utan provperiod.
+   gränssnitt. Priserna är 2,99 USD/år (upp till 4 pers), 3,99 USD/år (upp till 6 pers) och 4,99 USD/år (upp till 8 pers), utan provperiod.
 
 ## Bygg om ikonerna
 

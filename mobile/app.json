@@ -27,6 +27,19 @@
           "isAndroidForegroundServiceEnabled": true
         }
       ],
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "15.1"
+          },
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "minSdkVersion": 24
+          }
+        }
+      ],
       "expo-secure-store"
     ],
     "android": {
@@ -85,6 +98,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {}
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
   }
 }
