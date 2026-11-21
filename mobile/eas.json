@@ -21,7 +21,8 @@
       },
       "env": {
         "EXPO_PUBLIC_DEFAULT_EMERGENCY_NUMBER": "112",
-        "EXPO_PUBLIC_API_BASE": "https://safepath-server.onrender.com"
+        "EXPO_PUBLIC_API_BASE": "https://safepath-server.onrender.com",
+        "EXPO_PUBLIC_SUPERWALL_API_KEY": ""
       }
     },
     "production": {
@@ -32,7 +33,8 @@
       },
       "env": {
         "EXPO_PUBLIC_DEFAULT_EMERGENCY_NUMBER": "112",
-        "EXPO_PUBLIC_API_BASE": "https://safepath-server.onrender.com"
+        "EXPO_PUBLIC_API_BASE": "https://safepath-server.onrender.com",
+        "EXPO_PUBLIC_SUPERWALL_API_KEY": ""
       }
     }
   },

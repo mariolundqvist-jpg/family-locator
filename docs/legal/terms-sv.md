@@ -131,7 +131,7 @@ kopiera, sälja eller bakåtkompilera appen utöver vad som följer av tvingande
 
 - Vi ansvarar för skada som vi orsakar genom **uppsåt eller grov vårdslöshet**.
 - Vid **ringa vårdslöshet** ansvarar vi, i den mån lagen tillåter, endast för direkta skador
-  och med ett sammanlagt tak motsvarande **12 månaders abonnemangsavgift**, dock lägst 50 €.
+  och med ett sammanlagt tak motsvarande **12 månaders abonnemangsavgift**, dock lägst 50 USD.
 - Vi ansvarar inte för indirekta skador, utebliven vinst eller för skada som beror på
   nätverk, batteri, operativsystem, tredjepartsbutik eller din egen utrustning.
 - Ingenting i dessa villkor begränsar ansvar för **personskada, dödsfall, uppsåt eller grov
