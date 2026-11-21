@@ -39,8 +39,7 @@ nätverkstillgång påverkar tjänsten.
 
 ## 3. Konto och behörighet
 
-Du skapar konto med e-postadress och lösenord. Du ansvarar för att hålla inloggningen
-hemlig och för att uppgifterna du anger är korrekta. Du får inte dela konto med någon
+Du loggar in lösenordsfritt med din e-postadress och en engångskod. Du ansvarar för att hålla tillgången till din e-postadress säker och för att uppgifterna du anger är korrekta. Du får inte dela konto med någon
 annan. Vi får stänga av konton som används för att trakassera, spåra eller hota andra.
 
 ## 4. Grupper, inbjudningar och samtycke
@@ -60,7 +59,7 @@ Vi behandlar positionsuppgifter enligt vår integritetspolicy. Kort:
 - Positionen visas för gruppen med **tidpunkt och noggrannhet** och markeras som
   **aktuell**, **inaktuell** eller **otillgänglig**. En gammal position visas aldrig som live.
 - Vi sparar **ingen positionshistorik** i denna version. Senaste kända position raderas
-  normalt inom 24 timmar och när du pausar, lämnar gruppen eller raderar ditt konto.
+  automatiskt inom max 15 minuter och när du pausar, lämnar gruppen eller raderar ditt konto.
 - Positionsuppgifter skickas bara när du aktivt delar.
 
 ## 6. Prenumeration, priser och betalning

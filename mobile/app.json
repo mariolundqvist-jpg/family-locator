@@ -60,6 +60,9 @@
         "monochromeImage": "./assets/adaptive-icon-monochrome.png"
       }
     },
+    "locales": {
+      "sv": "./locales/sv.json"
+    },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "app.safepath.client",
@@ -68,12 +71,12 @@
         "UIBackgroundModes": [
           "location"
         ],
-        "NSLocationWhenInUseUsageDescription": "SafePath delar din position med gruppen du valt, medan appen är öppen och bara när du själv slagit på delning.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "SafePath kan fortsätta dela din position när skärmen är låst. Det är frivilligt, syns i aviseringsfältet och kan stängas av när som helst.",
-        "NSLocationAlwaysUsageDescription": "SafePath kan fortsätta dela din position när skärmen är låst. Det är frivilligt och kan stängas av när som helst.",
-        "NSCameraUsageDescription": "SafePath använder inte kameran.",
-        "NSMicrophoneUsageDescription": "SafePath använder inte mikrofonen.",
-        "NSPhotoLibraryUsageDescription": "SafePath använder inte bildbiblioteket."
+        "NSLocationWhenInUseUsageDescription": "SafePath shares your location with your chosen group only while the app is active and only when you explicitly turn sharing on.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "SafePath allows voluntary background location sharing with your group when the screen is locked. A persistent indicator is shown, and sharing can be paused at any time.",
+        "NSLocationAlwaysUsageDescription": "SafePath allows voluntary background location sharing with your group when the screen is locked. Sharing can be paused at any time.",
+        "NSCameraUsageDescription": "SafePath does not access the camera.",
+        "NSMicrophoneUsageDescription": "SafePath does not access the microphone.",
+        "NSPhotoLibraryUsageDescription": "SafePath does not access the photo library."
       },
       "dark": {
         "image": "./assets/icon-dark.png"
@@ -82,10 +85,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "00000000-0000-0000-0000-000000000000"
-      }
-    }
+    "extra": {}
   }
 }

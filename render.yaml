@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: safepath-server
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: node server/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
+      - key: EMAIL_FROM
+        value: support@byggbartech.com
+      - key: SAFEPATH_SECRET
+        generateValue: true

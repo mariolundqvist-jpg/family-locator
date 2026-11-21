@@ -11,12 +11,20 @@
       "distribution": "internal",
       "ios": {
         "simulator": false
+      }
+    },
+    "testflight": {
+      "distribution": "store",
+      "autoIncrement": true,
+      "ios": {
+        "simulator": false
       },
       "env": {
         "EXPO_PUBLIC_DEFAULT_EMERGENCY_NUMBER": "112"
       }
     },
     "production": {
+      "distribution": "store",
       "autoIncrement": true,
       "ios": {
         "simulator": false
@@ -27,6 +35,7 @@
     }
   },
   "submit": {
+    "testflight": {},
     "production": {}
   }
 }

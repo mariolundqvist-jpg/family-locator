@@ -175,7 +175,7 @@ intended.
 
 | Data | Retention | Deleted when |
 | --- | --- | --- |
-| Latest position | Until replaced, and at most **24 hours** after the last update; then discarded automatically | Pause, leave, removal, withdrawal of consent, account deletion |
+| Latest position | Until replaced, and at most **15 minutes** after the last update; then discarded automatically | Pause, leave, removal, withdrawal of consent, account deletion |
 | Sign-in code | **10 minutes**, single use, stored hashed | Used or expired |
 | Invitation | **30 minutes**, single use | Accepted, cancelled or expired |
 | Session | **12 hours** | Sign-out, passwordless re-login, account deletion |

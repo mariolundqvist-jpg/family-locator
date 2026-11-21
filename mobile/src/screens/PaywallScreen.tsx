@@ -80,30 +80,22 @@ export function PaywallModal({
   async function handleSubscribe() {
     setBusy(true);
     const plan = PLANS.find((p) => p.id === selectedPlan)!;
+    // Transparent TestFlight/Beta handling compliant with Apple Review guidelines
     setTimeout(() => {
       setBusy(false);
-      Alert.alert(
-        t('save'),
-        `${t(plan.titleKey)} (${plan.priceFormatted} ${t('perYear')}).`,
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              onPurchased?.(selectedPlan);
-              onClose();
-            },
-          },
-        ],
-      );
-    }, 600);
+      onPurchased?.(selectedPlan);
+      onClose();
+    }, 400);
   }
 
   function handleRestore() {
     Alert.alert(
       t('restorePurchases'),
-      'Store checked. Any previous purchases have been restored.',
+      'Inga tidigare köp hittades. I TestFlight-versionen är alla funktioner redan upplåsta.',
     );
   }
+
+  const selectedPlanInfo = PLANS.find((p) => p.id === selectedPlan) ?? PLANS[1]!;
 
   return (
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
@@ -114,10 +106,18 @@ export function PaywallModal({
         </View>
 
         <ScrollView contentContainerStyle={styles.content}>
+          {/* TestFlight Banner */}
+          <View style={styles.betaNotice}>
+            <Text style={styles.betaNoticeTitle}>🧪 TestFlight & Beta-läge</Text>
+            <Text style={styles.betaNoticeText}>
+              Alla funktioner är helt kostnadsfritt upplåsta under testperioden. Nedan visas de planer som lanseras vid skarp release.
+            </Text>
+          </View>
+
           <View style={styles.hero}>
             <View style={styles.heroBadge}>
               <Text style={styles.heroBadgeIcon}>🛡️</Text>
-              <Text style={styles.heroBadgeText}>100% Samtycke · Noll Historiklagring</Text>
+              <Text style={styles.heroBadgeText}>100% Samtycke · Noll Historiklagring (18+)</Text>
             </View>
             <Text style={type.hero}>{t('paywallHeroTitle')}</Text>
             <Text style={[type.body, styles.heroSub]}>{t('paywallHeroDesc')}</Text>
@@ -202,7 +202,7 @@ export function PaywallModal({
           </View>
 
           <Button
-            label={t('startPlanButton', { price: PLANS.find((p) => p.id === selectedPlan)?.priceFormatted ?? '$3.98' })}
+            label={`Välj ${selectedPlanInfo.priceFormatted} / år (Öppna i beta)`}
             onPress={handleSubscribe}
             busy={busy}
           />
@@ -252,6 +252,16 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.line,
   },
   content: { padding: space(4), gap: space(4), paddingBottom: space(10) },
+  betaNotice: {
+    backgroundColor: '#eff8f5',
+    borderWidth: 1,
+    borderColor: '#c3e8dc',
+    borderRadius: radius.md,
+    padding: space(3),
+    gap: space(1),
+  },
+  betaNoticeTitle: { ...type.subhead, color: colors.primary, fontWeight: '800' },
+  betaNoticeText: { ...type.small, color: colors.inkSoft, lineHeight: 18 },
   hero: { gap: space(2), paddingTop: space(2) },
   heroBadge: {
     flexDirection: 'row',
