@@ -145,7 +145,7 @@ Bygget kräver swapfilen: maskinen har 2 GB RAM och Gradle dödas utan den.
    överlevnad vid omstart är **oprövat**. Inga siffror om detta får användas i marknadsföring
    förrän de är uppmätta. Testplanen ligger i `docs/DEVICE-TEST-PLAN.md` (F1–F5, B1–B8,
    P1–P6, G1–G6, E1–E6).
-2. **Betalning i appen integrerad via Superwall och StoreKit.** Planerna är prissatta per månad och år: Bas ($2.99/mån eller $19/år), Plus ($3.99/mån eller $24/år) och Stor familj ($4.99/mån eller $29/år). Store-ID:n är `small4`, `medium6`, `large8` (månad) och `small4_yearly`, `medium6_yearly`, `large8_yearly` (år). Köp och återställning kan testas i TestFlight via Apple Sandbox utan skarp debitering. För Android/Huawei krävs IAP-aktivering före skarp release om köp ska ske i appen.
+2. **Betalning i appen integrerad via Superwall och StoreKit.** Ett komplett paket för hela familjen (upp till 8 personer) erbjuds med två produkt-ID:n: `monthly` ($4.99/mån) och `yearly` ($29.00/år, spara 51%). Köp och återställning kan testas i TestFlight via Apple Sandbox utan skarp debitering. För Android/Huawei krävs IAP-aktivering före skarp release om köp ska ske i appen.
 3. **E-postutskick i produktion är inte kopplat** — kräver leverantörsnyckel, se
    `docs/CREDENTIALS-NEEDED.md`.
 4. **Huawei-telefon utan Google Play-tjänster** är hanterad i koden (expo-location faller
@@ -184,11 +184,9 @@ dokumenterats i `open-decisions.md` — inte rådgivning.
 
 ## 7. Ekonomi och priser
 
-| Plan | Medlemmar | Månadspris | Årspris (spara ~50 %) | Produkt-ID (Månad / År) |
-| --- | --- | --- | --- | --- |
-| Bas (Liten familj) | Upp till 4 personer | 2,99 USD / mån | 19 USD / år (ca 1,58 USD/mån) | `small4` / `small4_yearly` |
-| Plus (Mellanfamilj, mest populär ★) | Upp till 6 personer | 3,99 USD / mån | 24 USD / år (ca 2,00 USD/mån) | `medium6` / `medium6_yearly` |
-| Max (Stor familj) | Upp till 8 personer | 4,99 USD / mån | 29 USD / år (ca 2,42 USD/mån) | `large8` / `large8_yearly` |
+| Paket | Medlemmar | Månadspris (ID: `monthly`) | Årspris (ID: `yearly`, spara 51 %) |
+| --- | --- | --- | --- |
+| SafePath Familj | Upp till 8 personer | 4,99 USD / månad | 29,00 USD / år (ca 2,42 USD/mån) |
 
 - **Ingen gratis provperiod.** Ordet får inte förekomma i app, butikstext eller marknadsföring.
 - Priset ska läsas **live från butiken** vid köp — aldrig hårdkodas. Butikspriser varierar

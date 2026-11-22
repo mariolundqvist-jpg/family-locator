@@ -64,14 +64,12 @@ Vi behandlar positionsuppgifter enligt vår integritetspolicy. Kort:
 
 ## 6. Prenumeration, priser och betalning
 
-SafePath är en betaltjänst med **auto-förnyande månads- eller årsprenumeration**. **Det finns ingen
+SafePath erbjuder ett familjeabonnemang för upp till 8 personer (18+) med **auto-förnyande månads- eller årsprenumeration**. **Det finns ingen
 gratis provperiod** och inga dolda avgifter. Priserna är transparenta:
 
-| Plan | Månadspris | Årspris (spara ~50 %) | Antal medlemmar |
+| Paket | Månadspris (ID: `monthly`) | Årspris (ID: `yearly`, spara 51 %) | Antal medlemmar |
 |---|---|---|---|
-| Liten familj / Bas | **2,99 USD / mån** | **19 USD / år** (ca 1,58 USD / mån) | Upp till 4 personer |
-| Mellanfamilj / Plus | **3,99 USD / mån** | **24 USD / år** (ca 2,00 USD / mån) | Upp till 6 personer |
-| Stor familj / Max | **4,99 USD / mån** | **29 USD / år** (ca 2,42 USD / mån) | Upp till 8 personer |
+| SafePath Familj | **4,99 USD / månad** | **29,00 USD / år** (ca 2,42 USD / mån) | Upp till 8 personer |
 
 - Priserna är **inklusive moms** för konsumenter inom EU där det är tillämpligt.
 - Betalning sker genom den butik du installerade appen från (Apple App Store, Google Play
