@@ -40,7 +40,7 @@ Servern är en Node.js-tjänst med bakgrundsstädare (raderar positioner efter 1
 Projektet har en färdig `render.yaml`:
 1. Skapa konto på [render.com](https://render.com).
 2. Klicka på **New +** → **Blueprint** och koppla repot `mariolundqvist-jpg/family-locator`.
-3. Render bygger och startar webbtjänsten automatiskt på t.ex. `https://safepath-server.onrender.com`.
+3. Render bygger och startar webbtjänsten automatiskt på t.ex. `https://safepath-server-v8qp.onrender.com`.
 
 ### Alternativ B: Fly.io (Via Dockerfile)
 Projektet har färdig `Dockerfile` och `fly.toml`:

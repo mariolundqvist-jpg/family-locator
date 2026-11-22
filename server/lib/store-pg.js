@@ -41,10 +41,12 @@ const EMPTY = {
 export class PgStore {
   constructor(connectionString, { max = 10, ssl } = {}) {
     this.connectionString = connectionString;
+    const isSsl = ssl === true || ssl === 'true' || ssl === '1' ||
+      (typeof connectionString === 'string' && !connectionString.includes('localhost') && !connectionString.includes('127.0.0.1'));
     this.pool = new pg.Pool({
       connectionString,
       max,
-      ssl: ssl === true ? { rejectUnauthorized: true } : ssl,
+      ssl: isSsl ? { rejectUnauthorized: false } : (ssl || false),
       // A prototype should fail fast rather than hang a request for 30s.
       connectionTimeoutMillis: 5000,
       idleTimeoutMillis: 10_000,
