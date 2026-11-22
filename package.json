@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "DEV_DELIVERY=1 node server/index.js",
+    "migrate": "node tools/migrate.mjs",
     "test": "node tests/security-suite.mjs && node tests/e2e-web.mjs",
     "test:security": "node tests/security-suite.mjs",
     "test:e2e": "node tests/e2e-web.mjs",
