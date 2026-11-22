@@ -96,21 +96,17 @@ function TermsContent() {
 
       <SectionTitle>2. Prenumerationer & Priser</SectionTitle>
       <Text style={styles.p}>
-        SafePath är en betaltjänst med månads- eller årsförnyelse via Apple App Store, Google Play eller Huawei AppGallery.
+        SafePath erbjuder ett komplett abonnemang för hela familjen eller gruppen (upp till 8 personer, 18+).
         Det finns ingen gratis provperiod och inga dolda avgifter. Priserna är:
       </Text>
       <View style={styles.bulletBox}>
         <View style={styles.planRow}>
-          <Text style={styles.planName}>• Liten familj / Bas (upp till 4 personer):</Text>
-          <Text style={styles.planPrice}>2,99 USD / mån (eller 19 USD / år)</Text>
+          <Text style={styles.planName}>• Månadsvis (produkt-ID: monthly):</Text>
+          <Text style={styles.planPrice}>4,99 USD / månad</Text>
         </View>
         <View style={styles.planRow}>
-          <Text style={styles.planName}>• Mellanfamilj / Plus (upp till 6 personer):</Text>
-          <Text style={styles.planPrice}>3,99 USD / mån (eller 24 USD / år)</Text>
-        </View>
-        <View style={styles.planRow}>
-          <Text style={styles.planName}>• Stor familj / Max (upp till 8 personer):</Text>
-          <Text style={styles.planPrice}>4,99 USD / mån (eller 29 USD / år)</Text>
+          <Text style={styles.planName}>• Årsvis (produkt-ID: yearly):</Text>
+          <Text style={styles.planPrice}>29,00 USD / år (spara 51 %)</Text>
         </View>
       </View>
       <Text style={styles.p}>

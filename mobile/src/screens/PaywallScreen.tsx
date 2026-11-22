@@ -16,64 +16,40 @@ import { purchaseStoreProduct, restoreStorePurchases, triggerPaywall } from '../
 import { Button, Pill, SectionTitle } from '../ui/components';
 import { colors, radius, space, type } from '../ui/theme';
 
-export type PlanId = 'small_4' | 'medium_6' | 'large_8';
-export type BillingInterval = 'monthly' | 'yearly';
+export type PlanId = 'yearly' | 'monthly';
 
 export interface Plan {
   id: PlanId;
-  storeProductIdMonthly: string;
-  storeProductIdYearly: string;
-  titleKey: 'planSmall' | 'planMedium' | 'planLarge';
-  maxMembers: number;
-  monthlyPrice: string;
-  yearlyPrice: string;
-  yearlyMonthlyEquivalent: string;
-  yearlySavingsText: string;
-  badgeKey?: 'badgeMostPopular' | 'badgeMaxFreedom';
+  storeProductId: 'yearly' | 'monthly';
+  title: string;
+  priceFormatted: string;
+  periodText: string;
+  monthlyEquivalent: string;
+  badge?: string;
   badgeTone?: 'positive' | 'gold' | 'neutral';
-  descKey: 'planSmallDesc' | 'planMediumDesc' | 'planLargeDesc';
+  savingsText?: string;
 }
 
 export const PLANS: Plan[] = [
   {
-    id: 'small_4',
-    storeProductIdMonthly: 'small4',
-    storeProductIdYearly: 'small4_yearly',
-    titleKey: 'planSmall',
-    maxMembers: 4,
-    monthlyPrice: '$2.99',
-    yearlyPrice: '$19.00',
-    yearlyMonthlyEquivalent: 'ca $1.58 / mån vid helår',
-    yearlySavingsText: 'Spara 47% med årsplan',
-    descKey: 'planSmallDesc',
-  },
-  {
-    id: 'medium_6',
-    storeProductIdMonthly: 'medium6',
-    storeProductIdYearly: 'medium6_yearly',
-    titleKey: 'planMedium',
-    maxMembers: 6,
-    monthlyPrice: '$3.99',
-    yearlyPrice: '$24.00',
-    yearlyMonthlyEquivalent: 'ca $2.00 / mån vid helår',
-    badgeKey: 'badgeMostPopular',
+    id: 'yearly',
+    storeProductId: 'yearly',
+    title: 'Årsvis',
+    priceFormatted: '$29.00',
+    periodText: '/ år',
+    monthlyEquivalent: 'ca $2.42 / månad',
+    badge: 'MEST POPULÄR ★',
     badgeTone: 'gold',
-    yearlySavingsText: 'Spara 50% med årsplan',
-    descKey: 'planMediumDesc',
+    savingsText: 'Spara 51% jämfört med månadsvis',
   },
   {
-    id: 'large_8',
-    storeProductIdMonthly: 'large8',
-    storeProductIdYearly: 'large8_yearly',
-    titleKey: 'planLarge',
-    maxMembers: 8,
-    monthlyPrice: '$4.99',
-    yearlyPrice: '$29.00',
-    yearlyMonthlyEquivalent: 'ca $2.42 / mån vid helår',
-    badgeKey: 'badgeMaxFreedom',
-    badgeTone: 'positive',
-    yearlySavingsText: 'Spara 51% med årsplan ($29 / år)',
-    descKey: 'planLargeDesc',
+    id: 'monthly',
+    storeProductId: 'monthly',
+    title: 'Månadsvis',
+    priceFormatted: '$4.99',
+    periodText: '/ månad',
+    monthlyEquivalent: 'Full flexibilitet',
+    savingsText: 'Ingen bindningstid — avsluta när du vill',
   },
 ];
 
@@ -87,8 +63,7 @@ export function PaywallModal({
   onPurchased?: (planId: PlanId) => void;
 }) {
   const { t } = useI18n();
-  const [selectedPlan, setSelectedPlan] = useState<PlanId>('medium_6');
-  const [billingInterval, setBillingInterval] = useState<BillingInterval>('monthly');
+  const [selectedPlan, setSelectedPlan] = useState<PlanId>('yearly');
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -99,22 +74,12 @@ export function PaywallModal({
     }
   }, [visible]);
 
-  const currentPlan = PLANS.find((p) => p.id === selectedPlan) ?? PLANS[1];
-  const targetProductId =
-    billingInterval === 'yearly'
-      ? currentPlan.storeProductIdYearly
-      : currentPlan.storeProductIdMonthly;
-  const currentPrice =
-    billingInterval === 'yearly'
-      ? currentPlan.yearlyPrice
-      : currentPlan.monthlyPrice;
-  const currentPeriod =
-    billingInterval === 'yearly' ? t('perYear') : (t('perMonth') || 'per månad');
+  const currentPlan = PLANS.find((p) => p.id === selectedPlan) ?? PLANS[0];
 
   const handlePurchase = async () => {
     setIsPurchasing(true);
     try {
-      const res = await purchaseStoreProduct(targetProductId);
+      const res = await purchaseStoreProduct(currentPlan.storeProductId);
       if (res && res.type === 'purchased') {
         Alert.alert('Prenumeration aktiverad', 'Ditt köp har genomförts. Tack för ditt stöd!', [
           {
@@ -133,7 +98,7 @@ export function PaywallModal({
         // Sandlåda / TestFlight-återkoppling vid testbygge
         Alert.alert(
           'Köp genomfört (TestFlight)',
-          `Prenumeration på ${t(currentPlan.titleKey)} (${targetProductId}, ${currentPrice}/${currentPeriod}) har aktiverats i testläget utan debitering.`,
+          `Prenumeration på SafePath Familj (${currentPlan.storeProductId}: ${currentPlan.priceFormatted} ${currentPlan.periodText}) har aktiverats i testläget utan debitering.`,
           [
             {
               text: 'OK',
@@ -174,7 +139,7 @@ export function PaywallModal({
     <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
       <SafeAreaView style={styles.safe}>
         <View style={styles.header}>
-          <Text style={type.title}>Planöversikt & Priser</Text>
+          <Text style={type.title}>SafePath Familj</Text>
           <Button label={t('close')} onPress={onClose} variant="quiet" />
         </View>
 
@@ -183,69 +148,27 @@ export function PaywallModal({
           <View style={styles.betaNotice}>
             <Text style={styles.betaNoticeTitle}>🧪 TestFlight & Beta-läge</Text>
             <Text style={styles.betaNoticeText}>
-              Alla funktioner är helt kostnadsfritt upplåsta under testperioden. Nedan visas de planer och priser som lanseras vid skarp release.
+              Alla funktioner är upplåsta under testningen. Välj en plan nedan för att provköra StoreKit Sandbox-köp.
             </Text>
           </View>
 
           <View style={styles.hero}>
             <View style={styles.heroBadge}>
               <Text style={styles.heroBadgeIcon}>🛡️</Text>
-              <Text style={styles.heroBadgeText}>100% Samtycke · Noll Historiklagring (18+)</Text>
+              <Text style={styles.heroBadgeText}>Max 8 personer · 100% Samtycke (18+)</Text>
             </View>
-            <Text style={type.hero}>{t('paywallHeroTitle')}</Text>
-            <Text style={[type.body, styles.heroSub]}>{t('paywallHeroDesc')}</Text>
+            <Text style={type.hero}>Ett abonnemang för hela familjen</Text>
+            <Text style={[type.body, styles.heroSub]}>
+              Plats för upp till 8 personer (18+). Varje person styr själv över sin position. Noll historiklagring och inga dolda avgifter.
+            </Text>
           </View>
 
-          {/* Välj intervall: Månad eller År */}
-          <View style={styles.intervalToggleWrap}>
-            <Pressable
-              style={[
-                styles.intervalTab,
-                billingInterval === 'monthly' && styles.intervalTabActive,
-              ]}
-              onPress={() => setBillingInterval('monthly')}
-            >
-              <Text
-                style={[
-                  styles.intervalTabText,
-                  billingInterval === 'monthly' && styles.intervalTabTextActive,
-                ]}
-              >
-                Månadsvis
-              </Text>
-            </Pressable>
-            <Pressable
-              style={[
-                styles.intervalTab,
-                billingInterval === 'yearly' && styles.intervalTabActive,
-              ]}
-              onPress={() => setBillingInterval('yearly')}
-            >
-              <Text
-                style={[
-                  styles.intervalTabText,
-                  billingInterval === 'yearly' && styles.intervalTabTextActive,
-                ]}
-              >
-                Årsvis · Spara upp till 51% ⚡
-              </Text>
-            </Pressable>
-          </View>
-
-          {/* Välj plan */}
-          <SectionTitle>{t('choosePlanTitle')}</SectionTitle>
+          {/* Välj betalningsperiod */}
+          <SectionTitle>Välj betalningsperiod</SectionTitle>
           <View style={styles.planList}>
             {PLANS.map((plan) => {
               const isSelected = selectedPlan === plan.id;
-              const isPopular = plan.id === 'medium_6';
-              const displayPrice =
-                billingInterval === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice;
-              const displayPeriod =
-                billingInterval === 'yearly' ? t('perYear') : (t('perMonth') || 'per månad');
-              const displaySub =
-                billingInterval === 'yearly'
-                  ? plan.yearlyMonthlyEquivalent
-                  : `eller ${plan.yearlyPrice}/år (${plan.yearlySavingsText})`;
+              const isPopular = plan.id === 'yearly';
 
               return (
                 <Pressable
@@ -262,38 +185,36 @@ export function PaywallModal({
                   <View style={styles.planHeader}>
                     <View style={styles.planTitleWrap}>
                       <View style={{ flexDirection: 'row', alignItems: 'center', gap: space(2) }}>
-                        <Text style={styles.planTitle}>{t(plan.titleKey)}</Text>
-                        {plan.badgeKey ? (
+                        <Text style={styles.planTitle}>{plan.title}</Text>
+                        {plan.badge ? (
                           <Pill
-                            label={plan.badgeKey === 'badgeMostPopular' ? 'MEST POPULÄR ★' : t(plan.badgeKey)}
-                            tone={plan.badgeTone ?? 'positive'}
+                            label={plan.badge}
+                            tone={plan.badgeTone ?? 'gold'}
                           />
                         ) : null}
                       </View>
-                      <Text style={styles.planDesc}>{t(plan.descKey)}</Text>
+                      <Text style={styles.planDesc}>Upp till 8 personer i samma cirkel</Text>
                     </View>
                     <View style={styles.priceWrap}>
-                      <Text style={styles.planPrice}>{displayPrice}</Text>
-                      <Text style={styles.planPeriod}>{displayPeriod}</Text>
-                      <Text style={styles.monthlyEq}>{displaySub}</Text>
+                      <Text style={styles.planPrice}>{plan.priceFormatted}</Text>
+                      <Text style={styles.planPeriod}>{plan.periodText}</Text>
+                      <Text style={styles.monthlyEq}>{plan.monthlyEquivalent}</Text>
                     </View>
                   </View>
 
-                  <View style={styles.savingsRow}>
-                    <Text style={styles.savingsIcon}>⚡</Text>
-                    <Text style={styles.savingsText}>
-                      {billingInterval === 'yearly'
-                        ? plan.yearlySavingsText
-                        : `Årsrabatt: ${plan.yearlyPrice} / år (${plan.yearlySavingsText})`}
-                    </Text>
-                  </View>
+                  {plan.savingsText ? (
+                    <View style={styles.savingsRow}>
+                      <Text style={styles.savingsIcon}>⚡</Text>
+                      <Text style={styles.savingsText}>{plan.savingsText}</Text>
+                    </View>
+                  ) : null}
 
                   <View style={styles.radioRow}>
                     <View style={[styles.radioCircle, isSelected && styles.radioCircleSelected]}>
                       {isSelected ? <View style={styles.radioDot} /> : null}
                     </View>
                     <Text style={[styles.radioLabel, isSelected && styles.radioLabelSelected]}>
-                      {isSelected ? t('selectedPlan') : t('tapToSelect')}
+                      {isSelected ? 'Vald period' : 'Tryck för att välja'}
                     </Text>
                   </View>
                 </Pressable>
@@ -303,12 +224,13 @@ export function PaywallModal({
 
           {/* Vad som alltid ingår */}
           <View style={styles.featuresCard}>
-            <SectionTitle>{t('includedFeatures')}</SectionTitle>
+            <SectionTitle>Alltid inkluderat i SafePath</SectionTitle>
+            <FeatureRow icon="👥" title="Plats för 8 personer" desc="Ett enda abonnemang täcker hela familjen eller gruppen." />
             <FeatureRow icon="🛡️" title={t('featurePrivacy')} desc={t('featurePrivacyDesc')} />
             <FeatureRow icon="🤝" title={t('featureNoSpy')} desc={t('featureNoSpyDesc')} />
             <FeatureRow icon="📍" title={t('featureFreeGps')} desc={t('featureFreeGpsDesc')} />
             <FeatureRow icon="⚡" title={t('featureCheckIn')} desc={t('featureCheckInDesc')} />
-            <FeatureRow icon="🚫" title={t('featureNoTrialTrap')} desc={t('featureNoTrialTrapDesc')} />
+            <FeatureRow icon="🚫" title={t('featureNoTrialTrap')} desc="Fast månads- eller årspris. Inga överraskande provperiodsfällor." />
           </View>
 
           {/* Trygghetsgarantier */}
@@ -326,7 +248,9 @@ export function PaywallModal({
             label={
               isPurchasing
                 ? 'Bearbetar köp...'
-                : `Prenumerera på ${t(currentPlan.titleKey)} (${currentPrice} / ${currentPeriod})`
+                : selectedPlan === 'yearly'
+                ? 'Starta SafePath Årsvis ($29 / år)'
+                : 'Starta SafePath Månadsvis ($4.99 / mån)'
             }
             onPress={handlePurchase}
             disabled={isPurchasing}
@@ -351,7 +275,7 @@ export function PaywallModal({
 
           <View style={styles.betaInfoBox}>
             <Text style={styles.betaInfoText}>
-              🧪 TestFlight Sandbox: In-App Purchases är kopplade via StoreKit och Superwall ({targetProductId}). I TestFlight genomförs provköp säkert utan debitering mot ditt Apple-ID.
+              🧪 TestFlight Sandbox: In-App Purchases är kopplade via StoreKit och Superwall ({currentPlan.storeProductId}). I TestFlight genomförs provköp säkert utan debitering mot ditt Apple-ID.
             </Text>
           </View>
 
@@ -422,38 +346,6 @@ const styles = StyleSheet.create({
   heroBadgeIcon: { fontSize: 13 },
   heroBadgeText: { fontSize: 12, fontWeight: '700', color: colors.primary },
   heroSub: { color: colors.inkSoft, marginTop: -space(0.5) },
-  intervalToggleWrap: {
-    flexDirection: 'row',
-    backgroundColor: '#eaf4f0',
-    borderRadius: radius.pill,
-    padding: 3,
-    borderWidth: 1,
-    borderColor: '#cce5dc',
-  },
-  intervalTab: {
-    flex: 1,
-    paddingVertical: space(2),
-    borderRadius: radius.pill,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  intervalTabActive: {
-    backgroundColor: colors.surface,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  intervalTabText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: colors.inkSoft,
-  },
-  intervalTabTextActive: {
-    color: colors.primary,
-    fontWeight: '800',
-  },
   planList: { gap: space(3) },
   planCard: {
     backgroundColor: colors.surface,
