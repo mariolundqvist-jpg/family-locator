@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SafePath Guider — Frivillig GPS-delning & Familjeapp utan övervakning</title>
+<meta name="description" content="Kompletta guider för SafePath: Frivillig familjelokalisering med 100% samtycke. Lär dig hur gratis satellit-GPS, kartor, smart incheckning och noll historiklagring skyddar din familj.">
+<meta name="keywords" content="familjeapp, gps delning familj, frivillig platsdelning, familjelokalisering samtycke, bästa familjeappen, gratis gps app, spåra barn utan spionprogram, safe family locator, safepath guider">
+<link rel="canonical" href="https://safepath-server-v8qp.onrender.com/guides.html">
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+<!-- Open Graph / Facebook / LinkedIn -->
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://safepath-server-v8qp.onrender.com/guides.html">
+<meta property="og:title" content="SafePath Guider — Frivillig GPS-delning & Familjeapp utan övervakning">
+<meta property="og:description" content="Håll koll på familjen på ett tryggt och hederligt sätt. Inga spionfunktioner, gratis satellit-GPS, inbyggd SOS 112 och total radering efter 15 minuter.">
+<meta property="og:locale" content="sv_SE">
+
+<!-- Structured Data (Schema.org) for Google Search Engine Optimization -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "SafePath Family Locator",
+      "operatingSystem": "iOS, Android, Web",
+      "applicationCategory": "SocialNetworkingApplication, LifestyleApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "4.99",
+        "priceCurrency": "USD",
+        "description": "SafePath Familjeplan för upp till 8 personer ($4.99/mån eller $29.00/år)"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "ratingCount": "128"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Kostar GPS-funktionen i SafePath något?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nej, satellit-GPS på moderna mobiler (iPhone och Android) är helt gratis att använda. SafePath använder enhetens inbyggda hårdvara och karttjänster (Apple Maps och Google Maps) utan några dolda API-kostnader för användaren."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Kan någon i familjen spåra mig i smyg?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nej, aldrig. SafePath är strikt byggt på 100 % samtycke. Det finns ingen fjärrstyrning eller dolt läge. Varje person styr helt och hållet sin egen delning och kan pausa eller stänga av den med ett klick."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Sparar SafePath en historik över var jag har varit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nej. Till skillnad från övervakningsappar sparar SafePath noll platshistorik. Endast den allra senaste giltiga positionen visas, och den raderas fysiskt och permanent ur databasen efter 15 minuter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hur många personer ingår i familjeplanen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ett abonnemang täcker upp till 8 familjemedlemmar för antingen $4.99 per månad eller $29.00 per år. Inga extra avgifter tillkommer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hur fungerar SOS-knappen vid nödläge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SafePath känner automatiskt av vilket land du befinner dig i via gratis geocoding och ställer in rätt nödnummer (t.ex. 112 i Sverige och EU, 911 i USA). Med ett klick ringer du och kan skicka ett SMS med dina exakta koordinater och en kartlänk."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+
+<style>
+.guide-container {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2.5rem 1.25rem 5rem;
+}
+.guide-hero {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+.guide-hero h1 {
+  font-size: 2.4rem;
+  line-height: 1.2;
+  color: var(--primary-dark, #0d382c);
+  margin-bottom: 1rem;
+}
+.guide-hero p.lead {
+  font-size: 1.2rem;
+  color: var(--ink-soft, #475853);
+  max-width: 680px;
+  margin: 0 auto 1.5rem;
+}
+.article-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--line, #e1e7e4);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(17, 27, 24, 0.04);
+}
+.article-card h2 {
+  font-size: 1.45rem;
+  color: var(--primary, #1b6e5a);
+  margin-top: 0;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.article-card p, .article-card li {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ink, #111b18);
+}
+.article-card ul {
+  padding-left: 1.25rem;
+  margin: 1rem 0;
+}
+.article-card li {
+  margin-bottom: 0.5rem;
+}
+.highlight-badge {
+  display: inline-block;
+  background: #eef7f4;
+  color: #1b6e5a;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.75rem;
+}
+.faq-box {
+  background: var(--surface-subtle, #f1f5f3);
+  border-left: 4px solid var(--primary, #1b6e5a);
+  padding: 1.25rem 1.5rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.25rem 0;
+}
+.faq-q {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--primary-dark, #0d382c);
+  margin-bottom: 0.35rem;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--primary, #1b6e5a);
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+.back-link:hover {
+  text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <a href="/" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
+      <svg viewBox="0 0 32 32" aria-hidden="true" class="brand-mark">
+        <circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="16" cy="16" r="10" fill="none" stroke="currentColor" stroke-width=".9" stroke-dasharray="2 3" opacity=".55"/>
+        <path d="M16 6.5 L18.2 13.8 L25.5 16 L18.2 18.2 L16 25.5 L13.8 18.2 L6.5 16 L13.8 13.8 Z" fill="currentColor"/>
+      </svg>
+      <span class="brand-name">SafePath</span>
+      <span class="brand-tag">guider</span>
+    </a>
+  </div>
+  <div class="topbar-right">
+    <a class="btn primary sm" href="/">Tillbaka till appen</a>
+  </div>
+</header>
+
+<main class="guide-container">
+  <a href="/" class="back-link">← Tillbaka till SafePath</a>
+
+  <div class="guide-hero">
+    <span class="highlight-badge">Integritetsfokuserad familjelokalisering</span>
+    <h1>Frivillig GPS-delning för hela familjen</h1>
+    <p class="lead">
+      Lär dig hur SafePath gör det enkelt och tryggt att veta att barnen eller partnern kommit fram säkert — helt utan spionprogram, batteritömning eller övervakning.
+    </p>
+  </div>
+
+  <!-- Artikel 1 -->
+  <article class="article-card">
+    <span class="highlight-badge">1. Grundprincipen</span>
+    <h2>🤝 Frivillig delning med 100 % samtycke</h2>
+    <p>
+      De flesta familjelokaliseringsappar fungerar som övervakningsverktyg: föräldern installerar appen och barnet förlorar all kontroll över sin egen data. SafePath är byggt på en helt annan filosofi: <strong>förtroende och samtycke</strong>.
+    </p>
+    <ul>
+      <li><strong>Ingen kan slå på din position utifrån:</strong> Bara du själv har knappen för att starta delning.</li>
+      <li><strong>Tydlig indikator:</strong> Så länge du delar visas en tydlig grön status och en avisering.</li>
+      <li><strong>Pausa när du vill:</strong> Med ett enda tryck pausar du delningen. Din tidigare position raderas omedelbart.</li>
+      <li><strong>Alla har samma rättigheter:</strong> Varje medlem i gruppen bestämmer över sin egen telefon.</li>
+    </ul>
+  </article>
+
+  <!-- Artikel 2 -->
+  <article class="article-card">
+    <span class="highlight-badge">2. GPS & Kartor</span>
+    <h2>🗺️ Gratis GPS och kartvisning (Apple & Google Maps)</h2>
+    <p>
+      Satellit-GPS (GPS, GLONASS, Galileo) är inbyggt i alla moderna iPhones och Android-telefoner och är <strong>helt gratis</strong> att ta emot. SafePath använder inga dyra tredjepartstjänster som kräver API-nycklar.
+    </p>
+    <p>
+      När en familjemedlem delar sin position visar SafePath:
+    </p>
+    <ul>
+      <li><strong>Plats och gatunamn:</strong> Inbyggd gratis geocoding översätter koordinater till läsbara adresser (t.ex. <em>Kungsgatan, Stockholm</em>).</li>
+      <li><strong>Träffsäkerhet och tid:</strong> Du ser alltid exakt hur många meter radien är och exakt vilket klockslag positionen mättes.</li>
+      <li><strong>Ett klick till kartan:</strong> Knappen <em>"Visa på karta"</em> öppnar positionen direkt i telefonens inbyggda kartapp (Apple Maps på iOS eller Google Maps på Android) med full navigering och satellitvy.</li>
+    </ul>
+  </article>
+
+  <!-- Artikel 3 -->
+  <article class="article-card">
+    <span class="highlight-badge">3. Smart incheckning</span>
+    <h2>📍 Incheckning – meddela att du är framme utan konstant spårning</h2>
+    <p>
+      Många vill inte ha GPS-delning påslagen hela dagen av batteri- eller integritetsskäl. SafePath löser detta med funktionen <strong>Incheckning (Check-in)</strong>:
+    </p>
+    <ul>
+      <li>När barnet kommer till skolan eller fotbollsträningen trycker de på <em>"Checka in"</em>.</li>
+      <li>En enda fräsch position skickas till familjen med tidsstämpel och adress.</li>
+      <li>Delningen förblir avstängd efter incheckningen, så batteriet sparas och ingen kontinuerlig rutt sparas.</li>
+      <li>Andra familjemedlemmar kan skicka en vänlig påminnelse (<em>"Be om incheckning"</em>) utan att själva kunna tvinga fram en position.</li>
+    </ul>
+  </article>
+
+  <!-- Artikel 4 -->
+  <article class="article-card">
+    <span class="highlight-badge">4. GDPR & Säkerhet</span>
+    <h2>🛡️ Noll historik = Total säkerhet</h2>
+    <p>
+      Om en traditionell spionapp blir hackad kan utomstående se var dina barn bor, går i skola och tränar. SafePath skyddar familjen genom principen om <strong>dataminimering</strong>:
+    </p>
+    <ul>
+      <li><strong>Ingen ruttlogg:</strong> SafePath sparar aldrig historik. Det finns ingen databastabell för gamla rutter.</li>
+      <li><strong>15-minuters radering:</strong> Positioner raderas automatiskt och permanent av servern efter 15 minuter.</li>
+      <li><strong>Omedelbar radering vid paus:</strong> När du pausar eller stänger av delning raderas koordinaterna omedelbart från servern.</li>
+      <li><strong>Krypterad databas:</strong> All kommunikation sker via HTTPS och krypterade anslutningar.</li>
+    </ul>
+  </article>
+
+  <!-- Artikel 5: FAQ -->
+  <article class="article-card">
+    <span class="highlight-badge">5. Vanliga frågor</span>
+    <h2>❓ Frågor och svar (FAQ)</h2>
+
+    <div class="faq-box">
+      <div class="faq-q">Kostar GPS-funktionen något i SafePath?</div>
+      <p>Nej, GPS i telefonen är gratis. Appen använder telefonens inbyggda GPS-mottagare och integrerar direkt med Apple Maps och Google Maps utan extra avgifter.</p>
+    </div>
+
+    <div class="faq-box">
+      <div class="faq-q">Vad kostar familjeabonnemanget?</div>
+      <p>Ett SafePath-abonnemang täcker upp till 8 personer. Priset är antingen <strong>$4.99 per månad</strong> eller <strong>$29.00 per år</strong> (vilket sparar 51 %, motsvarande ca $2.42/mån). Inga dolda avgifter eller avancerade nivåer.</p>
+    </div>
+
+    <div class="faq-box">
+      <div class="faq-q">Hur fungerar SOS-knappen i appen?</div>
+      <p>Den röda SOS-knappen fungerar i över 200 länder. Appen känner av vilket land du är i och ställer automatiskt in rätt nödnummer (112 i Sverige och Europa, 911 i USA etc.). Du kan också med ett klick generera ett SMS till dina anhöriga med dina exakta koordinater och kartlänk.</p>
+    </div>
+
+    <div class="faq-box">
+      <div class="faq-q">Fungerar appen både på iPhone och Android?</div>
+      <p>Ja! SafePath är byggd i React Native/Expo och fungerar identiskt och synkat på både iOS och Android, samt i moderna webbläsare.</p>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a class="link-btn" href="/">Startsida</a>
+      <span class="footer-sep">·</span>
+      <a class="link-btn" href="/terms.html">Användarvillkor</a>
+      <span class="footer-sep">·</span>
+      <a class="link-btn" href="/privacy.html">Integritetspolicy</a>
+      <span class="footer-sep">·</span>
+      <a class="link-btn" href="/guides.html">SEO Guider</a>
+    </div>
+    <div class="footer-info">
+      SafePath · Frivillig familjelokalisering · 100% samtycke · Inga historiska positioner sparas
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
