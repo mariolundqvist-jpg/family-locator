@@ -85,14 +85,17 @@ Apple har mycket strikta regler kring appar för barn och föräldrakontroll. Sa
 
 ## 4. Betalvägg och Köp i TestFlight
 
-- **I TestFlight & Sandbox:** Betalväggen stöder StoreKit Sandbox-köp och köpåterställning via Superwall utan verklig debitering mot Apple-ID:t.
+- **I TestFlight & Sandbox:** Betalväggen stöder StoreKit Sandbox-köp och köpåterställning via Superwall utan verklig debitering mot Apple-ID:t. Användaren kan välja mellan månadsvis eller årsvis prenumeration.
 - **Vid skarp App Store-lansering:** Skapa följande auto-förnyande prenumerationer under **In-App Purchases** i App Store Connect:
 
-| Produkt-ID | Nivå | Pris (USD / Tier) | Medlemmar |
+| Produkt-ID | Nivå | Pris (USD / Period) | Medlemmar |
 |---|---|---|---|
-| `small4` | Bas | **$2.99 / år** (Tier 3) | Upp till 4 personer |
-| `medium6` | Plus (Populärast ★) | **$3.99 / år** (Tier 4) | Upp till 6 personer |
-| `large8` | Max | **$4.99 / år** (Tier 5) | Upp till 8 personer |
+| `small4` | Bas (Månadsvis) | **$2.99 / mån** | Upp till 4 personer |
+| `small4_yearly` | Bas (Årsvis) | **$19.00 / år** (spara 47%) | Upp till 4 personer |
+| `medium6` | Plus (Månadsvis, mest populär ★) | **$3.99 / mån** | Upp till 6 personer |
+| `medium6_yearly` | Plus (Årsvis) | **$24.00 / år** (spara 50%) | Upp till 6 personer |
+| `large8` | Max (Månadsvis) | **$4.99 / mån** | Upp till 8 personer |
+| `large8_yearly` | Max (Årsvis) | **$29.00 / år** (spara 51%) | Upp till 8 personer |
 
 ---
 

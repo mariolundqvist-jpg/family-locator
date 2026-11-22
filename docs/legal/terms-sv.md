@@ -64,22 +64,21 @@ Vi behandlar positionsuppgifter enligt vår integritetspolicy. Kort:
 
 ## 6. Prenumeration, priser och betalning
 
-SafePath är en betaltjänst med **auto-förnyande årsprenumeration**. **Det finns ingen
-gratis provperiod** och inga dolda avgifter. Priserna är transparenta och faktureras
-årsvis:
+SafePath är en betaltjänst med **auto-förnyande månads- eller årsprenumeration**. **Det finns ingen
+gratis provperiod** och inga dolda avgifter. Priserna är transparenta:
 
-| Plan | Pris per år | Antal medlemmar | Motsvarar per månad |
+| Plan | Månadspris | Årspris (spara ~50 %) | Antal medlemmar |
 |---|---|---|---|
-| Liten familj / Bas | **2,99 USD / år** | Upp till 4 personer | ca 0,25 USD / mån |
-| Mellanfamilj / Plus | **3,99 USD / år** | Upp till 6 personer | ca 0,33 USD / mån |
-| Stor familj / Max | **4,99 USD / år** | Upp till 8 personer | ca 0,41 USD / mån |
+| Liten familj / Bas | **2,99 USD / mån** | **19 USD / år** (ca 1,58 USD / mån) | Upp till 4 personer |
+| Mellanfamilj / Plus | **3,99 USD / mån** | **24 USD / år** (ca 2,00 USD / mån) | Upp till 6 personer |
+| Stor familj / Max | **4,99 USD / mån** | **29 USD / år** (ca 2,42 USD / mån) | Upp till 8 personer |
 
 - Priserna är **inklusive moms** för konsumenter inom EU där det är tillämpligt.
 - Betalning sker genom den butik du installerade appen från (Apple App Store, Google Play
   eller Huawei AppGallery). Butiken är betalningsmottagare och hanterar din betalmetod. Vi ser inte dina kortuppgifter.
 - Priset som visas i appen hämtas **live från butiken** och kan skilja sig mellan länder
   och lokala valutor. Butikens pris vid köptillfället gäller.
-- Prenumerationen förnyas automatiskt i slutet av varje år till ordinarie pris, om du
+- Prenumerationen förnyas automatiskt i slutet av varje månad eller år till ordinarie pris, om du
   inte säger upp den senast **24 timmar före** periodens slut. Uppsägning görs enkelt i butikens
   prenumerationsinställningar.
 - Vi meddelar i appen och via e-post **minst 30 dagar innan** ett pris höjs. Höjningen

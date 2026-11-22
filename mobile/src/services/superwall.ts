@@ -1,9 +1,14 @@
 import { SuperwallExpoModule } from 'expo-superwall';
 
 export const STORE_PRODUCTS = {
+  // Monthly subscription products ($2.99, $3.99, $4.99)
   small4: 'small4',
   medium6: 'medium6',
   large8: 'large8',
+  // Annual subscription products ($19, $24, $29/year)
+  small4_yearly: 'small4_yearly',
+  medium6_yearly: 'medium6_yearly',
+  large8_yearly: 'large8_yearly',
 } as const;
 
 export const PLAN_TO_STORE_PRODUCT: Record<'small_4' | 'medium_6' | 'large_8', string> = {
@@ -11,6 +16,30 @@ export const PLAN_TO_STORE_PRODUCT: Record<'small_4' | 'medium_6' | 'large_8', s
   medium_6: STORE_PRODUCTS.medium6,
   large_8: STORE_PRODUCTS.large8,
 };
+
+export function getStoreProductId(
+  planId: 'small_4' | 'medium_6' | 'large_8',
+  interval: 'monthly' | 'yearly' = 'monthly'
+): string {
+  if (interval === 'yearly') {
+    switch (planId) {
+      case 'small_4':
+        return STORE_PRODUCTS.small4_yearly;
+      case 'medium_6':
+        return STORE_PRODUCTS.medium6_yearly;
+      case 'large_8':
+        return STORE_PRODUCTS.large8_yearly;
+    }
+  }
+  switch (planId) {
+    case 'small_4':
+      return STORE_PRODUCTS.small4;
+    case 'medium_6':
+      return STORE_PRODUCTS.medium6;
+    case 'large_8':
+      return STORE_PRODUCTS.large8;
+  }
+}
 
 const SUPERWALL_API_KEY = process.env.EXPO_PUBLIC_SUPERWALL_API_KEY ?? '';
 

@@ -10,7 +10,7 @@ services:
     runtime: node
     plan: free
     buildCommand: npm ci --omit=dev
-    startCommand: node server/index.js
+    startCommand: node tools/migrate.mjs && node server/index.js
     envVars:
       - key: NODE_ENV
         value: production

@@ -17,51 +17,62 @@ import { Button, Pill, SectionTitle } from '../ui/components';
 import { colors, radius, space, type } from '../ui/theme';
 
 export type PlanId = 'small_4' | 'medium_6' | 'large_8';
+export type BillingInterval = 'monthly' | 'yearly';
 
 export interface Plan {
   id: PlanId;
-  storeProductId: string;
+  storeProductIdMonthly: string;
+  storeProductIdYearly: string;
   titleKey: 'planSmall' | 'planMedium' | 'planLarge';
   maxMembers: number;
-  priceFormatted: string;
-  monthlyEquivalent: string;
+  monthlyPrice: string;
+  yearlyPrice: string;
+  yearlyMonthlyEquivalent: string;
+  yearlySavingsText: string;
   badgeKey?: 'badgeMostPopular' | 'badgeMaxFreedom';
   badgeTone?: 'positive' | 'gold' | 'neutral';
-  savingsText?: string;
   descKey: 'planSmallDesc' | 'planMediumDesc' | 'planLargeDesc';
 }
 
 export const PLANS: Plan[] = [
   {
     id: 'small_4',
-    storeProductId: 'small4',
+    storeProductIdMonthly: 'small4',
+    storeProductIdYearly: 'small4_yearly',
     titleKey: 'planSmall',
     maxMembers: 4,
-    priceFormatted: '$2.99',
-    monthlyEquivalent: 'ca $0.25 / mån',
+    monthlyPrice: '$2.99',
+    yearlyPrice: '$19.00',
+    yearlyMonthlyEquivalent: 'ca $1.58 / mån vid helår',
+    yearlySavingsText: 'Spara 47% med årsplan',
     descKey: 'planSmallDesc',
   },
   {
     id: 'medium_6',
-    storeProductId: 'medium6',
+    storeProductIdMonthly: 'medium6',
+    storeProductIdYearly: 'medium6_yearly',
     titleKey: 'planMedium',
     maxMembers: 6,
-    priceFormatted: '$3.99',
-    monthlyEquivalent: 'ca $0.33 / mån',
+    monthlyPrice: '$3.99',
+    yearlyPrice: '$24.00',
+    yearlyMonthlyEquivalent: 'ca $2.00 / mån vid helår',
     badgeKey: 'badgeMostPopular',
     badgeTone: 'gold',
-    savingsText: 'Spara över 90% mot månadsprenumerationer',
+    yearlySavingsText: 'Spara 50% med årsplan',
     descKey: 'planMediumDesc',
   },
   {
     id: 'large_8',
-    storeProductId: 'large8',
+    storeProductIdMonthly: 'large8',
+    storeProductIdYearly: 'large8_yearly',
     titleKey: 'planLarge',
     maxMembers: 8,
-    priceFormatted: '$4.99',
-    monthlyEquivalent: 'ca $0.41 / mån',
+    monthlyPrice: '$4.99',
+    yearlyPrice: '$29.00',
+    yearlyMonthlyEquivalent: 'ca $2.42 / mån vid helår',
     badgeKey: 'badgeMaxFreedom',
     badgeTone: 'positive',
+    yearlySavingsText: 'Spara 51% med årsplan ($29 / år)',
     descKey: 'planLargeDesc',
   },
 ];
@@ -77,6 +88,7 @@ export function PaywallModal({
 }) {
   const { t } = useI18n();
   const [selectedPlan, setSelectedPlan] = useState<PlanId>('medium_6');
+  const [billingInterval, setBillingInterval] = useState<BillingInterval>('monthly');
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -88,11 +100,21 @@ export function PaywallModal({
   }, [visible]);
 
   const currentPlan = PLANS.find((p) => p.id === selectedPlan) ?? PLANS[1];
+  const targetProductId =
+    billingInterval === 'yearly'
+      ? currentPlan.storeProductIdYearly
+      : currentPlan.storeProductIdMonthly;
+  const currentPrice =
+    billingInterval === 'yearly'
+      ? currentPlan.yearlyPrice
+      : currentPlan.monthlyPrice;
+  const currentPeriod =
+    billingInterval === 'yearly' ? t('perYear') : (t('perMonth') || 'per månad');
 
   const handlePurchase = async () => {
     setIsPurchasing(true);
     try {
-      const res = await purchaseStoreProduct(currentPlan.storeProductId);
+      const res = await purchaseStoreProduct(targetProductId);
       if (res && res.type === 'purchased') {
         Alert.alert('Prenumeration aktiverad', 'Ditt köp har genomförts. Tack för ditt stöd!', [
           {
@@ -111,7 +133,7 @@ export function PaywallModal({
         // Sandlåda / TestFlight-återkoppling vid testbygge
         Alert.alert(
           'Köp genomfört (TestFlight)',
-          `Prenumeration på ${t(currentPlan.titleKey)} (${currentPlan.storeProductId}, ${currentPlan.priceFormatted}/${t('perYear')}) har aktiverats i testläget utan debitering.`,
+          `Prenumeration på ${t(currentPlan.titleKey)} (${targetProductId}, ${currentPrice}/${currentPeriod}) har aktiverats i testläget utan debitering.`,
           [
             {
               text: 'OK',
@@ -174,12 +196,57 @@ export function PaywallModal({
             <Text style={[type.body, styles.heroSub]}>{t('paywallHeroDesc')}</Text>
           </View>
 
+          {/* Välj intervall: Månad eller År */}
+          <View style={styles.intervalToggleWrap}>
+            <Pressable
+              style={[
+                styles.intervalTab,
+                billingInterval === 'monthly' && styles.intervalTabActive,
+              ]}
+              onPress={() => setBillingInterval('monthly')}
+            >
+              <Text
+                style={[
+                  styles.intervalTabText,
+                  billingInterval === 'monthly' && styles.intervalTabTextActive,
+                ]}
+              >
+                Månadsvis
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.intervalTab,
+                billingInterval === 'yearly' && styles.intervalTabActive,
+              ]}
+              onPress={() => setBillingInterval('yearly')}
+            >
+              <Text
+                style={[
+                  styles.intervalTabText,
+                  billingInterval === 'yearly' && styles.intervalTabTextActive,
+                ]}
+              >
+                Årsvis · Spara upp till 51% ⚡
+              </Text>
+            </Pressable>
+          </View>
+
           {/* Välj plan */}
           <SectionTitle>{t('choosePlanTitle')}</SectionTitle>
           <View style={styles.planList}>
             {PLANS.map((plan) => {
               const isSelected = selectedPlan === plan.id;
               const isPopular = plan.id === 'medium_6';
+              const displayPrice =
+                billingInterval === 'yearly' ? plan.yearlyPrice : plan.monthlyPrice;
+              const displayPeriod =
+                billingInterval === 'yearly' ? t('perYear') : (t('perMonth') || 'per månad');
+              const displaySub =
+                billingInterval === 'yearly'
+                  ? plan.yearlyMonthlyEquivalent
+                  : `eller ${plan.yearlyPrice}/år (${plan.yearlySavingsText})`;
+
               return (
                 <Pressable
                   key={plan.id}
@@ -206,18 +273,20 @@ export function PaywallModal({
                       <Text style={styles.planDesc}>{t(plan.descKey)}</Text>
                     </View>
                     <View style={styles.priceWrap}>
-                      <Text style={styles.planPrice}>{plan.priceFormatted}</Text>
-                      <Text style={styles.planPeriod}>{t('perYear')}</Text>
-                      <Text style={styles.monthlyEq}>{plan.monthlyEquivalent}</Text>
+                      <Text style={styles.planPrice}>{displayPrice}</Text>
+                      <Text style={styles.planPeriod}>{displayPeriod}</Text>
+                      <Text style={styles.monthlyEq}>{displaySub}</Text>
                     </View>
                   </View>
 
-                  {plan.savingsText ? (
-                    <View style={styles.savingsRow}>
-                      <Text style={styles.savingsIcon}>⚡</Text>
-                      <Text style={styles.savingsText}>{plan.savingsText}</Text>
-                    </View>
-                  ) : null}
+                  <View style={styles.savingsRow}>
+                    <Text style={styles.savingsIcon}>⚡</Text>
+                    <Text style={styles.savingsText}>
+                      {billingInterval === 'yearly'
+                        ? plan.yearlySavingsText
+                        : `Årsrabatt: ${plan.yearlyPrice} / år (${plan.yearlySavingsText})`}
+                    </Text>
+                  </View>
 
                   <View style={styles.radioRow}>
                     <View style={[styles.radioCircle, isSelected && styles.radioCircleSelected]}>
@@ -257,7 +326,7 @@ export function PaywallModal({
             label={
               isPurchasing
                 ? 'Bearbetar köp...'
-                : `Prenumerera på ${t(currentPlan.titleKey)} (${currentPlan.priceFormatted}/${t('perYear')})`
+                : `Prenumerera på ${t(currentPlan.titleKey)} (${currentPrice} / ${currentPeriod})`
             }
             onPress={handlePurchase}
             disabled={isPurchasing}
@@ -282,7 +351,7 @@ export function PaywallModal({
 
           <View style={styles.betaInfoBox}>
             <Text style={styles.betaInfoText}>
-              🧪 TestFlight Sandbox: In-App Purchases är kopplade via StoreKit och Superwall ({currentPlan.storeProductId}). I TestFlight genomförs provköp säkert utan debitering mot ditt Apple-ID.
+              🧪 TestFlight Sandbox: In-App Purchases är kopplade via StoreKit och Superwall ({targetProductId}). I TestFlight genomförs provköp säkert utan debitering mot ditt Apple-ID.
             </Text>
           </View>
 
@@ -353,6 +422,38 @@ const styles = StyleSheet.create({
   heroBadgeIcon: { fontSize: 13 },
   heroBadgeText: { fontSize: 12, fontWeight: '700', color: colors.primary },
   heroSub: { color: colors.inkSoft, marginTop: -space(0.5) },
+  intervalToggleWrap: {
+    flexDirection: 'row',
+    backgroundColor: '#eaf4f0',
+    borderRadius: radius.pill,
+    padding: 3,
+    borderWidth: 1,
+    borderColor: '#cce5dc',
+  },
+  intervalTab: {
+    flex: 1,
+    paddingVertical: space(2),
+    borderRadius: radius.pill,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  intervalTabActive: {
+    backgroundColor: colors.surface,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.08,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  intervalTabText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.inkSoft,
+  },
+  intervalTabTextActive: {
+    color: colors.primary,
+    fontWeight: '800',
+  },
   planList: { gap: space(3) },
   planCard: {
     backgroundColor: colors.surface,
