@@ -1,5 +1,6 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as Location from 'expo-location';
+import React, { useEffect, useState } from 'react';
+import { Linking, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { MemberView } from '../api';
 import {
@@ -42,6 +43,44 @@ export function PositionCard({
   const band = member.location ? accuracyBand(member.location.accuracyM) : 'low';
   const initial = (member.displayName || '?').charAt(0).toUpperCase();
 
+  const [placeName, setPlaceName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!presence.showCoordinates || !member.location) {
+      setPlaceName(null);
+      return;
+    }
+
+    let isMounted = true;
+    const lat = member.location.lat;
+    const lng = member.location.lng;
+
+    Location.reverseGeocodeAsync({ latitude: lat, longitude: lng })
+      .then((results) => {
+        if (!isMounted || !results || results.length === 0) return;
+        const item = results[0];
+        const parts: string[] = [];
+        if (item?.street) {
+          parts.push(item.streetNumber ? `${item.street} ${item.streetNumber}` : item.street);
+        } else if (item?.district) {
+          parts.push(item.district);
+        }
+        if (item?.city || item?.subregion) {
+          parts.push(item.city || item.subregion || '');
+        }
+        if (parts.length > 0) {
+          setPlaceName(parts.filter(Boolean).join(', '));
+        }
+      })
+      .catch(() => {
+        // Reverse geocoding failed or offline
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [presence.showCoordinates, member.location?.lat, member.location?.lng]);
+
   return (
     <View style={[styles.card, compact && styles.cardCompact]} testID={`position-${member.displayName}`}>
       <View style={styles.head}>
@@ -82,6 +121,14 @@ export function PositionCard({
 
       {presence.showCoordinates && member.location ? (
         <View style={styles.facts}>
+          {placeName ? (
+            <Fact label="Plats" value={placeName} />
+          ) : (
+            <Fact
+              label="Position"
+              value={`${member.location.lat.toFixed(4)}, ${member.location.lng.toFixed(4)}`}
+            />
+          )}
           <Fact label="Mätt" value={formatTimestamp(member.location.capturedAt, { timeZone })} />
           <Fact
             label="Träffsäkerhet"
@@ -97,6 +144,13 @@ export function PositionCard({
                   : 'Medan appen är öppen'
             }
           />
+          <Pressable
+            style={styles.mapButton}
+            onPress={() => openMap(member.location!.lat, member.location!.lng, member.displayName)}
+            testID={`open-map-${member.displayName}`}
+          >
+            <Text style={styles.mapButtonText}>🗺️ Visa på karta</Text>
+          </Pressable>
         </View>
       ) : null}
 
@@ -107,6 +161,17 @@ export function PositionCard({
       ) : null}
     </View>
   );
+}
+
+function openMap(lat: number, lng: number, label?: string) {
+  const encLabel = encodeURIComponent(label || 'Position');
+  const url = Platform.OS === 'ios'
+    ? `https://maps.apple.com/?ll=${lat},${lng}&q=${encLabel}`
+    : `https://maps.google.com/?q=${lat},${lng}`;
+
+  Linking.openURL(url).catch((err) => {
+    console.warn('[map] Could not open maps URL', err);
+  });
 }
 
 function Fact({ label, value }: { label: string; value: string }) {
@@ -182,4 +247,18 @@ const styles = StyleSheet.create({
   },
   fact: { flexDirection: 'row', justifyContent: 'space-between', gap: space(2) },
   factLabel: { ...type.faint, textTransform: 'uppercase', letterSpacing: 0.6, fontWeight: '600' },
+  mapButton: {
+    marginTop: space(1),
+    backgroundColor: colors.primary,
+    paddingVertical: space(2.5),
+    paddingHorizontal: space(3),
+    borderRadius: radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mapButtonText: {
+    color: '#ffffff',
+    fontWeight: '700',
+    fontSize: 13,
+  },
 });

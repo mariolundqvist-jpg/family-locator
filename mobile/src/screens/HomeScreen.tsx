@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { EmergencyButton, EmergencyModal } from './EmergencyModal';
+import { GuidesModal } from './GuidesModal';
 import { LegalDocType, LegalModal } from './LegalScreen';
 import { PaywallModal } from './PaywallScreen';
 import * as api from '../api';
@@ -24,6 +25,7 @@ export function HomeScreen() {
   const [error, setError] = useState<string | null>(null);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showEmergency, setShowEmergency] = useState(false);
+  const [showGuides, setShowGuides] = useState(false);
   const [legalDoc, setLegalDoc] = useState<LegalDocType>(null);
   const [showLangPicker, setShowLangPicker] = useState(false);
 
@@ -133,6 +135,10 @@ export function HomeScreen() {
       <Button label={t('signOut')} onPress={() => void signOut()} variant="quiet" />
 
       <View style={styles.legalRow}>
+        <Pressable onPress={() => setShowGuides(true)}>
+          <Text style={styles.legalLink}>📖 Guider & Hjälp</Text>
+        </Pressable>
+        <Text style={styles.legalSep}>·</Text>
         <Pressable onPress={() => setLegalDoc('terms')}>
           <Text style={styles.legalLink}>{t('termsTitle')}</Text>
         </Pressable>
@@ -145,6 +151,7 @@ export function HomeScreen() {
       <PaywallModal visible={showPaywall} onClose={() => setShowPaywall(false)} />
       <LegalModal visible={!!legalDoc} type={legalDoc} onClose={() => setLegalDoc(null)} />
       <EmergencyModal visible={showEmergency} onClose={() => setShowEmergency(false)} />
+      <GuidesModal visible={showGuides} onClose={() => setShowGuides(false)} />
       <LanguagePickerModal visible={showLangPicker} onClose={() => setShowLangPicker(false)} />
     </ScrollView>
   );

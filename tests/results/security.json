@@ -1,7 +1,7 @@
 {
   "kind": "api-security",
   "backend": "json",
-  "generatedAt": "2026-11-22T09:38:04.865Z",
+  "generatedAt": "2026-11-22T14:49:12.065Z",
   "total": 81,
   "passed": 81,
   "failed": 0,
@@ -74,7 +74,7 @@
       "section": "Authentication and sessions",
       "name": "One-time code signs a user in",
       "pass": true,
-      "detail": "user e5efd85b…"
+      "detail": "user 0c860b1d…"
     },
     {
       "section": "Authentication and sessions",
@@ -146,7 +146,7 @@
       "section": "Group creation and membership",
       "name": "Owner creates a group",
       "pass": true,
-      "detail": "family 0b954fc6…"
+      "detail": "family e9bc2f91…"
     },
     {
       "section": "Group creation and membership",
@@ -194,7 +194,7 @@
       "section": "Invitations",
       "name": "Invitee accepts and joins",
       "pass": true,
-      "detail": "member 8293e4d0…"
+      "detail": "member 1c1ab7ab…"
     },
     {
       "section": "Invitations",
@@ -440,7 +440,7 @@
       "section": "Account deletion",
       "name": "Deletion removes the user record",
       "pass": true,
-      "detail": "users[9299b722] present=false"
+      "detail": "users[6b2af14e] present=false"
     },
     {
       "section": "Account deletion",

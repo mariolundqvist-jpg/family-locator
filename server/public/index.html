@@ -1,13 +1,22 @@
 <!doctype html>
-<html lang="en-GB">
+<html lang="sv">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>SafePath — family locator prototype</title>
-<meta name="description" content="A consent-first family location prototype. Every person controls their own sharing.">
+<title>SafePath — Frivillig GPS-delning & Familjeapp med 100% samtycke</title>
+<meta name="description" content="SafePath är familjeappen för frivillig GPS-delning med fullt samtycke. Inga spionfunktioner, noll sparad historik, gratis satellit-GPS och inbyggt SOS 112 för upp till 8 personer.">
+<meta name="keywords" content="familjeapp, gps spårning familj, dela position frivilligt, samtycke gps, familjelokalisering, safepath, barn och föräldrar gps, ingen övervakning, gratis gps">
+<link rel="canonical" href="https://safepath-server-v8qp.onrender.com/">
 <link rel="stylesheet" href="/styles.css">
 <link rel="icon" href="/icon.svg" type="image/svg+xml">
+
+<!-- Open Graph / SEO -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://safepath-server-v8qp.onrender.com/">
+<meta property="og:title" content="SafePath — Frivillig GPS-delning & Familjeapp med 100% samtycke">
+<meta property="og:description" content="SafePath är familjeappen för frivillig GPS-delning med fullt samtycke. Inga spionfunktioner, noll sparad historik, gratis satellit-GPS och inbyggt SOS 112 för upp till 8 personer.">
+<meta property="og:locale" content="sv_SE">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -24,6 +33,7 @@
   </div>
   <div class="topbar-right">
     <button class="btn danger sm" id="emergency-btn" type="button" style="display: inline-flex; align-items: center; gap: 4px;">🚨 SOS 112</button>
+    <a class="btn ghost sm" href="/guides.html" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📖 Guider & SEO</a>
     <a class="btn secondary sm" href="/screens.html" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📱 App-skärmar</a>
     <button class="btn ghost sm" id="pricing-btn" type="button">Priser & Planer</button>
     <span class="env-chip" id="env-chip" hidden></span>
@@ -233,6 +243,8 @@
   <div class="footer-inner">
     <div class="footer-links">
       <button class="link-btn" id="footer-emergency-btn" type="button" style="color: var(--red); font-weight: 700;">🚨 SOS (Nödläge & 112)</button>
+      <span class="footer-sep">·</span>
+      <a class="link-btn" href="/guides.html" style="text-decoration: none;">📖 Guider & FAQ (Google SEO)</a>
       <span class="footer-sep">·</span>
       <button class="link-btn" id="legal-terms-btn" type="button">Användarvillkor (Terms)</button>
       <span class="footer-sep">·</span>
