@@ -34,7 +34,7 @@
             "deploymentTarget": "15.1"
           },
           "android": {
-            "compileSdkVersion": 35,
+            "compileSdkVersion": 37,
             "targetSdkVersion": 35,
             "minSdkVersion": 24
           }
@@ -44,7 +44,7 @@
     ],
     "android": {
       "package": "app.safepath.client",
-      "versionCode": 2,
+      "versionCode": 3,
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
