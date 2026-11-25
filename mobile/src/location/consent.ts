@@ -13,6 +13,7 @@
  * button the person pressed, after copy that explains what will be shared.
  */
 import * as Location from 'expo-location';
+import { Alert } from 'react-native';
 
 import { grantConsent } from '../api';
 
@@ -47,11 +48,27 @@ export type ConsentResult =
   | { ok: true; state: ConsentState }
   | { ok: false; step: 'foreground' | 'background'; reason: 'denied' | 'cannot_ask_again' | 'inconsistent' };
 
+/** Explain optional background collection before the first OS location prompt. */
+function confirmLocationDisclosure(): Promise<boolean> {
+  return new Promise((resolve) => {
+    Alert.alert(
+      'Så använder SafePath din position',
+      'SafePath samlar in din position för att dela den med medlemmarna i din valda grupp och för incheckning. Om du senare aktiverar bakgrundsdelning samlar SafePath in position även när appen är stängd eller inte används. Bakgrundsdelning är frivillig och kan stängas av.',
+      [
+        { text: 'Inte nu', style: 'cancel', onPress: () => resolve(false) },
+        { text: 'Fortsätt', onPress: () => resolve(true) },
+      ],
+      { cancelable: true, onDismiss: () => resolve(false) },
+    );
+  });
+}
+
 /** Step 1 — used when the person taps "Share my position". */
 export async function askForeground(): Promise<ConsentResult> {
   const current = await Location.getForegroundPermissionsAsync();
   let status = current.status;
   if (status === 'undetermined') {
+    if (!(await confirmLocationDisclosure())) return { ok: false, step: 'foreground', reason: 'denied' };
     status = (await Location.requestForegroundPermissionsAsync()).status;
   }
   if (status !== 'granted') {

@@ -24,7 +24,7 @@ Under **Innehåll i appen** (App content) i vänstermenyn fyller du i följande:
 - **URL:** `https://safepath-server-v8qp.onrender.com/privacy.html`
 
 ### Åtkomst till appen (App Access)
-- Välj: *Alla funktioner är tillgängliga utan särskild åtkomst* (eller ange testkonto med e-post och en engångskod).
+- Inloggning kräver en giltig e-postadress och engångskod. Ange en fungerande granskningsväg i Play Console och kontrollera e-postleveransen; välj inte att all åtkomst är öppen utan att verifiera det.
 
 ### Annonser (Ads)
 - Välj: *Nej, min app innehåller inte annonser*.
@@ -38,7 +38,7 @@ Google Play ställer frågor om bakgrundsplats och `FOREGROUND_SERVICE_LOCATION`
 - **Deklaration:** Appen visar en persistent notifikation så länge delning är aktiv, användaren kan när som helst pausa delningen, och inga historiska positioner sparas (raderas automatiskt efter 15 minuter).
 
 ### Radering av konto (Account Deletion)
-- Ange att användare kan radera sitt konto direkt inuti appen samt via webben (`https://safepath-server-v8qp.onrender.com/`).
+- Konto kan raderas i appen. Extern begäran beskrivs på integritetspolicyn under `#delete-account`. Kontrollera att sidan är publikt åtkomlig och att supportadressen bemannas innan URL:en anges i Play Console.
 
 ---
 
@@ -90,4 +90,4 @@ När den första AAB-filen är uppladdad har Google registrerat paket-ID:t `app.
 | **`yearly`** | SafePath Family Yearly | 1 år | $29.00 |
 
 3. Aktivera basplanerna (Base plans) för båda produkterna.
-4. Klart! Nu fungerar köp och förnyelser automatiskt i appen på Android.
+4. Detta räcker inte för att aktivera köp: köpflödet är avstängt tills produktpriser, SDK, rättigheter och riktiga testköp har verifierats.

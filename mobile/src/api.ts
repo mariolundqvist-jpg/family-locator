@@ -118,11 +118,15 @@ async function request<T>(path: string, init: RequestInit = {}): Promise<T> {
   };
 
   let res: Response;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
   try {
-    res = await fetch(`${API_BASE}${path}`, { ...init, headers });
+    res = await fetch(`${API_BASE}${path}`, { ...init, headers, signal: controller.signal });
   } catch (err) {
     // Network failure: retryable, and carries no coordinate.
     throw new ApiError('Could not reach SafePath. Check your connection.', 0, 'network');
+  } finally {
+    clearTimeout(timeout);
   }
 
   const text = await res.text();

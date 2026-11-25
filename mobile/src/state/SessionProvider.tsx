@@ -33,6 +33,7 @@ type SessionValue = {
   signIn: (email: string, code: string, displayName?: string) => Promise<void>;
   signOut: () => Promise<void>;
   refresh: () => Promise<void>;
+  retryStartup: () => Promise<void>;
   selectFamily: (familyId: string) => Promise<void>;
   setSharing: (state: SharingState) => Promise<void>;
   applyConsent: (foreground: boolean, background: boolean) => Promise<void>;
@@ -117,21 +118,23 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }
   }, [loadFamily]);
 
-  // Boot: restore a session if the keychain still has one.
-  useEffect(() => {
-    (async () => {
+  // Never leave the startup spinner running after a storage/native failure.
+  const retryStartup = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
       const ctrl = await getController();
-      // Reconcile the watcher with whatever was persisted, then verify online.
       await ctrl.setContext({});
       const token = await api.loadToken();
-      if (!token) {
-        setLoading(false);
-        return;
-      }
-      await refresh();
+      if (token) await refresh();
+    } catch {
+      setError('SafePath kunde inte starta. Kontrollera anslutningen och försök igen.');
+    } finally {
       setLoading(false);
-    })();
+    }
   }, [refresh]);
+
+  useEffect(() => { void retryStartup(); }, [retryStartup]);
 
   // Coming back to the foreground is a chance to flush what queued while away
   // and to learn about a removal that happened in the meantime.
@@ -231,6 +234,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       signIn,
       signOut,
       refresh,
+      retryStartup,
       selectFamily,
       setSharing,
       applyConsent,
@@ -247,6 +251,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
       signIn,
       signOut,
       refresh,
+      retryStartup,
       selectFamily,
       setSharing,
       applyConsent,
