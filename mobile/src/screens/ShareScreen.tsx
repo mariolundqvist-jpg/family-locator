@@ -101,6 +101,17 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
     });
   }
 
+  function confirmBackgroundDisclosure() {
+    Alert.alert(
+      'Platsdelning i bakgrunden',
+      'SafePath samlar in din position för att dela den med medlemmarna i din valda grupp även när appen är stängd eller inte används, om du har aktiverat bakgrundsdelning. Du kan pausa eller stänga av delningen när som helst.',
+      [
+        { text: 'Inte nu', style: 'cancel' },
+        { text: 'Jag godkänner', onPress: () => void enableBackground() },
+      ],
+    );
+  }
+
   async function enableBackground() {
     await withBusy('background', async () => {
       const result = await askBackground();
@@ -324,7 +335,7 @@ export function ShareScreen({ onOpenGroup }: { onOpenGroup: () => void }) {
             <Banner tone="caution" title="Läs det här">
               <Text style={type.small}>{CONSENT_COPY.background.warning}</Text>
             </Banner>
-            <Button label="Fortsätt" onPress={enableBackground} busy={busy === 'background'} testID="confirm-background" />
+            <Button label="Fortsätt" onPress={confirmBackgroundDisclosure} busy={busy === 'background'} testID="confirm-background" />
             <Button label="Inte nu" onPress={() => setShowBackgroundCopy(false)} variant="quiet" />
           </>
         ) : (

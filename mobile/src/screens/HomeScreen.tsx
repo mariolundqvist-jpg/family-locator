@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { EmergencyButton, EmergencyModal } from './EmergencyModal';
 import { GuidesModal } from './GuidesModal';
@@ -17,7 +17,7 @@ import { colors, space, type } from '../ui/theme';
  * that is a separate, later decision on the Share screen.
  */
 export function HomeScreen() {
-  const { refresh, user, signOut, families, selectFamily } = useSession();
+  const { refresh, user, signOut, deleteAccount, families, selectFamily } = useSession();
   const { t } = useI18n();
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
@@ -57,6 +57,15 @@ export function HomeScreen() {
     } finally {
       setBusy(null);
     }
+  }
+
+  function confirmDeleteAccount() {
+    Alert.alert('Radera konto och uppgifter?', 'Ditt konto och dina medlemskap raderas. Det går inte att ångra.', [
+      { text: 'Avbryt', style: 'cancel' },
+      { text: 'Radera', style: 'destructive', onPress: () => {
+        void deleteAccount().catch(() => setError('Kunde inte radera kontot. Kontrollera anslutningen och försök igen.'));
+      } },
+    ]);
   }
 
   return (
@@ -133,6 +142,7 @@ export function HomeScreen() {
       </Card>
 
       <Button label={t('signOut')} onPress={() => void signOut()} variant="quiet" />
+      <Button label="Radera konto och uppgifter" onPress={confirmDeleteAccount} variant="quiet" />
 
       <View style={styles.legalRow}>
         <Pressable onPress={() => setShowGuides(true)}>

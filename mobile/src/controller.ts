@@ -78,7 +78,13 @@ export async function getController(options: { startWatcher?: boolean } = {}): P
     return controller;
   })();
 
-  return booting;
+  try {
+    return await booting;
+  } catch (error) {
+    // A transient storage/native error must not poison all future retries.
+    booting = null;
+    throw error;
+  }
 }
 
 /** Test/teardown hook. */

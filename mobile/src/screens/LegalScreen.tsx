@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import { useI18n } from '../i18n';
-import { Button, SectionTitle } from '../ui/components';
+import { Button } from '../ui/components';
 import { colors, radius, space, type } from '../ui/theme';
 
 export type LegalDocType = 'terms' | 'privacy' | null;
@@ -81,66 +81,11 @@ export function LegalModal({
 function TermsContent() {
   return (
     <View style={styles.textWrap}>
-      <View style={styles.metaBox}>
-        <Text style={styles.metaTitle}>SafePath Användarvillkor</Text>
-        <Text style={type.faint}>Version 1.2 · Gäller från 2026-11-20 · Mario Lundqvist OÜ</Text>
-        <Text style={type.faint}>Kontakt: support@byggbartech.com (ange &quot;SafePath&quot; i ämnesraden) · Tallinn, Estland</Text>
-      </View>
-
-      <SectionTitle>1. Översikt & Behörighet</SectionTitle>
-      <Text style={styles.p}>
-        SafePath tillhandahålls av Mario Lundqvist OÜ. SafePath är en app för att dela sin position med
-        en sluten, privat grupp av personer som du själv väljer och som själva aktivt har godkänt inbjudan.
-        Tjänsten är inte ett trygghetslarm, inte ett övervakningsverktyg och inte avsedd för personer under 18 år (18+-gräns).
-      </Text>
-
-      <SectionTitle>2. Prenumerationer & Priser</SectionTitle>
-      <Text style={styles.p}>
-        SafePath erbjuder ett komplett abonnemang för hela familjen eller gruppen (upp till 8 personer, 18+).
-        Det finns ingen gratis provperiod och inga dolda avgifter. Priserna är:
-      </Text>
-      <View style={styles.bulletBox}>
-        <View style={styles.planRow}>
-          <Text style={styles.planName}>• Månadsvis (produkt-ID: monthly):</Text>
-          <Text style={styles.planPrice}>4,99 USD / månad</Text>
-        </View>
-        <View style={styles.planRow}>
-          <Text style={styles.planName}>• Årsvis (produkt-ID: yearly):</Text>
-          <Text style={styles.planPrice}>29,00 USD / år (spara 51 %)</Text>
-        </View>
-      </View>
-      <Text style={styles.p}>
-        Prenumerationen förnyas automatiskt månadsvis eller årligen om den inte sägs upp minst 24 timmar innan periodens slut via
-        butikens prenumerationshantering.
-      </Text>
-
-      <SectionTitle>3. Samtycke & Frivillighet</SectionTitle>
-      <Text style={styles.p}>
-        Att gå med i en grupp eller bli inbjuden innebär ALDRIG att din position automatiskt delas. Varje person
-        måste själv aktivt ge samtycke och slå på delning. Delning kan pausas eller stängas av omedelbart med ett
-        enda klick när som helst.
-      </Text>
-
-      <SectionTitle>4. Ingen Historiklagring</SectionTitle>
-      <Text style={styles.p}>
-        SafePath sparar ingen platshistorik. Endast den senaste kända positionen visas för dina gruppmedlemmar,
-        och den raderas automatiskt från servern efter 15 minuter. När du pausar eller lämnar raderas positionen direkt.
-      </Text>
-
-      <SectionTitle>5. Ångerrätt (14 dagar)</SectionTitle>
-      <Text style={styles.p}>
-        Som konsument inom EU har du 14 dagars lagstadgad ångerrätt från avtalets ingående. I appen finns en
-        oförkryssad kryssruta där du kan välja om du vill ha omedelbar åtkomst. Återbetalning hanteras av appbutiken.
-      </Text>
-
-      <SectionTitle>6. Tillåten Användning</SectionTitle>
-      <Text style={styles.p}>
-        Appen får inte användas för smygövervakning, stalkning eller utan berörda personers uttryckliga samtycke.
-        Konton som missbrukas stängs av omedelbart.
-      </Text>
-
-      <SectionTitle>7. Kontakt & Support</SectionTitle>
-      <Text style={styles.p}>Har du frågor eller behöver support? Kontakta oss på support@byggbartech.com med &quot;SafePath&quot; i ämnesraden.</Text>
+      <Text style={styles.metaTitle}>SafePath Användarvillkor · 2026-11-25</Text>
+      <Text style={styles.p}>SafePath tillhandahålls av Mario Lundqvist OÜ för frivillig platsdelning mellan vuxna. Dold övervakning eller användning utan berördas samtycke är inte tillåten.</Text>
+      <Text style={styles.p}>Du väljer själv om du delar din position. Den kan vara felaktig eller försenad. SafePath är inte en larmtjänst; kontakta lokal nödcentral vid fara.</Text>
+      <Text style={styles.p}>Prenumerationsköp är för närvarande inte tillgängliga. Om köp införs visas pris och förnyelsevillkor före köpet. Eventuella prenumerationer hanteras i appbutiken. Dina lagstadgade rättigheter påverkas inte.</Text>
+      <Text style={styles.p}>Kontakt: support@byggbartech.com.</Text>
     </View>
   );
 }
@@ -148,56 +93,13 @@ function TermsContent() {
 function PrivacyContent() {
   return (
     <View style={styles.textWrap}>
-      <View style={styles.metaBox}>
-        <Text style={styles.metaTitle}>SafePath Integritetspolicy</Text>
-        <Text style={type.faint}>Version 1.2 · Gäller från 2026-11-20 · GDPR-kompatibel</Text>
-        <Text style={type.faint}>Personuppgiftsansvarig: Mario Lundqvist OÜ (support@byggbartech.com, märk &quot;SafePath Dataskydd&quot;)</Text>
-      </View>
-
-      <SectionTitle>1. Vårt Integritetslöfte</SectionTitle>
-      <Text style={styles.p}>
-        SafePath säljer ALDRIG dina uppgifter. Vi använder inte din position för reklam och appen innehåller ingen
-        tredjepartsspårning, analysverktyg eller annonsnätverk.
-      </Text>
-
-      <SectionTitle>2. Vilka data som behandlas</SectionTitle>
-      <View style={styles.bulletBox}>
-        <Text style={styles.p}>
-          <Text style={{ fontWeight: '700' }}>• Senaste position:</Text> Skickas enbart när du aktivt slagit på delning.
-          Den sparas inte historiskt, utan ersätts vid varje mätning och raderas automatiskt efter 15 minuter.
-        </Text>
-        <Text style={styles.p}>
-          <Text style={{ fontWeight: '700' }}>• Omedelbar radering:</Text> När du pausar delning eller loggar ut raderas
-          positionen omedelbart från servern.
-        </Text>
-        <Text style={styles.p}>
-          <Text style={{ fontWeight: '700' }}>• Konto & E-post:</Text> E-postadress används enbart för lösenordsfri
-          inloggningskod. Inga lösenord sparas.
-        </Text>
-        <Text style={styles.p}>
-          <Text style={{ fontWeight: '700' }}>• Betalningsdata:</Text> All betalning hanteras säkert av Apple App Store,
-          Google Play eller Huawei AppGallery. Vi ser eller lagrar aldrig dina kortuppgifter.
-        </Text>
-      </View>
-
-      <SectionTitle>3. Rättslig Grund (GDPR)</SectionTitle>
-      <Text style={styles.p}>
-        Behandlingen av positionsdata sker med stöd av ditt uttryckliga samtycke (GDPR art. 6.1 a). Du kan återkalla
-        ditt samtycke när som helst med knappen &quot;Ta bort platsbehörigheten&quot; i appen.
-      </Text>
-
-      <SectionTitle>4. Dina Rättigheter</SectionTitle>
-      <Text style={styles.p}>
-        Du har full rätt till registerutdrag, rättelse och radering (rätten att bli glömd). Du kan radera ditt konto
-        och all tillhörande data direkt i appen under &quot;Radera konto och uppgifter&quot;.
-      </Text>
-
-      <SectionTitle>5. Tillsynsmyndighet & Kontakt</SectionTitle>
-      <Text style={styles.p}>
-        Personuppgiftsansvarig är Mario Lundqvist OÜ. Vid frågor om dina personuppgifter kontakta support@byggbartech.com
-        (ange &quot;SafePath Dataskydd&quot; som ämne). Du har även rätt att inge klagomål till behörig dataskyddsmyndighet
-        (Integritetsskyddsmyndigheten IMY i Sverige eller AKI i Estland).
-      </Text>
+      <Text style={styles.metaTitle}>SafePath Integritetspolicy · 2026-11-25</Text>
+      <Text style={styles.p}>Personuppgiftsansvarig: Mario Lundqvist OÜ, Estland. Kontakt: support@byggbartech.com.</Text>
+      <Text style={styles.p}>Vi behandlar e-post, visningsnamn, sessioner, gruppmedlemskap, inbjudningar samt säkerhets- och aktivitetsloggar. Drift-, databas- och e-postleverantörer behandlar uppgifter för tjänsten. Appen innehåller en betalningsleverantörs SDK, men köp är för närvarande inte tillgängliga.</Text>
+      <Text style={styles.p}>När du väljer att dela samlar appen in position, tid och noggrannhet för din valda grupp. En incheckning skickar en enstaka position även om löpande delning är av. Om du separat aktiverar bakgrundsdelning kan position samlas in även när appen är stängd eller inte används. Du kan pausa eller avsluta delningen.</Text>
+      <Text style={styles.p}>Servern sparar normalt bara senaste position per gruppmedlem och rensar positioner äldre än 15 minuter. Driftstörningar kan fördröja fysisk rensning. Vid anslutningsfel kan en position finnas kvar på servern till rensning. Enheten kan tillfälligt köa positioner som inte kunnat skickas.</Text>
+      <Text style={styles.p}>Radera konto via ”Radera konto och uppgifter” på startsidan eller i gruppen. Du kan också mejla support@byggbartech.com från din kontoadress och begära radering utan appen. Eventuell prenumeration måste avslutas separat i appbutiken.</Text>
+      <Text style={styles.p}>Kontouppgifter behålls tills kontot raderas. Säkerhets- och aktivitetsloggar kan finnas kvar. Du kan begära tillgång, rättelse eller radering samt klaga hos behörig dataskyddsmyndighet.</Text>
     </View>
   );
 }

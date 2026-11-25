@@ -73,6 +73,9 @@ export function startWatch({ background, onSample }: WatchStartOptions): () => v
     void startBackgroundUpdates(onSample).then((stop) => {
       if (stopped) stop();
       else teardown = stop;
+    }).catch(() => {
+      // Permission/service startup may fail; never leave an unhandled rejection.
+      console.warn("[SafePath] Background location could not start.");
     });
     return () => {
       stopped = true;

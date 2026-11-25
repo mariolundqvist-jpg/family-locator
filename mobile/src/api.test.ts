@@ -150,3 +150,22 @@ describe('positions', () => {
     expect(suspicious).toEqual([]);
   });
 });
+
+describe('request timeout', () => {
+  it('aborts a stalled request rather than waiting indefinitely', async () => {
+    jest.useFakeTimers();
+    try {
+      const api = await loadApi();
+      global.fetch = ((_url: string, init: RequestInit) => new Promise((_resolve, reject) => {
+        init.signal!.addEventListener('abort', () => reject(new Error('aborted')));
+      })) as unknown as typeof fetch;
+      const pending = api.me();
+      await Promise.resolve();
+      await Promise.resolve();
+      jest.advanceTimersByTime(15000);
+      await expect(pending).rejects.toMatchObject({ code: 'network', status: 0 });
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+});

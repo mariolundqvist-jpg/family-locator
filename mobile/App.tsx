@@ -19,12 +19,13 @@ import { ShareScreen } from './src/screens/ShareScreen';
 import { initSuperwall } from './src/services/superwall';
 import { SessionProvider, useSession } from './src/state/SessionProvider';
 import { colors, space, type } from './src/ui/theme';
+import { Button } from './src/ui/components';
 
 // Any coordinate or token that reaches console.log is scrubbed from here on.
 installConsoleRedaction();
 
 function Router() {
-  const { loading, user, view } = useSession();
+  const { loading, user, view, error, retryStartup } = useSession();
   const [screen, setScreen] = useState<'share' | 'group'>('share');
 
   if (loading) {
@@ -36,6 +37,12 @@ function Router() {
     );
   }
 
+  if (!user && error) return (
+    <View style={styles.centre}>
+      <Text style={type.small}>{error}</Text>
+      <Button label="Försök igen" onPress={() => void retryStartup()} />
+    </View>
+  );
   if (!user) return <LoginScreen />;
 
   if (!view) {
